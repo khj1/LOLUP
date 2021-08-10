@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2 th:text="|게임 버전: ${version}|"></h2>
+    <table style="width: 100%">
+        <tr>
+            <th>소환사 아이콘</th>
+            <th>소환사 이름</th>
+            <th>소환사 레벨</th>
+            <th>티어</th>
+            <th>티어</th>
+            <th>랭크</th>
+            <th>포인트</th>
+            <th>승</th>
+            <th>패</th>
+            <th>최근 10게임 전적</th>
+            <th>최근 10게임 모스트 챔피언</th>
+        </tr>
+        <tr th:align="center">
+            <td>
+                <img th:src="@{http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{iconId}.png(version=${version}, iconId=${totalInfo.profileIconId})}"
+                    width="40px"/>
+            </td>
+            <td th:text="${totalInfo.summonerName}"></td>
+            <td th:text="${totalInfo.summonerLevel}"></td>
+            <td>
+                <img th:src="@{/static/img/{tier}.png(tier=${totalInfo.tier})}"
+                    width="40px">
+            </td>
+            <td th:text="${totalInfo.tier}"></td>
+            <td th:text="${totalInfo.rank}"></td>
+            <td th:text="${totalInfo.leaguePoints}"></td>
+            <td th:text="${totalInfo.wins}"></td>
+            <td th:text="${totalInfo.losses}"></td>
+            <td th:text="${latestWinRate}"></td>
+            <td>
+                <img th:src="@{http://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{champion}.png(version=${version}, champion=${most3[0].key})}"
+                    width="40px"/>
+                <span th:text="|${most3[0].value}판|"></span>
+                <img th:src="@{http://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{champion}.png(version=${version}, champion=${most3[1].key})}"
+                     width="40px"/>
+                <span th:text="|${most3[1].value}판|"></span>
+                <img th:src="@{http://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{champion}.png(version=${version}, champion=${most3[2].key})}"
+                     width="40px"/>
+                <span th:text="|${most3[2].value}판|"></span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
