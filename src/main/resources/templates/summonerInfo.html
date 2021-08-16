@@ -28,7 +28,7 @@
             <td th:text="${totalInfo.summonerName}"></td>
             <td th:text="${totalInfo.summonerLevel}"></td>
             <td>
-                <img th:src="@{/static/img/{tier}.png(tier=${totalInfo.tier})}"
+                <img th:src="@{/img/{tier}.png(tier=${totalInfo.tier})}"
                     width="40px">
             </td>
             <td th:text="${totalInfo.tier}"></td>
@@ -36,7 +36,7 @@
             <td th:text="${totalInfo.leaguePoints}"></td>
             <td th:text="${totalInfo.wins}"></td>
             <td th:text="${totalInfo.losses}"></td>
-            <td th:text="${latestWinRate}"></td>champio
+            <td th:text="${latestWinRate}"></td>
             <td>
                 <img th:src="@{http://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{champion}.png(version=${version}, champion=${most3[0].key})}"
                     width="40px"/>
