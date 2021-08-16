@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,19 +20,17 @@ class SummonerServiceTest {
     SummonerService summonerService;
 
     @Test
-    void getMost3ChampOfLatestGames() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        List<MatchReferenceDTO> matches = summonerService.getLatestSoloRankHistories("hideonbush");
-        Method method = summonerService.getClass().getDeclaredMethod("getMost3ChampOfLatestGames", List.class);
+    void 최근_10게임_모스트3_추출() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        List<MatchReferenceDTO> matches = summonerService.getLatestMatches("hideonbush");
+        Method method = summonerService.getClass().getDeclaredMethod("getLatestMost3", List.class);
         method.setAccessible(true);
 
-        List<Map.Entry<String, Integer>> most3
-                = (List<Map.Entry<String, Integer>>) method.invoke(summonerService, matches);
-
-        System.out.println("most3 = " + most3);
+        Map<String, Integer> most3 = (Map<String, Integer>) method.invoke(summonerService, matches);
+        List<Map.Entry<String, Integer>> entries = most3.entrySet().stream().collect(Collectors.toList());
 
         assertThat(most3.size()).isEqualTo(3);
-        assertThat(most3.get(0).getValue()).isGreaterThanOrEqualTo(most3.get(1).getValue());
-        assertThat(most3.get(1).getValue()).isGreaterThanOrEqualTo(most3.get(2).getValue());
+        assertThat(entries.get(0).getValue()).isGreaterThanOrEqualTo(entries.get(1).getValue());
+        assertThat(entries.get(1).getValue()).isGreaterThanOrEqualTo(entries.get(2).getValue());
     }
 
 }

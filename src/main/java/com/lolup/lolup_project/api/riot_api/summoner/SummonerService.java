@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SummonerService {
@@ -35,7 +36,6 @@ public class SummonerService {
         SummonerAccountDTO summonerAccountInfo = getSummonerAccountInfo(summonerName);
         String id = summonerAccountInfo.getId();
         int profileIconId = summonerAccountInfo.getProfileIconId();
-        Long summonerLevel = summonerAccountInfo.getSummonerLevel();
 
         SummonerRankDTO summonerRankDTO = webClient
                 .get()
@@ -44,8 +44,17 @@ public class SummonerService {
                 .bodyToFlux(SummonerRankDTO.class)
                 .blockFirst();
 
+        if (summonerRankDTO == null) {
+            summonerRankDTO = SummonerRankDTO.builder()
+                    .summonerName(summonerName)
+                    .tier("UNRANKED")
+                    .rank("언랭크")
+                    .wins(0)
+                    .losses(0)
+                    .build();
+        }
+
         summonerRankDTO.setProfileIconId(profileIconId);
-        summonerRankDTO.setSummonerLevel(summonerLevel);
 
         return summonerRankDTO;
     }
@@ -59,7 +68,7 @@ public class SummonerService {
                 .block();
     }
 
-    public List<MatchReferenceDTO> getLatestSoloRankHistories(String summonerName) {
+    public List<MatchReferenceDTO> getLatestMatches(String summonerName) {
         List<MatchReferenceDTO> matches = getMatchReferences(summonerName);
 
         for (MatchReferenceDTO match : matches) {
@@ -69,32 +78,55 @@ public class SummonerService {
         return matches;
     }
 
-    private String getWinRateOfLatestGames(List<MatchReferenceDTO> matches) {
+    private String getLatestWinRate(List<MatchReferenceDTO> matches) {
         long winCount = matches.stream()
                 .filter(matchReferenceDTO -> matchReferenceDTO.getWin().equals("Win")).count();
 
         return (double) (winCount * 10) + "%";
     }
 
-    private List<Map.Entry<String, Integer>> getMost3ChampOfLatestGames(List<MatchReferenceDTO> matches) {
-        Map<String, Integer> champsPlayed = new HashMap<>();
+    private Map<String, Integer> getLatestMost3(List<MatchReferenceDTO> matches) {
+        Map<String, Integer> most10 = getLatestMost10(matches);
+        Stream<Map.Entry<String, Integer>> sortedMap = getSortedMap(most10);
+        List<Map.Entry<String, Integer>> most3Entries = getMost3Entries(sortedMap);
+
+        return getMost3Map(most3Entries);
+
+    }
+
+    private Map<String, Integer> getMost3Map(List<Map.Entry<String, Integer>> entries) {
+        Map<String, Integer> most3 = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entries) {
+            most3.put(entry.getKey(), entry.getValue());
+        }
+        return most3;
+    }
+
+    private List<Map.Entry<String, Integer>> getMost3Entries(Stream<Map.Entry<String, Integer>> sortedMap) {
+        return sortedMap.collect(Collectors.toList())
+                .subList(0, 3);
+    }
+
+    private Stream<Map.Entry<String, Integer>> getSortedMap(Map<String, Integer> most10) {
+        return most10.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed());
+    }
+
+    private Map<String, Integer> getLatestMost10(List<MatchReferenceDTO> matches) {
+        Map<String, Integer> most10 = new HashMap<>();
 
         for (MatchReferenceDTO match : matches) {
             int championId = match.getChampion();
             String championName = ChampionResource.getChampionNameById(championId);
 
-            if (champsPlayed.containsKey(championName)) {
-                champsPlayed.put(championName, champsPlayed.get(championName) + 1);
+            if (most10.containsKey(championName)) {
+                most10.put(championName, most10.get(championName) + 1);
             } else {
-                champsPlayed.put(championName, 1);
+                most10.put(championName, 1);
             }
         }
-
-        return champsPlayed.entrySet()
-                .stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .collect(Collectors.toList())
-                .subList(0, 3);
+        return most10;
     }
 
     public Map<String, Object> getSummonerSummaryInfo(String summonerName) {
@@ -103,14 +135,14 @@ public class SummonerService {
         SummonerRankDTO totalSoloRankInfo = getSummonerTotalSoloRankInfo(summonerName);
         String version = getGameVersion()[0];
 
-        List<MatchReferenceDTO> matches = getLatestSoloRankHistories(summonerName);
-        String winRateOfLatestGames = getWinRateOfLatestGames(matches);
-        List<Map.Entry<String, Integer>> most3ChampOfLatestGames = getMost3ChampOfLatestGames(matches);
+        List<MatchReferenceDTO> matches = getLatestMatches(summonerName);
+        String latestWinRate = getLatestWinRate(matches);
+        Map<String, Integer> latestMost3 = getLatestMost3(matches);
 
         map.put("version", version);
-        map.put("totalInfo", totalSoloRankInfo);
-        map.put("winRateOfLatestGames", winRateOfLatestGames);
-        map.put("most3ChampOfLatestGames", most3ChampOfLatestGames);
+        map.put("info", totalSoloRankInfo);
+        map.put("latestWinRate", latestWinRate);
+        map.put("most3", latestMost3);
 
         return map;
     }
