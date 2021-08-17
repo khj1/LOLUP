@@ -42,6 +42,16 @@ public class SummonerService {
             summonerRankDTO = getUnrankedInfo(summonerName);
         }
 
+        if (summonerRankDTO == null) {
+            summonerRankDTO = SummonerRankDto.builder()
+                    .summonerName(summonerName)
+                    .tier("UNRANKED")
+                    .rank("언랭크")
+                    .wins(0)
+                    .losses(0)
+                    .build();
+        }
+
         summonerRankDTO.setProfileIconId(profileIconId);
 
         return summonerRankDTO;
@@ -149,6 +159,7 @@ public class SummonerService {
                 .latestWinRate(latestWinRate)
                 .info(info)
                 .most3(most3).build();
+
     }
 
     private List<MatchReferenceDTO> getMatchReferences(String summonerName) {
