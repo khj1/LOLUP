@@ -3,7 +3,7 @@ package com.lolup.lolup_project.api.riot_api.summoner;
 import lombok.Data;
 
 @Data
-public class SummonerAccountDTO {
+public class SummonerAccountDto {
 
     private String accountId;
     private int profileIconId;

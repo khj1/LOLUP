@@ -6,7 +6,6 @@ import com.lolup.lolup_project.api.riot_api.match.MatchReferenceDTO;
 import com.lolup.lolup_project.api.riot_api.match.MatchlistDTO;
 import com.lolup.lolup_project.api.riot_api.resource.ChampionResource;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,35 +22,24 @@ public class SummonerService {
 
     private final WebClient webClient;
 
-    public SummonerAccountDTO getSummonerAccountInfo(String summonerName) {
+    private SummonerAccountDto getAccountInfo(String summonerName) {
         return webClient
                 .get()
                 .uri("/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + APIConst.riot_apiKey)
                 .retrieve()
-                .bodyToMono(SummonerAccountDTO.class)
+                .bodyToMono(SummonerAccountDto.class)
                 .block();
     }
 
-    public SummonerRankDTO getSummonerTotalSoloRankInfo(String summonerName) {
-        SummonerAccountDTO summonerAccountInfo = getSummonerAccountInfo(summonerName);
+    private SummonerRankDto getSummonerTotalSoloRankInfo(String summonerName) {
+        SummonerAccountDto summonerAccountInfo = getAccountInfo(summonerName);
         String id = summonerAccountInfo.getId();
         int profileIconId = summonerAccountInfo.getProfileIconId();
 
-        SummonerRankDTO summonerRankDTO = webClient
-                .get()
-                .uri("/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + APIConst.riot_apiKey)
-                .retrieve()
-                .bodyToFlux(SummonerRankDTO.class)
-                .blockFirst();
+        SummonerRankDto summonerRankDTO = getRankInfo(id);
 
         if (summonerRankDTO == null) {
-            summonerRankDTO = SummonerRankDTO.builder()
-                    .summonerName(summonerName)
-                    .tier("UNRANKED")
-                    .rank("언랭크")
-                    .wins(0)
-                    .losses(0)
-                    .build();
+            summonerRankDTO = getUnrankedInfo(summonerName);
         }
 
         summonerRankDTO.setProfileIconId(profileIconId);
@@ -59,7 +47,26 @@ public class SummonerService {
         return summonerRankDTO;
     }
 
-    public String[] getGameVersion() {
+    private SummonerRankDto getUnrankedInfo(String summonerName) {
+        return SummonerRankDto.builder()
+                .summonerName(summonerName)
+                .tier("UNRANKED")
+                .rank("언랭크")
+                .wins(0)
+                .losses(0)
+                .build();
+    }
+
+    private SummonerRankDto getRankInfo(String id) {
+        return webClient
+                .get()
+                .uri("/lol/league/v4/entries/by-summoner/" + id + "?api_key=" + APIConst.riot_apiKey)
+                .retrieve()
+                .bodyToFlux(SummonerRankDto.class)
+                .blockFirst();
+    }
+
+    private String[] getGameVersion() {
         return webClient
                 .get()
                 .uri("https://ddragon.leagueoflegends.com/api/versions.json")
@@ -68,11 +75,11 @@ public class SummonerService {
                 .block();
     }
 
-    public List<MatchReferenceDTO> getLatestMatches(String summonerName) {
+    private List<MatchReferenceDTO> getLatestMatches(String summonerName) {
         List<MatchReferenceDTO> matches = getMatchReferences(summonerName);
 
         for (MatchReferenceDTO match : matches) {
-            getLatestMatchInfo(match);
+            setWinCount(match);
         }
 
         return matches;
@@ -91,7 +98,6 @@ public class SummonerService {
         List<Map.Entry<String, Integer>> most3Entries = getMost3Entries(sortedMap);
 
         return getMost3Map(most3Entries);
-
     }
 
     private Map<String, Integer> getMost3Map(List<Map.Entry<String, Integer>> entries) {
@@ -129,26 +135,24 @@ public class SummonerService {
         return most10;
     }
 
-    public Map<String, Object> getSummonerSummaryInfo(String summonerName) {
-        Map<String, Object> map = new HashMap<>();
+    public SummonerDto find(String summonerName) {
 
-        SummonerRankDTO totalSoloRankInfo = getSummonerTotalSoloRankInfo(summonerName);
+        SummonerRankDto info = getSummonerTotalSoloRankInfo(summonerName);
         String version = getGameVersion()[0];
 
         List<MatchReferenceDTO> matches = getLatestMatches(summonerName);
         String latestWinRate = getLatestWinRate(matches);
-        Map<String, Integer> latestMost3 = getLatestMost3(matches);
+        Map<String, Integer> most3 = getLatestMost3(matches);
 
-        map.put("version", version);
-        map.put("info", totalSoloRankInfo);
-        map.put("latestWinRate", latestWinRate);
-        map.put("most3", latestMost3);
-
-        return map;
+        return SummonerDto.builder()
+                .version(version)
+                .latestWinRate(latestWinRate)
+                .info(info)
+                .most3(most3).build();
     }
 
     private List<MatchReferenceDTO> getMatchReferences(String summonerName) {
-        String accountId = getSummonerAccountInfo(summonerName).getAccountId();
+        String accountId = getAccountInfo(summonerName).getAccountId();
         return webClient
                 .get()
                 .uri("/lol/match/v4/matchlists/by-account/" + accountId + "?api_key=" + APIConst.riot_apiKey + "&queue=" + 420 + "&endIndex="  + 10)
@@ -160,21 +164,24 @@ public class SummonerService {
                 .getMatches();
     }
 
-    public void getLatestMatchInfo(MatchReferenceDTO matchReferenceDTO) {
+    private void setWinCount(MatchReferenceDTO matchReferenceDTO) {
         Long gameId = matchReferenceDTO.getGameId();
         int championId = matchReferenceDTO.getChampion();
 
-        MatchDto matchDto = webClient
+        MatchDto matchDto = getMatchInfo(gameId);
+        int teamId = getTeamId(championId, matchDto);
+        String win = getWin(teamId, matchDto);
+
+        matchReferenceDTO.setWin(win);
+    }
+
+    private MatchDto getMatchInfo(Long gameId) {
+        return webClient
                 .get()
                 .uri("https://kr.api.riotgames.com/lol/match/v4/matches/" + gameId + "?api_key=" + APIConst.riot_apiKey)
                 .retrieve()
                 .bodyToMono(MatchDto.class)
                 .block();
-
-        int teamId = getTeamId(championId, matchDto);
-        String win = getWin(teamId, matchDto);
-
-        matchReferenceDTO.setWin(win);
     }
 
     private String getWin(int teamId, MatchDto matchDto) {
