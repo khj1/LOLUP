@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class DuoForm {
-    private Long duoId;
     private Long memberId;
     private String summonerName;
     private String position;
@@ -19,8 +18,7 @@ public class DuoForm {
     private LocalDateTime postDate;
 
     @Builder
-    public DuoForm(Long duoId, Long memberId, String summonerName, String position, String desc, LocalDateTime postDate) {
-        this.duoId = duoId;
+    public DuoForm(Long memberId, String summonerName, String position, String desc, LocalDateTime postDate) {
         this.memberId = memberId;
         this.summonerName = summonerName;
         this.position = position;

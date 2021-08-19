@@ -10,23 +10,23 @@
     </resultMap>
 
 
-    <select id="findAll" resultMap="convertDto">
+    <select id="findAll" parameterType="java.lang.String" resultMap="convertDto">
         SELECT * FROM duo
         <choose>
-            <when test="!position.equals('ALL') and !tier.equals('ALL')">
-                WHERE position = #{position } AND tier = #{tier}
+            <when test="!_position.equals('ALL') and !_tier.equals('ALL')">
+                WHERE position = #{_position} AND tier = #{_tier}
             </when>
-            <when test="!position.equals('ALL')">
-                WHERE position = #{position }
+            <when test="!_position.equals('ALL')">
+                WHERE position = #{_position}
             </when>
-            <when test="!tier.equals('ALL')">
-                WHERE tier = #{tier}
+            <when test="!_tier.equals('ALL')">
+                WHERE tier = #{_tier}
             </when>
         </choose>
         ORDER BY memberId DESC
     </select>
 
-    <select id="findById" resultType="DuoDto">
+    <select id="findById" resultMap="convertDto">
         SELECT * FROM duo WHERE duoId = #{duoId}
     </select>
 
