@@ -6,7 +6,7 @@ import lombok.Data;
 public class SummonerAccountDto {
 
     private String accountId;
-    private int profileIconId;
+    private int IconId;
     private Long revisionDate; // Date summoner was last modified
     private String name;
     private String id;

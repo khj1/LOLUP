@@ -56,9 +56,9 @@ class SummonerControllerTest {
                 .summonerName("name")
                 .tier("BRONZE")
                 .rank("3")
-                .profileIconId(300)
-                .wins(20)
-                .losses(20)
+                .iconId(300)
+                .win(20)
+                .lose(20)
                 .build();
 
         Map<String, Integer> map = new HashMap<>();
@@ -91,9 +91,9 @@ class SummonerControllerTest {
                                 fieldWithPath("info.summonerName").description("인 게임에서 사용되는 소환사 이름입니다."),
                                 fieldWithPath("info.tier").description("소환사의 랭크 티어입니다. 예) BRONZE"),
                                 fieldWithPath("info.rank").description("소환사의 랭크 등급입니다. 예) ⅲ"),
-                                fieldWithPath("info.profileIconId").description("인 게임에서 사용되는 소환사의 아이콘 이미지 식별 값입니다."),
-                                fieldWithPath("info.wins").description("랭크 게임 전체 승리 횟수 입니다."),
-                                fieldWithPath("info.losses").description("랭크 게임 전체 패배 횟수 입니다."),
+                                fieldWithPath("info.iconId").description("인 게임에서 사용되는 소환사의 아이콘 이미지 식별 값입니다."),
+                                fieldWithPath("info.win").description("랭크 게임 전체 승리 횟수 입니다."),
+                                fieldWithPath("info.lose").description("랭크 게임 전체 패배 횟수 입니다."),
                                 fieldWithPath("most3.most1_championName").description("최근 10게임 내에서 가장 많이 플레이한 챔피언의 플레이 횟수 입니다."),
                                 fieldWithPath("most3.most2_championName").description("최근 10게임 내에서 두번째로 많이 플레이한 챔피언의 플레이 횟수 입니다."),
                                 fieldWithPath("most3.most3_championName").description("최근 10게임 내에서 세번째로 많이 플레이한 챔피언의 플레이 횟수 입니다.")
@@ -104,9 +104,9 @@ class SummonerControllerTest {
                 .jsonPath("$.info.summonerName").isEqualTo("name")
                 .jsonPath("$.info.tier").isEqualTo("BRONZE")
                 .jsonPath("$.info.rank").isEqualTo("3")
-                .jsonPath("$.info.profileIconId").isEqualTo(300)
-                .jsonPath("$.info.wins").isEqualTo(20)
-                .jsonPath("$.info.losses").isEqualTo(20)
+                .jsonPath("$.info.iconId").isEqualTo(300)
+                .jsonPath("$.info.win").isEqualTo(20)
+                .jsonPath("$.info.lose").isEqualTo(20)
                 .jsonPath("$.most3").isNotEmpty();
 
     }

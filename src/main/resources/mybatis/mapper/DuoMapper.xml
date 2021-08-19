@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lolup.lolup_project.duo.MybatisDuoRepository">
+    <select id="findAll" resultType="DuoDto">
+        SELECT * FROM duo
+        <choose>
+            <when test="!position.equals('ALL') and !tier.equals('ALL')">
+                WHERE position = #{position } AND tier = #{tier}
+            </when>
+            <when test="!position.equals('ALL')">
+                WHERE position = #{position }
+            </when>
+            <when test="!tier.equals('ALL')">
+                WHERE tier = #{tier}
+            </when>
+        </choose>
+        ORDER BY memberId DESC
+    </select>
+
+    <select id="findById" resultType="DuoDto">
+        SELECT * FROM duo WHERE duoId = #{duoId}
+    </select>
+
+    <select id="save" parameterType="DuoDto" resultType="java.lang.Long">
+        INSERT INTO duo (memberId, summonerName, position , tier, rank, most3, win, lose, latestWinRate, `desc`)
+            values (#{memberId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3}, #{win}, #{lose}, #{latestWinRate}, #{desc})
+            RETURNING duoId;
+    </select>
+
+    <delete id="delete">
+        DELETE FROM duo WHERE duoId = #{duoId}
+    </delete>
+
+    <update id="update">
+        UPDATE duo SET position = #{param2}, `desc` = #{param3} WHERE duoId = #{param1}
+    </update>
+
+
+</mapper>

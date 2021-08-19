@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DuoService {
 
@@ -16,8 +17,8 @@ public class DuoService {
     private final SummonerService summonerService;
 
 
-    public List<DuoDto> findAll(String tier, String position) {
-        return duoRepository.findAll(tier, position);
+    public List<DuoDto> findAll(ParameterDto parameterDto) {
+        return duoRepository.findAll(parameterDto);
     }
 
 
@@ -26,7 +27,6 @@ public class DuoService {
     }
 
 
-    @Transactional
     public Long save(DuoForm form) {
         SummonerDto summonerDto = summonerService.find(form.getSummonerName());
         DuoDto duoDto = DuoDto.create(summonerDto, form);
@@ -34,9 +34,8 @@ public class DuoService {
     }
 
 
-    public Long update(Long duoId, DuoForm form) {
-        DuoDto dto = duoRepository.findById(duoId);
-        return duoRepository.update(duoId, dto);
+    public Long update(Long duoId, String position, String desc) {
+        return duoRepository.update(duoId, position, desc);
     }
 
     public Long delete(Long duoId) {

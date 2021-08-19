@@ -7,20 +7,20 @@ import lombok.*;
 @NoArgsConstructor
 public class SummonerRankDto {
 
-    private int profileIconId;
+    private int iconId;
     private String summonerName;
     private String tier;
     private String rank;
-    private int wins;
-    private int losses;
+    private int win;
+    private int lose;
 
     @Builder
-    public SummonerRankDto(int profileIconId, String summonerName, String tier, String rank, int wins, int losses) {
-        this.profileIconId = profileIconId;
+    public SummonerRankDto(int iconId, String summonerName, String tier, String rank, int win, int lose) {
+        this.iconId = iconId;
         this.summonerName = summonerName;
         this.tier = tier;
         this.rank = rank;
-        this.wins = wins;
-        this.losses = losses;
+        this.win = win;
+        this.lose = lose;
     }
 }
