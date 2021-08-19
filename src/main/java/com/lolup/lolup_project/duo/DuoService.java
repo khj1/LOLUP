@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +21,6 @@ public class DuoService {
     public List<DuoDto> findAll(ParameterDto parameterDto) {
         return duoRepository.findAll(parameterDto);
     }
-
 
     public DuoDto findById(Long duoId) {
         return duoRepository.findById(duoId);
