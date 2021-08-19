@@ -15,10 +15,9 @@ public class DuoController {
     private final DuoService duoService;
 
     @GetMapping
-    public ResponseEntity<List<DuoDto>> findAll(@RequestParam String tier,
-                                                @RequestParam String position) {
+    public ResponseEntity<List<DuoDto>> findAll(ParameterDto parameterDto) {
 
-        List<DuoDto> list = duoService.findAll(tier, position);
+        List<DuoDto> list = duoService.findAll(parameterDto);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -34,8 +33,8 @@ public class DuoController {
     }
 
     @PatchMapping("/{duoId}")
-    public ResponseEntity<Long> update(@PathVariable Long duoId, DuoForm form) {
-        return new ResponseEntity<>(duoService.update(duoId, form), HttpStatus.OK);
+    public ResponseEntity<Long> update(@PathVariable Long duoId, String position, String desc) {
+        return new ResponseEntity<>(duoService.update(duoId, position, desc), HttpStatus.OK);
     }
 
     @DeleteMapping("/{duoId}")
