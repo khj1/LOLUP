@@ -2,7 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lolup.lolup_project.duo.MybatisDuoRepository">
-    <select id="findAll" resultType="DuoDto">
+
+    <resultMap id="convertDto" type="DuoDto">
+        <result column="most3" property="most3"
+                javaType="java.util.HashMap"
+                typeHandler="MybatisTypeHandler"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="convertDto">
         SELECT * FROM duo
         <choose>
             <when test="!position.equals('ALL') and !tier.equals('ALL')">
@@ -24,7 +32,7 @@
 
     <select id="save" parameterType="DuoDto" resultType="java.lang.Long">
         INSERT INTO duo (memberId, summonerName, position , tier, rank, most3, win, lose, latestWinRate, `desc`)
-            values (#{memberId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3}, #{win}, #{lose}, #{latestWinRate}, #{desc})
+            values (#{memberId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3, typeHandler=MybatisTypeHandler}, #{win}, #{lose}, #{latestWinRate}, #{desc})
             RETURNING duoId;
     </select>
 
