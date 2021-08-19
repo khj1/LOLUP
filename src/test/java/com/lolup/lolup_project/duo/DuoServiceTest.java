@@ -55,8 +55,6 @@ class DuoServiceTest {
 
         List<DuoDto> list_gold_jug = duoRepository.findAll(parameter_gold_jug);
         List<DuoDto> list_gold = duoRepository.findAll(parameter_gold);
-        List<DuoDto> list_silver_jug = duoRepository.findAll(parameter_silver_jug);
-        List<DuoDto> list_silver = duoRepository.findAll(parameter_silver);
         List<DuoDto> list_all = duoRepository.findAll(parameter_all);
 
         int size_gold_jug = list_gold_jug.size();
@@ -125,7 +123,7 @@ class DuoServiceTest {
                 .tier(tier)
                 .rank("3")
                 .position(position)
-                .most3(most3.toString())
+                .most3(most3)
                 .lose(100)
                 .memberId(1L)
                 .latestWinRate("20%")

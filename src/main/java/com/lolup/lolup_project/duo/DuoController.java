@@ -16,7 +16,6 @@ public class DuoController {
 
     @GetMapping
     public ResponseEntity<List<DuoDto>> findAll(ParameterDto parameterDto) {
-
         List<DuoDto> list = duoService.findAll(parameterDto);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
