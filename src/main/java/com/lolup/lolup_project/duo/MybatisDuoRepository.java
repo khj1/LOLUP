@@ -1,6 +1,7 @@
 package com.lolup.lolup_project.duo;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 public interface MybatisDuoRepository extends DuoRepository{
 
     @Override
-    List<DuoDto> findAll(ParameterDto parameterDto);
+    List<DuoDto> findAll(@Param("_position") String position,
+                         @Param("_tier") String tier);
 
     @Override
     DuoDto findById(Long duoId);

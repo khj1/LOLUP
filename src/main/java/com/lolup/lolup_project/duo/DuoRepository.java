@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DuoRepository {
 
-    List<DuoDto> findAll(ParameterDto parameterDto);
+    List<DuoDto> findAll(String position, String tier);
 
     DuoDto findById(Long duoId);
 
