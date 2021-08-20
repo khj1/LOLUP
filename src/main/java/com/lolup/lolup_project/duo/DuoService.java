@@ -18,8 +18,8 @@ public class DuoService {
     private final SummonerService summonerService;
 
 
-    public List<DuoDto> findAll(ParameterDto parameterDto) {
-        return duoRepository.findAll(parameterDto);
+    public List<DuoDto> findAll(String position, String tier) {
+        return duoRepository.findAll(position, tier);
     }
 
     public DuoDto findById(Long duoId) {

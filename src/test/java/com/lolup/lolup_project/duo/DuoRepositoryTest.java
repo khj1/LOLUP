@@ -17,7 +17,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @AutoConfigureTestDatabase(replace = NONE)
 @MybatisTest
-class DuoServiceTest {
+class DuoRepositoryTest {
 
     @Autowired
     private DuoRepository duoRepository;
@@ -41,21 +41,15 @@ class DuoServiceTest {
     @Test
     void 듀오_필터적용_조회() {
         // given
-        ParameterDto parameter_gold_jug = ParameterDto.create(SummonerTier.GOLD, SummonerPosition.JUG);
-        ParameterDto parameter_gold = ParameterDto.create(SummonerTier.GOLD, SummonerPosition.ALL);
-        ParameterDto parameter_silver_jug = ParameterDto.create(SummonerTier.SILVER, SummonerPosition.JUG);
-        ParameterDto parameter_silver = ParameterDto.create(SummonerTier.SILVER, SummonerPosition.ALL);
-        ParameterDto parameter_all = ParameterDto.create(SummonerTier.ALL, SummonerPosition.ALL);
-
-        // when
         duoRepository.save(getDuoDto(SummonerTier.GOLD, SummonerPosition.JUG));
         duoRepository.save(getDuoDto(SummonerTier.GOLD, SummonerPosition.TOP));
         duoRepository.save(getDuoDto(SummonerTier.SILVER, SummonerPosition.JUG));
         duoRepository.save(getDuoDto(SummonerTier.SILVER, SummonerPosition.TOP));
 
-        List<DuoDto> list_gold_jug = duoRepository.findAll(parameter_gold_jug);
-        List<DuoDto> list_gold = duoRepository.findAll(parameter_gold);
-        List<DuoDto> list_all = duoRepository.findAll(parameter_all);
+        // when
+        List<DuoDto> list_gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG);
+        List<DuoDto> list_gold = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.ALL);
+        List<DuoDto> list_all = duoRepository.findAll(SummonerTier.ALL, SummonerPosition.ALL);
 
         int size_gold_jug = list_gold_jug.size();
         long count_gold_jug = list_gold_jug.stream()
