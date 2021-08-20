@@ -69,10 +69,10 @@ class DuoControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
-                                fieldWithPath("memberId").description("작성자의 회원 고유 번호"),
+                                fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
                                 fieldWithPath("position").description("주 포지션"),
                                 fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
-                                fieldWithPath("postDate").description("모집글 작성 시간")
+                                fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
                         )
                 ));
     }
