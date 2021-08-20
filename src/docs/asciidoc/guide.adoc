@@ -64,12 +64,27 @@ include::{snippets}/summoner/exception/http-response.adoc[]
 
 [[Duo]]
 == Duo
+**path**
+|===
+| method | path
+
+| `GET`
+| /duo
+
+| `POST`
+| /duo/new
+
+| `PATCH`
+| /duo/{duoId}
+
+| `DELETE`
+| /duo/{duoId}
+
+|===
+
 
 [[Duo_Get]]
 === 조회
-DUO 모집글 목록을 조회합니다.
-
-    GET /duo
 
 ==== Request
 **Parameters**
@@ -113,9 +128,6 @@ include::{snippets}/duo/readAll/http-response.adoc[]
 ***
 [[Duo_Post]]
 === 추가
-DUO 모집글을 추가합니다.
-
-    Post /duo/new
 
 ==== Request
 **Parameters**

@@ -670,16 +670,41 @@ Content-Length: 93
 <div class="sect1">
 <h2 id="Duo"><a class="link" href="#Duo">Duo</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><strong>path</strong></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">method</th>
+<th class="tableblock halign-left valign-top">path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/duo</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/duo/new</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PATCH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/duo/{duoId}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DELETE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/duo/{duoId}</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sect2">
 <h3 id="Duo_Get"><a class="link" href="#Duo_Get">조회</a></h3>
-<div class="paragraph">
-<p>DUO 모집글 목록을 조회합니다.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>GET /duo</pre>
-</div>
-</div>
 <div class="sect3">
 <h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
 <div class="paragraph">
@@ -888,7 +913,7 @@ Content-Length: 798
   "lose" : 300,
   "latestWinRate" : "20%",
   "desc" : "hi",
-  "postDate" : "2021-08-20T11:59:36.9185242"
+  "postDate" : "2021-08-20T12:12:02.0065669"
 }, {
   "duoId" : 2,
   "memberId" : 1,
@@ -906,7 +931,7 @@ Content-Length: 798
   "lose" : 300,
   "latestWinRate" : "20%",
   "desc" : "hi",
-  "postDate" : "2021-08-20T11:59:36.9185242"
+  "postDate" : "2021-08-20T12:12:02.0065669"
 } ]</code></pre>
 </div>
 </div>
@@ -915,14 +940,6 @@ Content-Length: 798
 </div>
 <div class="sect2">
 <h3 id="Duo_Post"><a class="link" href="#Duo_Post">추가</a></h3>
-<div class="paragraph">
-<p>DUO 모집글을 추가합니다.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Post /duo/new</pre>
-</div>
-</div>
 <div class="sect3">
 <h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
 <div class="paragraph">
@@ -1017,7 +1034,7 @@ Host: lolup-api.p-e.kr</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-20 10:33:13 KST
+Last updated 2021-08-20 12:11:02 KST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">

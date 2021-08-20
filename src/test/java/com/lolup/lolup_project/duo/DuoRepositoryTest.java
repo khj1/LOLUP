@@ -17,7 +17,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @AutoConfigureTestDatabase(replace = NONE)
 @MybatisTest
-class DuoServiceTest {
+class DuoRepositoryTest {
 
     @Autowired
     private DuoRepository duoRepository;
