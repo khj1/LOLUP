@@ -2,16 +2,20 @@ package com.lolup.lolup_project.duo;
 
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
+import com.lolup.lolup_project.member.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -31,9 +35,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@WebFluxTest(value = DuoController.class, excludeAutoConfiguration = ReactiveSecurityAutoConfiguration.class)
+@WithMockUser
+@WebFluxTest(value = DuoController.class)
 class DuoControllerTest {
 
     private WebTestClient webTestClient;
@@ -59,7 +65,7 @@ class DuoControllerTest {
         when(duoService.save(duoForm)).thenReturn(1L);
         
         //then
-        webTestClient.post().uri("duo/new")
+        webTestClient.mutateWith(csrf()).post().uri("duo/new")
                 .body(Mono.just(duoForm), DuoForm.class)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()

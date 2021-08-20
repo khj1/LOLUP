@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Custom ###
+application-oauth.yml
+application-db.yml
