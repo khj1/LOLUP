@@ -12,3 +12,8 @@ spring:
 mybatis:
   type-aliases-package: com.lolup.lolup_project
   mapper-locations: mybatis/mapper/**/*.xml
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: 1234

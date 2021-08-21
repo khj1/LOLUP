@@ -2,6 +2,7 @@ package com.lolup.lolup_project.duo;
 
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
+@EnableEncryptableProperties
 @AutoConfigureTestDatabase(replace = NONE)
-@MybatisTest
+@MybatisTest(properties = {"classpath:application-db.yml", "classpath:application.yml"})
 class DuoRepositoryTest {
 
     @Autowired

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mariadb://lolup-rds1.c7qm67jnhiks.ap-northeast-2.rds.amazonaws.com:3306/lolup
-    username: admin
-    password: lolup1234
+    url: ENC(gKZYnBvjAjedTjh3b9ZuuEGOAc6+yQKJ7vw1jq4xw143s7KcstlVg8NztcPRKjzJlWDo/rQlFRngtC3FcnowYFNhgGtEMZdzwow9elTByMlAMEFvlvmkKDihHQ0v4uDH)
+    username: ENC(TrfO7cYfJec5zTygpY/GvA==)
+    password: ENC(aGwjP5UFAUbohPv29yVHXxSncI8okXT5)
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       pool-name: mybatis-hikari-pool

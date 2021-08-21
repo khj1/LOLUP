@@ -5,8 +5,8 @@ spring:
         registration:
           # 네이버는 Spring Security를 공식 지원하지 않기 때문에 CommonOAuth2Provider 에서 해주는 값들을 수동으로 입력한다.
           naver:
-            client-id: wW09JL4TM0LOkyLGm1uS
-            client-secret: g_tZBXBFgz
+            client-id: ENC(xgr1Vshedp/+SaEaO1ytFHtD2MnEsRAYw44/WQsmNNI=)
+            client-secret: ENC(oQ8kqphaiR1i0Jcl8Gogf91CQchdjOzy)
             clientAuthenticationMethod: post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
@@ -18,8 +18,8 @@ spring:
             client-name: Naver
 
           google:
-            client-id: 988347019914-o7367lsmnq231633cerpshve1rth3lmj.apps.googleusercontent.com
-            client-secret: gW6W9qMnto02htjOez-I4YBK
+            client-id: ENC(xkPiPi3rI37x0QR0Xp3/wpGfa5N5wK0IkkcK1+D2FUgRkeT3meZTisytQQ37Yq03wYBvI5HnJAs3RCxOrhZE6DrL7rjI5YfKdPoop1l2BI4DL5+YlEI0mg==)
+            client-secret: ENC(dMmQIPkVnjU3Y24doVDVIyJquIrjt5QYKfz8WrOUMfjeYohs1hJYuw==)
             scope:
               - profile
               - email
