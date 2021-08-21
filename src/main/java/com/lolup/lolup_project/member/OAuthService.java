@@ -49,7 +49,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
         // 유저 생성 및 수정 서비스 로직
         private Member saveOrUpdate(UserProfile userProfile){
-            Member member = memberRepository.findByOauthId(userProfile.getOauthId())
+            Member member = memberRepository.findByEmail(userProfile.getEmail())
                     .map(m -> m.update(userProfile.getName(), userProfile.getEmail(), userProfile.getPicture()))
                     .orElse(userProfile.toMember());
 

@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 public class Member {
 
     private Long memberId;
-    private String oauthId;
     private String name;
     private String email;
     private String picture;
@@ -21,14 +20,13 @@ public class Member {
     @NotNull
     private Role role;
 
-    public Member(String oauthId, String name, String email, Role role, String picture, String summonerName) {
-        this(null, oauthId, name, email, role, picture, null);
+    public Member(String name, String email, Role role, String picture, String summonerName) {
+        this(null, name, email, role, picture, null);
     }
 
     @Builder
-    public Member(Long memberId, String oauthId, String name, String email, Role role, String picture, String summonerName) {
+    public Member(Long memberId, String name, String email, Role role, String picture, String summonerName) {
         this.memberId = memberId;
-        this.oauthId = oauthId;
         this.name = name;
         this.email = email;
         this.role = role;

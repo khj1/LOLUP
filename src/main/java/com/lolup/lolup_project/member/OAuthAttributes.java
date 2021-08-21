@@ -10,7 +10,6 @@ public enum OAuthAttributes {
 
     GOOGLE("google", (attributes) -> {
         return new UserProfile(
-                String.valueOf(attributes.get("id")),
                 (String) attributes.get("name"),
                 (String) attributes.get("email"),
                 (String) attributes.get("picture")
@@ -19,7 +18,6 @@ public enum OAuthAttributes {
     NAVER("naver", (attributes) -> {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
         return new UserProfile(
-                String.valueOf(attributes.get("sub")),
                 (String) attributes.get("name"),
                 (String) attributes.get("email"),
                 (String) attributes.get("picture")

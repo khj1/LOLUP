@@ -11,9 +11,6 @@ import java.util.Optional;
 public interface MybatisMemberRepository extends MemberRepository{
 
     @Override
-    Optional<Member> findByOauthId(String oauthId);
-
-    @Override
     Optional<Member> findByEmail(@Param("_email") String email);
 
     @Override
