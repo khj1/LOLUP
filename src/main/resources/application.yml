@@ -5,7 +5,9 @@ logging:
 
 spring:
   profiles:
-    include: oauth, db
+    include:
+      - oauth
+      - db
 
 mybatis:
   type-aliases-package: com.lolup.lolup_project
