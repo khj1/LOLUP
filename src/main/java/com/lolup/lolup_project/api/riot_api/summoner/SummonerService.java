@@ -34,7 +34,7 @@ public class SummonerService {
     private SummonerRankDto getSummonerTotalSoloRankInfo(String summonerName) {
         SummonerAccountDto summonerAccountInfo = getAccountInfo(summonerName);
         String id = summonerAccountInfo.getId();
-        int profileIconId = summonerAccountInfo.getIconId();
+        int iconId = summonerAccountInfo.getIconId();
 
         SummonerRankDto summonerRankDTO = getRankInfo(id);
 
@@ -42,7 +42,17 @@ public class SummonerService {
             summonerRankDTO = getUnrankedInfo(summonerName);
         }
 
-        summonerRankDTO.setIconId(profileIconId);
+        if (summonerRankDTO == null) {
+            summonerRankDTO = SummonerRankDto.builder()
+                    .summonerName(summonerName)
+                    .tier("UNRANKED")
+                    .rank("언랭크")
+                    .win(0)
+                    .lose(0)
+                    .build();
+        }
+
+        summonerRankDTO.setIconId(iconId);
 
         return summonerRankDTO;
     }
@@ -149,6 +159,7 @@ public class SummonerService {
                 .latestWinRate(latestWinRate)
                 .info(info)
                 .most3(most3).build();
+
     }
 
     private List<MatchReferenceDTO> getMatchReferences(String summonerName) {
