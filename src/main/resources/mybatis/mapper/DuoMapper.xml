@@ -45,5 +45,4 @@
         UPDATE duo SET position = #{param2}, `desc` = #{param3} WHERE duoId = #{param1}
     </update>
 
-
 </mapper>

@@ -1,10 +1,20 @@
+logging:
+  level:
+    root: info
+    com.lolup.lolup_project: debug
+
 spring:
-  datasource:
-    url: jdbc:mariadb://lolup-rds1.c7qm67jnhiks.ap-northeast-2.rds.amazonaws.com:3306/lolup
-    username: admin
-    password: lolup1234
-    driver-class-name: org.mariadb.jdbc.Driver
+  profiles:
+    include:
+      - oauth
+      - db
+      - test
+
 
 mybatis:
   type-aliases-package: com.lolup.lolup_project
   mapper-locations: mybatis/mapper/**/*.xml
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

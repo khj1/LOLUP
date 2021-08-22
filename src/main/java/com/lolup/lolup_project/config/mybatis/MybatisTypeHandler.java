@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.config;
+package com.lolup.lolup_project.config.mybatis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -32,7 +33,8 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@WebFluxTest(value = SummonerController.class, excludeAutoConfiguration = ReactiveSecurityAutoConfiguration.class)
+@WithMockUser
+@WebFluxTest(value = SummonerController.class)
 class SummonerControllerTest {
 
     private WebTestClient webTestClient;
