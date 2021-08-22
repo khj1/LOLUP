@@ -10,6 +10,7 @@ spring:
       - db
       - test
 
+
 mybatis:
   type-aliases-package: com.lolup.lolup_project
   mapper-locations: mybatis/mapper/**/*.xml
