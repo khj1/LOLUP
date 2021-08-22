@@ -2,10 +2,19 @@ package com.lolup.lolup_project.duo;
 
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
+import com.lolup.lolup_project.config.JasyptConfig;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+import com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,8 +24,11 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
+@ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase(replace = NONE)
+@EnableEncryptableProperties
 @MybatisTest
+@Import(JasyptConfig.class)
 class DuoRepositoryTest {
 
     @Autowired
