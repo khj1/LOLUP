@@ -1,11 +1,13 @@
 package com.lolup.lolup_project.duo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerDto;
 import lombok.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -20,7 +22,7 @@ public class DuoDto {
     private String position;
     private String tier;
     private String rank;
-    private Map<String, Integer> most3;
+    private List<MostInfo> most3;
     private int win;
     private int lose;
     private String latestWinRate;
@@ -29,7 +31,7 @@ public class DuoDto {
 
     @Builder
     public DuoDto(Long duoId, Long memberId, int iconId, String summonerName, String position,
-                  String tier, String rank, Map<String, Integer> most3, int win, int lose,
+                  String tier, String rank, List<MostInfo> most3, int win, int lose,
                   String latestWinRate, String desc, LocalDateTime postDate) {
 
         this.duoId = duoId;
