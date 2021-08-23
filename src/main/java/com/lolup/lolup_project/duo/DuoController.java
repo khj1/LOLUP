@@ -15,7 +15,6 @@ public class DuoController {
     private final DuoService duoService;
 
     @GetMapping
-
     public ResponseEntity<List<DuoDto>> findAll(String position, String tier) {
         List<DuoDto> list = duoService.findAll(position, tier);
         return new ResponseEntity<>(list, HttpStatus.OK);
