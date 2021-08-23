@@ -4,9 +4,7 @@
 <mapper namespace="com.lolup.lolup_project.duo.MybatisDuoRepository">
 
     <resultMap id="convertDto" type="DuoDto">
-        <result column="most3" property="most3"
-                javaType="java.util.HashMap"
-                typeHandler="MybatisTypeHandler"/>
+        <result column="most3" property="most3" javaType="java.util.List" typeHandler="MybatisTypeHandler"/>
     </resultMap>
 
     <select id="findAll" parameterType="java.lang.String" resultMap="convertDto">

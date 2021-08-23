@@ -1,6 +1,8 @@
 package com.lolup.lolup_project.config.mybatis;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -10,51 +12,49 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
-public class MybatisTypeHandler implements TypeHandler<Map<String, Integer>> {
+public class MybatisTypeHandler implements TypeHandler<List<MostInfo>> {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void setParameter(PreparedStatement ps, int i, Map<String, Integer> parameter, JdbcType jdbcType) throws SQLException {
+    public void setParameter(PreparedStatement ps, int i, List<MostInfo> parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, this.toJson(parameter));
     }
 
     @Override
-    public Map<String, Integer> getResult(ResultSet rs, String columnName) throws SQLException {
-        return this.toMap(rs.getString(columnName));
+    public List<MostInfo> getResult(ResultSet rs, String columnName) throws SQLException {
+        return this.toList(rs.getString(columnName));
 
     }
 
     @Override
-    public Map<String, Integer> getResult(ResultSet rs, int columnIndex) throws SQLException {
-        return this.toMap(rs.getString(columnIndex));
+    public List<MostInfo> getResult(ResultSet rs, int columnIndex) throws SQLException {
+        return this.toList(rs.getString(columnIndex));
     }
 
     @Override
-    public Map<String, Integer> getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return this.toMap(cs.getString(columnIndex));
+    public List<MostInfo> getResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return this.toList(cs.getString(columnIndex));
     }
 
-    private String toJson(Map<String, Integer> map) {
+    private String toJson(List<MostInfo> list) {
         try {
-            log.info("TypeConverter convert map to json, result:{}",mapper.writeValueAsString(map));
-            return mapper.writeValueAsString(map);
+            return mapper.writeValueAsString(list);
         } catch (IOException e) {
-            log.error("TypeConverter failed to convert map to json, map:{}", map.toString());
             throw new RuntimeException(e);
         }
     }
 
-    private Map<String, Integer> toMap(String json) {
+    private List<MostInfo> toList(String json) {
         try {
-            log.info("TypeConverter convert json to map, result:{}", mapper.readValue(json, HashMap.class));
-            return mapper.readValue(json, HashMap.class);
+            List<MostInfo> most3 = mapper.readValue(json, new TypeReference<List<MostInfo>>() {});
+            log.info("TypeConverter convert json to list, result:{}", most3.toString());
+            return most3;
         } catch (IOException e) {
-            log.error("TypeConverter failed to convert json to map, json:{}", json);
+            log.error("TypeConverter failed to convert json to list, json:{}", json);
             throw new RuntimeException();
         }
     }
