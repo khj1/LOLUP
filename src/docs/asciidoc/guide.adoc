@@ -49,6 +49,12 @@ include::{snippets}/summoner/success/http-request.adoc[]
 **Response fields**
 include::{snippets}/summoner/success/response-fields.adoc[]
 
+**info**
+include::{snippets}/summoner/success/response-fields-beneath-info.adoc[]
+
+**most3**
+include::{snippets}/summoner/success/response-fields-beneath-most3.adoc[]
+
 **Response HTTP Example**
 
 include::{snippets}/summoner/success/http-response.adoc[]
@@ -66,19 +72,23 @@ include::{snippets}/summoner/exception/http-response.adoc[]
 == Duo
 **path**
 |===
-| method | path
+| method | path | desc
 
 | `GET`
 | /duo
+| 게시물을 조회합니다.
 
 | `POST`
 | /duo/new
+| 새로운 게시물을 추가합니다.
 
 | `PATCH`
 | /duo/{duoId}
+| 게시물 내용을 수정합니다.
 
 | `DELETE`
 | /duo/{duoId}
+| 게시물을 삭제합니다.
 
 |===
 

@@ -1,5 +1,6 @@
 package com.lolup.lolup_project.duo;
 
+import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
 import com.lolup.lolup_project.config.JasyptConfig;
@@ -17,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,10 +119,11 @@ class DuoRepositoryTest {
 
 
     private DuoDto getDuoDto(String tier, String position) {
-        Map<String, Integer> most3 = new HashMap<>();
-        most3.put("Lucian", 2);
-        most3.put("Syndra", 2);
-        most3.put("Ryze", 2);
+        List<MostInfo> most3 = new ArrayList<>();
+
+        most3.add(MostInfo.create("Syndra", 4));
+        most3.add(MostInfo.create("Lucian", 3));
+        most3.add(MostInfo.create("Zed", 2));
 
         return DuoDto.builder()
                 .win(100)
