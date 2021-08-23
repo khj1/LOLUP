@@ -9,8 +9,6 @@
                 typeHandler="MybatisTypeHandler"/>
     </resultMap>
 
-
-
     <select id="findAll" parameterType="java.lang.String" resultMap="convertDto">
         SELECT * FROM duo
         <choose>
