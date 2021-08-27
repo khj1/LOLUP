@@ -41,6 +41,18 @@ public class Member {
         return this;
     }
 
+    public UserProfile toUserProfile(String name, String email, String picture) {
+        return new UserProfile(name, email, picture);
+    }
+
+    public static UserProfile toUserProfileWithMember(Member member) {
+        return new UserProfile(
+                member.getName(),
+                member.getEmail(),
+                member.getPicture()
+        );
+    }
+
     public String getRoleKey() {
         return this.role.getKey();
     }

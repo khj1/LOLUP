@@ -1,5 +1,6 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.config.oauth;
 
+import com.lolup.lolup_project.member.UserProfile;
 import lombok.Builder;
 
 import java.util.Arrays;
@@ -22,6 +23,16 @@ public enum OAuthAttributes {
                 (String) response.get("email"),
                 (String) response.get("picture")
         );
+    }),
+    KAKAO("kakao", (attributes) -> {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
+
+        return new UserProfile(
+                (String) kakaoProfile.get("nickname"),
+                (String) kakaoAccount.get("email"),
+                (String) kakaoProfile.get("profile_image_url")
+        );
     });
 
     private final String registrationId;
@@ -32,7 +43,6 @@ public enum OAuthAttributes {
         this.of = of;
     }
 
-    //TODO
     public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
         return Arrays.stream(values())
                     .filter(provider -> registrationId.equals(provider.registrationId))

@@ -10,6 +10,7 @@
     <select id="save" parameterType="Member" resultType="java.lang.String">
         INSERT INTO member (name, email, picture, role)
             values (#{name}, #{email}, #{picture}, #{role})
+            ON DUPLICATE KEY UPDATE name = #{name}, picture = #{picture}
             RETURNING email;
     </select>
 
