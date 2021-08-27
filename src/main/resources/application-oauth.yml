@@ -7,9 +7,9 @@ spring:
           naver:
             client-id: ENC(xgr1Vshedp/+SaEaO1ytFHtD2MnEsRAYw44/WQsmNNI=)
             client-secret: ENC(oQ8kqphaiR1i0Jcl8Gogf91CQchdjOzy)
-            clientAuthenticationMethod: post
+#            clientAuthenticationMethod: post
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
             scope:
               - name
               - email
@@ -20,22 +20,24 @@ spring:
           google:
             client-id: ENC(xkPiPi3rI37x0QR0Xp3/wpGfa5N5wK0IkkcK1+D2FUgRkeT3meZTisytQQ37Yq03wYBvI5HnJAs3RCxOrhZE6DrL7rjI5YfKdPoop1l2BI4DL5+YlEI0mg==)
             client-secret: ENC(dMmQIPkVnjU3Y24doVDVIyJquIrjt5QYKfz8WrOUMfjeYohs1hJYuw==)
+            authorization-grant-type: authorization_code
+            accessTokenValiditySeconds: 1*60*60;
             scope:
               - profile
               - email
 
           kakao:
-            clientId: '{카카오 client-id}'
-            clientSecret: '{카카오 client-secret}'
-            clientAuthenticationMethod: post
+            clientId: e284a5e53a80a3d3df7523acbc658c21
+            clientSecret: VfyxkGau1MMQDRrQbSJkffmjtkenXb1X
+#            clientAuthenticationMethod: post
+            redirectUri: "{baseUrl}/login/oauth2/code/kakao"
             authorizationGrantType: authorization_code
-            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            client-authentication-method: POST
+            clientName: Kakao
             scope:
               - profile_nickname
               - profile_image
               - account_email
-            clientName: Kakao
-
 
         provider:
           naver:
@@ -48,5 +50,18 @@ spring:
             authorizationUri: https://kauth.kakao.com/oauth/authorize
             tokenUri: https://kauth.kakao.com/oauth/token
             userInfoUri: https://kapi.kakao.com/v2/user/me
-            userNameAttribute: id
+            user-name-attribute: id
+
+
+jwt:
+  secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
+
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpiry: 1800000
+    refreshTokenExpiry: 604800000
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth/redirect
 
