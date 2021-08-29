@@ -1,15 +1,9 @@
 package com.lolup.lolup_project.config.oauth;
 
 import io.jsonwebtoken.*;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +16,7 @@ public class JwtProvider {
 
     private String SECRET_KEY = "token-secret-key";
     private long TOKEN_VALIDATION_PERIOD = 1000L * 30 * 60; // 30분
-    private long REFRESH_TOKEN_VALIDATION_PERIOD = 1000L * 60L * 60L * 24L * 30L * 4L; // 한달
+    private long REFRESH_TOKEN_VALIDATION_PERIOD = 1000L * 60L * 60L * 24L * 30L; // 한달
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
@@ -32,12 +26,6 @@ public class JwtProvider {
         // secretKey를 Base64로 인코딩한다.
         SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
     }
-
-    // JWT 토큰에서 인증 정보 조회
-//    public Authentication getAuthentication(String token) {
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUid(token));
-//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-//    }
 
     // 토큰 생성
     public Token generateToken(String uid, String role) {
@@ -54,6 +42,7 @@ public class JwtProvider {
                         .setExpiration(new Date(now.getTime() + TOKEN_VALIDATION_PERIOD))
                         .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 사용할 암호화 알고리즘과 Signature에 들어갈 secret 값 세팅
                         .compact(),
+
                 Jwts.builder()
                         .setClaims(claims)
                         .setIssuedAt(now)
@@ -65,7 +54,7 @@ public class JwtProvider {
 
     public boolean verifyToken(String token) throws ExpiredJwtException {
         log.info("verifyToken() 호출");
-        return !Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody()
@@ -75,26 +64,11 @@ public class JwtProvider {
 
     public String getTokenClaims(String token) {
         log.info("getTokenClaims() 호출");
-
-        try{
-            return Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-
-        } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-        } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-        }
-        return null;
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public Claims getExpiredTokenClaims(String token) {
@@ -113,7 +87,13 @@ public class JwtProvider {
     }
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+    public String resolveToken(HttpServletRequest request, String type) {
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization.toLowerCase().startsWith(type.toLowerCase())) {
+            return authorization.substring(type.length()).trim();
+        }
+
+        return null;
     }
 }
