@@ -1,6 +1,5 @@
 package com.lolup.lolup_project.config.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.UserProfile;
 import com.lolup.lolup_project.token.RefreshToken;
@@ -11,16 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.Provider;
 import java.util.Map;
 
 @Slf4j
@@ -29,7 +25,6 @@ import java.util.Map;
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
-    private final ObjectMapper objectMapper;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -51,24 +46,25 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         log.info("tokens={}", token);
 
         RefreshToken refreshToken = RefreshToken.create(memberId, token.getRefreshToken());
-        String email = refreshTokenRepository.save(refreshToken);
+        String savedRefreshToken = refreshTokenRepository.save(refreshToken);
 
-        log.info("All email after refresh token saved = {}", email);
+        log.info("get refresh token after refresh token saved = {}", savedRefreshToken);
 
         writeTokenResponse(response, token);
     }
 
     private void writeTokenResponse(HttpServletResponse response, Token token) throws IOException{
-        response.setContentType("text/html;charset=UTF-8");
-        response.addHeader("X-AUTH-TOKEN", token.getToken());
-        response.addHeader("X-REFRESH-TOKEN", token.getRefreshToken());
-        response.setContentType("application/json;charset=UTF-8");
 
-        log.info("JWT 토큰 헤더에 추가됨");
+        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
+        cookie.setMaxAge(60 * 60 * 24 * 30); // 1달
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
-        PrintWriter writer = response.getWriter();
-        writer.println(objectMapper.writeValueAsString(token));
-        writer.flush();
+        response.addCookie(cookie);
+
+        log.info("refresh token cookie generated={} : {}", cookie.getName(), cookie.getValue());
+
+        response.sendRedirect("http://localhost:3000/oauth2/login?token=" + token.getToken());
     }
-
 }

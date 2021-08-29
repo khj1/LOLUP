@@ -10,7 +10,7 @@
     <select id="save" parameterType="RefreshToken" resultType="java.lang.String">
         INSERT INTO refresh_token (memberId, refresh_token)
             values (#{memberId}, #{refreshToken})
-            ON DUPLICATE KEY UPDATE memberId = #{memberId}, refresh_token = #{refreshToken}
+            ON DUPLICATE KEY UPDATE refresh_token = #{refreshToken}
             RETURNING refresh_token;
     </select>
 
