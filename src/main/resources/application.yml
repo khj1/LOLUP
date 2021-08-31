@@ -13,8 +13,6 @@ spring:
     include:
       - oauth
       - db
-      - test
-
 
 mybatis:
   type-aliases-package: com.lolup.lolup_project
