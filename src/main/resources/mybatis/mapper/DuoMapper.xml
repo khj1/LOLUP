@@ -28,8 +28,8 @@
     </select>
 
     <select id="save" parameterType="DuoDto" resultType="java.lang.Long">
-        INSERT INTO duo (memberId, summonerName, position , tier, rank, most3, win, lose, latestWinRate, `desc`)
-            values (#{memberId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3, typeHandler=MybatisTypeHandler}, #{win}, #{lose}, #{latestWinRate}, #{desc})
+        INSERT INTO duo (memberId, iconId, summonerName, position , tier, rank, most3, win, lose, latestWinRate, `desc`)
+            values (#{memberId}, #{iconId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3, typeHandler=MybatisTypeHandler}, #{win}, #{lose}, #{latestWinRate}, #{desc})
             RETURNING duoId;
     </select>
 

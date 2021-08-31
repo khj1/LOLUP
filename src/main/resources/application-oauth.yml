@@ -27,8 +27,8 @@ spring:
               - email
 
           kakao:
-            clientId: e284a5e53a80a3d3df7523acbc658c21
-            clientSecret: VfyxkGau1MMQDRrQbSJkffmjtkenXb1X
+            clientId: ENC(jOmRBZz9NjpeenL+DaCYk4S6xDC+wo07h0NkNINMfRw3scqG0DNBJUlvyDqj9KCE)
+            clientSecret: ENC(mylpxosRyT//agdBD7W8svsSHAPOimOnbGdN+gLWD2tMdapBCgAcNuZWMi1An4Fu)
 #            clientAuthenticationMethod: post
             redirectUri: "{baseUrl}/login/oauth2/code/kakao"
             authorizationGrantType: authorization_code
@@ -54,14 +54,6 @@ spring:
 
 
 jwt:
-  secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
+  secret: ENC(b/GysgadqZoCeK/Y4ctB8dumwZSuOuf5ppvC3K3v20A=)
 
-app:
-  auth:
-    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-    tokenExpiry: 1800000
-    refreshTokenExpiry: 604800000
-  oauth2:
-    authorizedRedirectUris:
-      - http://localhost:3000/oauth/redirect
 

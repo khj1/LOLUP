@@ -13,4 +13,7 @@ public interface MyBatisRefreshTokenRepository extends RefreshTokenRepository{
 
     @Override
     String save(RefreshToken refreshToken);
+
+    @Override
+    void delete(@Param("_memberId") Long memberId);
 }

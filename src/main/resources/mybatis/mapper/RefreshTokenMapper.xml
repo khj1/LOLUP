@@ -14,4 +14,7 @@
             RETURNING refresh_token;
     </select>
 
+    <delete id="delete">
+        DELETE FROM refresh_token WHERE memberId = #{_memberId}
+    </delete>
 </mapper>
