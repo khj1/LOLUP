@@ -1,6 +1,6 @@
 package com.lolup.lolup_project.config.security;
 
-import com.lolup.lolup_project.member.OAuthService;
+import com.lolup.lolup_project.config.oauth.OAuthService;
 import com.lolup.lolup_project.member.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;

@@ -7,9 +7,9 @@ spring:
           naver:
             client-id: ENC(xgr1Vshedp/+SaEaO1ytFHtD2MnEsRAYw44/WQsmNNI=)
             client-secret: ENC(oQ8kqphaiR1i0Jcl8Gogf91CQchdjOzy)
-            clientAuthenticationMethod: post
+#            clientAuthenticationMethod: post
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
             scope:
               - name
               - email
@@ -20,22 +20,24 @@ spring:
           google:
             client-id: ENC(xkPiPi3rI37x0QR0Xp3/wpGfa5N5wK0IkkcK1+D2FUgRkeT3meZTisytQQ37Yq03wYBvI5HnJAs3RCxOrhZE6DrL7rjI5YfKdPoop1l2BI4DL5+YlEI0mg==)
             client-secret: ENC(dMmQIPkVnjU3Y24doVDVIyJquIrjt5QYKfz8WrOUMfjeYohs1hJYuw==)
+            authorization-grant-type: authorization_code
+            accessTokenValiditySeconds: 1*60*60;
             scope:
               - profile
               - email
 
           kakao:
-            clientId: '{카카오 client-id}'
-            clientSecret: '{카카오 client-secret}'
-            clientAuthenticationMethod: post
+            clientId: ENC(jOmRBZz9NjpeenL+DaCYk4S6xDC+wo07h0NkNINMfRw3scqG0DNBJUlvyDqj9KCE)
+            clientSecret: ENC(mylpxosRyT//agdBD7W8svsSHAPOimOnbGdN+gLWD2tMdapBCgAcNuZWMi1An4Fu)
+#            clientAuthenticationMethod: post
+            redirectUri: "{baseUrl}/login/oauth2/code/kakao"
             authorizationGrantType: authorization_code
-            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            client-authentication-method: POST
+            clientName: Kakao
             scope:
               - profile_nickname
               - profile_image
               - account_email
-            clientName: Kakao
-
 
         provider:
           naver:
@@ -48,5 +50,10 @@ spring:
             authorizationUri: https://kauth.kakao.com/oauth/authorize
             tokenUri: https://kauth.kakao.com/oauth/token
             userInfoUri: https://kapi.kakao.com/v2/user/me
-            userNameAttribute: id
+            user-name-attribute: id
+
+
+jwt:
+  secret: ENC(b/GysgadqZoCeK/Y4ctB8dumwZSuOuf5ppvC3K3v20A=)
+
 

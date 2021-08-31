@@ -1,5 +1,6 @@
 package com.lolup.lolup_project.duo;
 
+import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
 import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
 import com.lolup.lolup_project.member.Role;
@@ -151,11 +152,13 @@ class DuoControllerTest {
                 .build();
     }
 
-    private Map<String, Integer> getMost3() {
-        Map<String, Integer> most3 = new HashMap<>();
-        most3.put("most1_champion_name", 3);
-        most3.put("most2_champion_name", 2);
-        most3.put("most3_champion_name", 1);
+    private List<MostInfo> getMost3() {
+        List<MostInfo> most3 = new ArrayList<>();
+
+        most3.add(MostInfo.create("Syndra", 4));
+        most3.add(MostInfo.create("Lucian", 3));
+        most3.add(MostInfo.create("Zed", 2));
+
         return most3;
     }
 
@@ -182,7 +185,7 @@ class DuoControllerTest {
                                 fieldWithPath("position").description("주 포지션"),
                                 fieldWithPath("tier").description("게임 티어"),
                                 fieldWithPath("rank").description("티어 등급"),
-                                subsectionWithPath("most3").type("Map<String, Integer>").description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
+                                subsectionWithPath("most3").type("List<MostInfo>").description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
                                 fieldWithPath("win").type("int").description("총 승리 횟수"),
                                 fieldWithPath("lose").type("int").description("총 패배 횟수"),
                                 fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
@@ -190,9 +193,8 @@ class DuoControllerTest {
                                 fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
                         ),
                         responseFields(beneathPath("most3"),
-                                fieldWithPath("most1_champion_name").description("최근 10 게임에서 첫번째로 많이 플레이한 챔피언. 챔피언의 이름이 key값, 판수가 value값으로 지정된다."),
-                                fieldWithPath("most2_champion_name").description("최근 10 게임에서 두번째로 많이 플레이한 챔피언. 챔피언의 이름이 key값, 판수가 value값으로 지정된다."),
-                                fieldWithPath("most3_champion_name").description("최근 10 게임에서 세번째로 많이 플레이한 챔피언. 챔피언의 이름이 key값, 판수가 value값으로 지정된다.")
+                                fieldWithPath("name").description("챔피언의 이름."),
+                                fieldWithPath("play").description("판수.")
                         )
                 ));
 

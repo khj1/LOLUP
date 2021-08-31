@@ -20,7 +20,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,16 +64,17 @@ class SummonerControllerTest {
                 .lose(20)
                 .build();
 
-        Map<String, Integer> map = new HashMap<>();
-        map.put("most1_championName", 3);
-        map.put("most2_championName", 2);
-        map.put("most3_championName", 2);
+        List<MostInfo> most3 = new ArrayList<>();
+
+        most3.add(MostInfo.create("Syndra", 4));
+        most3.add(MostInfo.create("Lucian", 3));
+        most3.add(MostInfo.create("Zed", 2));
 
         SummonerDto Summonerdto = SummonerDto.builder()
                 .info(rankDto)
                 .latestWinRate("10%")
                 .version("1")
-                .most3(map)
+                .most3(most3)
                 .build();
 
         when(service.find("correctName")).thenReturn(Summonerdto);
@@ -87,17 +90,22 @@ class SummonerControllerTest {
                                 parameterWithName("summonerName").description("인 게임에서 사용하는 소환사 이름을 전달합니다.")
                         ),
                         responseFields(
-                                fieldWithPath("version").description("게임 버전입니다. 원하는 이미지 resource를 API로 부터 호출하기 위해 필요합니다."),
-                                fieldWithPath("latestWinRate").description("최근 10 게임에서의 승률 입니다."),
-                                fieldWithPath("info.summonerName").description("인 게임에서 사용되는 소환사 이름입니다."),
-                                fieldWithPath("info.tier").description("소환사의 랭크 티어입니다. 예) BRONZE"),
-                                fieldWithPath("info.rank").description("소환사의 랭크 등급입니다. 예) ⅲ"),
-                                fieldWithPath("info.iconId").description("인 게임에서 사용되는 소환사의 아이콘 이미지 식별 값입니다."),
-                                fieldWithPath("info.win").description("랭크 게임 전체 승리 횟수 입니다."),
-                                fieldWithPath("info.lose").description("랭크 게임 전체 패배 횟수 입니다."),
-                                fieldWithPath("most3.most1_championName").description("최근 10게임 내에서 가장 많이 플레이한 챔피언의 플레이 횟수 입니다."),
-                                fieldWithPath("most3.most2_championName").description("최근 10게임 내에서 두번째로 많이 플레이한 챔피언의 플레이 횟수 입니다."),
-                                fieldWithPath("most3.most3_championName").description("최근 10게임 내에서 세번째로 많이 플레이한 챔피언의 플레이 횟수 입니다.")
+                                fieldWithPath("version").type("String").description("게임 버전입니다. 원하는 이미지 resource를 API로 부터 호출하기 위해 필요합니다."),
+                                fieldWithPath("latestWinRate").type("String").description("최근 10 게임에서의 승률 입니다."),
+                                subsectionWithPath("info").type("SummonerRankDto").description("소환사의 전반적인 정보를 담고 있습니다."),
+                                subsectionWithPath("most3").type("List<MostInfo>").description("최근 10게임 내에서 가장 많이 플레이한 3 챔피언들의 정보입니다.")
+                        ),
+                        responseFields(beneathPath("info"),
+                                fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름입니다."),
+                                fieldWithPath("tier").description("소환사의 랭크 티어입니다. 예) BRONZE"),
+                                fieldWithPath("rank").description("소환사의 랭크 등급입니다. 예) ⅲ"),
+                                fieldWithPath("iconId").description("인 게임에서 사용되는 소환사의 아이콘 이미지 식별 값입니다."),
+                                fieldWithPath("win").description("랭크 게임 전체 승리 횟수 입니다."),
+                                fieldWithPath("lose").description("랭크 게임 전체 패배 횟수 입니다.")
+                        ),
+                        responseFields(beneathPath("most3"),
+                                fieldWithPath("name").description("챔피언의 이름."),
+                                fieldWithPath("play").type("int").description("판수.")
                         )
                 ))
                 .jsonPath("$.version").isEqualTo("1")
@@ -108,7 +116,8 @@ class SummonerControllerTest {
                 .jsonPath("$.info.iconId").isEqualTo(300)
                 .jsonPath("$.info.win").isEqualTo(20)
                 .jsonPath("$.info.lose").isEqualTo(20)
-                .jsonPath("$.most3").isNotEmpty();
+                .jsonPath("$.most3[0].name").isEqualTo("Syndra")
+                .jsonPath("$.most3[0].play").isEqualTo(4);
 
     }
 

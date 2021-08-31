@@ -37,11 +37,10 @@ class SummonerServiceTest {
         getLatestMost3.setAccessible(true);
 
         List<MatchReferenceDTO> matches = (List<MatchReferenceDTO>) getLatestMatches.invoke(summonerService, "hideonbush");
-        Map<String, Integer> most3 = (Map<String, Integer>) getLatestMost3.invoke(summonerService, matches);
-        List<Map.Entry<String, Integer>> entries = most3.entrySet().stream().collect(Collectors.toList());
+        List<MostInfo> most3 = (List<MostInfo>) getLatestMost3.invoke(summonerService, matches);
 
         assertThat(most3.size()).isEqualTo(3);
-        assertThat(entries.get(0).getValue()).isGreaterThanOrEqualTo(entries.get(1).getValue());
-        assertThat(entries.get(1).getValue()).isGreaterThanOrEqualTo(entries.get(2).getValue());
+        assertThat(most3.get(0).getPlay()).isGreaterThanOrEqualTo(most3.get(1).getPlay());
+        assertThat(most3.get(1).getPlay()).isGreaterThanOrEqualTo(most3.get(2).getPlay());
     }
 }

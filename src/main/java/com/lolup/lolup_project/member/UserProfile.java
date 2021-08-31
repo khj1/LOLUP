@@ -2,6 +2,7 @@ package com.lolup.lolup_project.member;
 
 import lombok.Getter;
 
+
 @Getter
 public class UserProfile {
     private final String name;

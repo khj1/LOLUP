@@ -22,10 +22,15 @@ class JasyptConfigTest {
         String googleClientId = "988347019914-o7367lsmnq231633cerpshve1rth3lmj.apps.googleusercontent.com";
         String googleClientSecret = "gW6W9qMnto02htjOez-I4YBK";
 
+        String kakaoClientId = "e284a5e53a80a3d3df7523acbc658c21";
+        String kakaoClientSecret = "VfyxkGau1MMQDRrQbSJkffmjtkenXb1X";
+
+        String jwtTokenSecret = "token-secret-key";
+
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
 
-        config.setPassword("1234");
+        config.setPassword(System.getProperty("jasypt.encryptor.password"));
         config.setAlgorithm("PBEWithMD5AndDES");
         config.setKeyObtentionIterations("1000");
         config.setPoolSize("1");
@@ -43,6 +48,11 @@ class JasyptConfigTest {
         String encryptGCI = encryptor.encrypt(googleClientId);
         String encryptGCS = encryptor.encrypt(googleClientSecret);
 
+        String encryptKCI = encryptor.encrypt(kakaoClientId);
+        String encryptKCS = encryptor.encrypt(kakaoClientSecret);
+
+        String encryptJwt = encryptor.encrypt(jwtTokenSecret);
+
         System.out.println("encryptPassword = " + encryptPassword);
         System.out.println("encryptUsername = " + encryptUsername);
         System.out.println("encryptUrl = " + encryptUrl);
@@ -50,6 +60,10 @@ class JasyptConfigTest {
         System.out.println("encryptNCS = " + encryptNCS);
         System.out.println("encryptGCI = " + encryptGCI);
         System.out.println("encryptGCS = " + encryptGCS);
+        System.out.println("encryptKCI = " + encryptKCI);
+        System.out.println("encryptKCS = " + encryptKCS);
+        System.out.println("encryptJwt = " + encryptJwt);
+
 
         assertThat(url).isEqualTo(encryptor.decrypt(encryptUrl));
     }

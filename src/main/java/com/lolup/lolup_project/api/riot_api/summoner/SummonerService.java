@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,18 +99,19 @@ public class SummonerService {
         return (double) (winCount * 10) + "%";
     }
 
-    private Map<String, Integer> getLatestMost3(List<MatchReferenceDTO> matches) {
+    private List<MostInfo> getLatestMost3(List<MatchReferenceDTO> matches) {
         Map<String, Integer> most10 = getLatestMost10(matches);
         Stream<Map.Entry<String, Integer>> sortedMap = getSortedMap(most10);
         List<Map.Entry<String, Integer>> most3Entries = getMost3Entries(sortedMap);
 
-        return getMost3Map(most3Entries);
+        return getMost3List(most3Entries);
     }
 
-    private Map<String, Integer> getMost3Map(List<Map.Entry<String, Integer>> entries) {
-        Map<String, Integer> most3 = new LinkedHashMap<>();
+    private List<MostInfo> getMost3List(List<Map.Entry<String, Integer>> entries) {
+        List<MostInfo> most3 = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : entries) {
-            most3.put(entry.getKey(), entry.getValue());
+            MostInfo mostInfo = MostInfo.create(entry.getKey(), entry.getValue());
+            most3.add(mostInfo);
         }
         return most3;
     }
@@ -152,13 +150,14 @@ public class SummonerService {
 
         List<MatchReferenceDTO> matches = getLatestMatches(summonerName);
         String latestWinRate = getLatestWinRate(matches);
-        Map<String, Integer> most3 = getLatestMost3(matches);
+        List<MostInfo> most3 = getLatestMost3(matches);
 
         return SummonerDto.builder()
                 .version(version)
                 .latestWinRate(latestWinRate)
                 .info(info)
-                .most3(most3).build();
+                .most3(most3)
+                .build();
 
     }
 
