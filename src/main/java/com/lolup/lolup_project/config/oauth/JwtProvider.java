@@ -78,7 +78,7 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request, String type) {
         String authorization = request.getHeader("Authorization");
 
-        if (authorization.toLowerCase().startsWith(type.toLowerCase())) {
+        if (authorization != null && authorization.toLowerCase().startsWith(type.toLowerCase())) {
             return authorization.substring(type.length()).trim();
         }
 
