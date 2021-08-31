@@ -40,9 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
 //                        .antMatchers("/").permitAll()
-//                        .antMatchers("/token/**").permitAll()
-//                        .antMatchers("/oauth/**").permitAll()
-//                        .antMatchers("/auth/refresh").permitAll()
 //                        .antMatchers("/auth/check").hasRole(Role.USER.getKey())
 //                        .antMatchers("/duo/{duoId}").hasRole("USER")
                         .anyRequest().permitAll()
@@ -62,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.addAllowedOrigin("http://d2fh37v4sikqk8.cloudfront.net/");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
