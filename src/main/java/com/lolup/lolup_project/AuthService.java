@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -82,6 +83,7 @@ public class AuthService {
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setDomain("/");
         response.addCookie(cookie);
     }
 
@@ -91,6 +93,7 @@ public class AuthService {
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setDomain("/");
         response.addCookie(cookie);
     }
 }
