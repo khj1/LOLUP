@@ -63,13 +63,34 @@ public class AuthService {
         return map;
     }
 
+    public Map<String, Object> logout(Principal principal, HttpServletResponse response) {
+        UserProfile userProfile = (UserProfile) ((Authentication) principal).getPrincipal();
+        Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
+
+        refreshTokenRepository.delete(member.getMemberId());
+        deleteCookie(response);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("logout", true);
+
+        return map;
+    }
+
     private void setCookie(HttpServletResponse response, String refreshToken) {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setMaxAge(60 * 60 * 24 * 30); // 1달
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 
+    private void deleteCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setMaxAge(0);
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 }

@@ -2,6 +2,7 @@ package com.lolup.lolup_project.config.oauth;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,9 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    private String SECRET_KEY = "token-secret-key";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+
     private long TOKEN_VALIDATION_PERIOD = 1000L * 30 * 60; // 30분
     private long REFRESH_TOKEN_VALIDATION_PERIOD = 1000L * 60L * 60L * 24L * 30L; // 한달
 
@@ -69,21 +72,6 @@ public class JwtProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-    }
-
-    public Claims getExpiredTokenClaims(String token) {
-        try{
-            Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-
-        } catch (ExpiredJwtException e){
-            log.info("Expired JWT token");
-            return e.getClaims();
-        }
-
-        return null;
     }
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
