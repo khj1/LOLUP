@@ -83,7 +83,6 @@ public class AuthService {
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setDomain(".d2fh37v4sikqk8.cloudfront.net");
         response.addCookie(cookie);
     }
 
@@ -93,7 +92,6 @@ public class AuthService {
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setDomain(".d2fh37v4sikqk8.cloudfront.net");
         response.addCookie(cookie);
     }
 }
