@@ -67,9 +67,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         log.info("refresh token cookie generated={} : {}", cookie.getName(), cookie.getValue());
 
         //배포용
-//        response.sendRedirect("http://d2fh37v4sikqk8.cloudfront.net/oauth2/login?token=" + token.getToken());
+        response.sendRedirect("http://d2fh37v4sikqk8.cloudfront.net/oauth2/login?token=" + token.getToken());
 
         //테스트용
-        response.sendRedirect("http://localhost:3000/oauth2/login?token=" + token.getToken());
+//        response.sendRedirect("http://localhost:3000/oauth2/login?token=" + token.getToken());
     }
 }
