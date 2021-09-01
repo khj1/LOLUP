@@ -117,7 +117,6 @@ class DuoRepositoryTest {
     }
 
 
-
     private DuoDto getDuoDto(String tier, String position) {
         List<MostInfo> most3 = new ArrayList<>();
 

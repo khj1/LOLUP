@@ -3,6 +3,7 @@ package com.lolup.lolup_project.config.oauth;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2SuccessHandler successHandler;
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
+
+    @Value("${front.domain}")
+    private String domain;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -58,8 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://d2fh37v4sikqk8.cloudfront.net");
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin(domain);
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

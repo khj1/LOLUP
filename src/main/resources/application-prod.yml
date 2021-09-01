@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    root: info
+    com.lolup.lolup_project: info
+
+front:
+  domain: http://d2fh37v4sikqk8.cloudfront.net
+  redirect_url: http://d2fh37v4sikqk8.cloudfront.net/oauth2/login?token=
+
+
