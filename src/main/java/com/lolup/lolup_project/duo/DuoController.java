@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,9 +16,9 @@ public class DuoController {
     private final DuoService duoService;
 
     @GetMapping
-    public ResponseEntity<List<DuoDto>> findAll(String position, String tier) {
-        List<DuoDto> list = duoService.findAll(position, tier);
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> findAll(String position, String tier, int section) {
+        Map<String, Object> map = duoService.findAll(position, tier, section);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/{duoId}")

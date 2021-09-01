@@ -7,6 +7,7 @@
         <result column="most3" property="most3" javaType="java.util.List" typeHandler="MybatisTypeHandler"/>
     </resultMap>
 
+    <!-- 듀오 목록 조회 -->
     <select id="findAll" parameterType="java.lang.String" resultMap="convertDto">
         SELECT * FROM duo
         <choose>
@@ -20,23 +21,32 @@
                 WHERE tier = #{_tier}
             </when>
         </choose>
-        ORDER BY memberId DESC
+        ORDER BY duoId DESC LIMIT 0, #{_section}
     </select>
 
+    <!--  id 값으로 찾기  -->
     <select id="findById" resultMap="convertDto">
         SELECT * FROM duo WHERE duoId = #{duoId}
     </select>
 
+    <!-- 총 듀오 데이터 갯수 -->
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM duo;
+    </select>
+
+    <!--  듀오 추가  -->
     <select id="save" parameterType="DuoDto" resultType="java.lang.Long">
         INSERT INTO duo (memberId, iconId, summonerName, position , tier, rank, most3, win, lose, latestWinRate, `desc`)
             values (#{memberId}, #{iconId}, #{summonerName}, #{position}, #{tier}, #{rank}, #{most3, typeHandler=MybatisTypeHandler}, #{win}, #{lose}, #{latestWinRate}, #{desc})
             RETURNING duoId;
     </select>
 
+    <!-- 듀오 제거 -->
     <delete id="delete">
         DELETE FROM duo WHERE duoId = #{duoId}
     </delete>
 
+    <!--  듀오 수정  -->
     <update id="update">
         UPDATE duo SET position = #{param2}, `desc` = #{param3} WHERE duoId = #{param1}
     </update>

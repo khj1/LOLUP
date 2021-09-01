@@ -98,10 +98,11 @@ class DuoControllerTest {
     @Test
     void 모집글_모두_조회() {
         //given
-        List<DuoDto> duoList = getDuoList();
+        Map<String, Object> map = getDuoMap();
+
 
         //when
-        when(duoService.findAll(SummonerPosition.ALL, SummonerTier.ALL)).thenReturn(duoList);
+        when(duoService.findAll(SummonerPosition.ALL, SummonerTier.ALL, 1)).thenReturn(map);
 
         //then
         webTestClient.get().uri(uriBuilder ->
@@ -109,29 +110,57 @@ class DuoControllerTest {
                                 .path("/duo")
                                 .queryParam("position", SummonerPosition.ALL)
                                 .queryParam("tier", SummonerTier.ALL)
+                                .queryParam("section", 1)
                                 .build()
                 )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(DuoDto.class).hasSize(2)
+                .expectBodyList(Map.class)
                 .consumeWith(document("duo/readAll",
                         preprocessResponse(prettyPrint()),
                         requestParameters(
                                 parameterWithName("position").description("주 포지션. 조회 항목을 필터링하기 위해 사용합니다."),
-                                parameterWithName("tier").description("게임 티어. 조회 항목을 필터링하기 위해 사용합니다.")
+                                parameterWithName("tier").description("게임 티어. 조회 항목을 필터링하기 위해 사용합니다."),
+                                parameterWithName("section").description("페이징 처리에 사용되는 페이징 구간을 의미합니다. 한 섹션당 20개의 데이터가 추가로 호출됩니다.")
+                        ),
+                        responseFields(
+                                fieldWithPath("totalCount").description("DB에 저장된 총 듀오 데이터 수"),
+                                subsectionWithPath("list").type("List<DuoDto>").description("페이징 처리된 듀오 리스트")
+                        ),
+                        responseFields(beneathPath("list"),
+                                fieldWithPath("duoId").type("Long").description("작성한 모집글의 고유 번호"),
+                                fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
+                                fieldWithPath("iconId").type("int").description("프로필 아이콘 번호"),
+                                fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
+                                fieldWithPath("position").description("주 포지션"),
+                                fieldWithPath("tier").description("게임 티어"),
+                                fieldWithPath("rank").description("티어 등급"),
+                                subsectionWithPath("most3").type("List<MostInfo>").description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
+                                fieldWithPath("win").type("int").description("총 승리 횟수"),
+                                fieldWithPath("lose").type("int").description("총 패배 횟수"),
+                                fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
+                                fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
+                                fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
                         )
                 ));
 
     }
 
-    private List<DuoDto> getDuoList() {
+    private Map<String, Object> getDuoMap() {
         DuoDto duoDto1 = getDuoDto();
         DuoDto duoDto2 = getDuoDto();
         List<DuoDto> list = new ArrayList<>();
         list.add(duoDto1);
         list.add(duoDto2);
 
-        return list;
+        int totalCount = 100;
+        int listSize = list.size();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalCount", totalCount);
+        map.put("list", list);
+
+        return map;
     }
 
     private DuoDto getDuoDto() {

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,9 +19,14 @@ public class DuoService {
     private final DuoRepository duoRepository;
     private final SummonerService summonerService;
 
+    public Map<String, Object> findAll(String position, String tier, int section) {
+        List<DuoDto> list = duoRepository.findAll(position, tier, (section * 20));
 
-    public List<DuoDto> findAll(String position, String tier) {
-        return duoRepository.findAll(position, tier);
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalCount", duoRepository.getTotalCount());
+        map.put("list", list);
+
+        return map;
     }
 
     public DuoDto findById(Long duoId) {

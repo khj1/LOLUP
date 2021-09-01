@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface DuoRepository {
 
-    List<DuoDto> findAll(String position, String tier);
+    List<DuoDto> findAll(String position, String tier, int section);
 
     DuoDto findById(Long duoId);
+
+    Integer getTotalCount();
 
     Long save(DuoDto dto);
 
