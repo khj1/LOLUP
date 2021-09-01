@@ -6,6 +6,7 @@ import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -27,6 +28,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    @Value("${front.redirect_url}")
+    private String redirect_url;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -65,10 +69,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         log.info("refresh token cookie generated={} : {}", cookie.getName(), cookie.getValue());
 
-        //배포용
-        response.sendRedirect("http://d2fh37v4sikqk8.cloudfront.net/oauth2/login?token=" + token.getToken());
-
-        //테스트용
-//        response.sendRedirect("http://localhost:3000/oauth2/login?token=" + token.getToken());
+        response.sendRedirect(redirect_url + token.getToken());
     }
 }

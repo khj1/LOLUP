@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: info
+    com.lolup.lolup_project: debug
+
+front:
+  domain: http://localhost:3000
+  redirect_url: http://localhost:3000/oauth2/login?token=
+

@@ -51,10 +51,8 @@ public class MybatisTypeHandler implements TypeHandler<List<MostInfo>> {
     private List<MostInfo> toList(String json) {
         try {
             List<MostInfo> most3 = mapper.readValue(json, new TypeReference<List<MostInfo>>() {});
-            log.info("TypeConverter convert json to list, result:{}", most3.toString());
             return most3;
         } catch (IOException e) {
-            log.error("TypeConverter failed to convert json to list, json:{}", json);
             throw new RuntimeException();
         }
     }
