@@ -12,10 +12,14 @@ public interface MybatisDuoRepository extends DuoRepository{
 
     @Override
     List<DuoDto> findAll(@Param("_position") String position,
-                         @Param("_tier") String tier);
+                         @Param("_tier") String tier,
+                         @Param("_section") int section);
 
     @Override
     DuoDto findById(Long duoId);
+
+    @Override
+    Integer getTotalCount();
 
     @Override
     Long save(DuoDto dto);
