@@ -125,9 +125,9 @@ class DuoControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("totalCount").description("DB에 저장된 총 듀오 데이터 수"),
-                                subsectionWithPath("list").type("List<DuoDto>").description("페이징 처리된 듀오 리스트")
+                                subsectionWithPath("data").type("List<DuoDto>").description("페이징 처리된 듀오 리스트")
                         ),
-                        responseFields(beneathPath("list"),
+                        responseFields(beneathPath("data"),
                                 fieldWithPath("duoId").type("Long").description("작성한 모집글의 고유 번호"),
                                 fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
                                 fieldWithPath("iconId").type("int").description("프로필 아이콘 번호"),
@@ -149,16 +149,16 @@ class DuoControllerTest {
     private Map<String, Object> getDuoMap() {
         DuoDto duoDto1 = getDuoDto();
         DuoDto duoDto2 = getDuoDto();
-        List<DuoDto> list = new ArrayList<>();
-        list.add(duoDto1);
-        list.add(duoDto2);
+        List<DuoDto> data = new ArrayList<>();
+        data.add(duoDto1);
+        data.add(duoDto2);
 
         int totalCount = 100;
-        int listSize = list.size();
+        int listSize = data.size();
 
         Map<String, Object> map = new HashMap<>();
         map.put("totalCount", totalCount);
-        map.put("list", list);
+        map.put("data", data);
 
         return map;
     }
