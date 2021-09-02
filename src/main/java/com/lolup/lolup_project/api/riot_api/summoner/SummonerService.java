@@ -19,7 +19,7 @@ public class SummonerService {
 
     private final WebClient webClient;
 
-    private SummonerAccountDto getAccountInfo(String summonerName) {
+    public SummonerAccountDto getAccountInfo(String summonerName) {
         return webClient
                 .get()
                 .uri("/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + APIConst.riot_apiKey)

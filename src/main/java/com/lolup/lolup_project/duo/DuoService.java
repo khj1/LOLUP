@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -17,9 +16,14 @@ public class DuoService {
     private final DuoRepository duoRepository;
     private final SummonerService summonerService;
 
+    public Map<String, Object> findAll(String position, String tier, int section) {
+        List<DuoDto> data = duoRepository.findAll(position, tier, (section * 20));
 
-    public List<DuoDto> findAll(String position, String tier) {
-        return duoRepository.findAll(position, tier);
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("totalCount", duoRepository.getTotalCount());
+        map.put("data", data);
+
+        return map;
     }
 
     public DuoDto findById(Long duoId) {

@@ -8,4 +8,6 @@ public interface MemberRepository{
     Optional<Member> findByEmail(String email);
 
     String save(Member member);
+
+    int update(Long memberId, String summonerName);
 }

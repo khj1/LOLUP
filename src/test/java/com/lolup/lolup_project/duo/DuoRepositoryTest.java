@@ -61,9 +61,9 @@ class DuoRepositoryTest {
         duoRepository.save(getDuoDto(SummonerTier.SILVER, SummonerPosition.TOP));
 
         // when
-        List<DuoDto> list_gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG);
-        List<DuoDto> list_gold = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.ALL);
-        List<DuoDto> list_all = duoRepository.findAll(SummonerTier.ALL, SummonerPosition.ALL);
+        List<DuoDto> list_gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG, 1);
+        List<DuoDto> list_gold = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.ALL, 1);
+        List<DuoDto> list_all = duoRepository.findAll(SummonerTier.ALL, SummonerPosition.ALL, 1);
 
         int size_gold_jug = list_gold_jug.size();
         long count_gold_jug = list_gold_jug.stream()
