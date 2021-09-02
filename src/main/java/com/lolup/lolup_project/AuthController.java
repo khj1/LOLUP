@@ -20,7 +20,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-
     @GetMapping("/auth/check")
     public ResponseEntity<Map<String, Object>> checkAuth(Principal principal) {
         Map<String, Object> map = authService.checkAuth(principal);

@@ -15,4 +15,8 @@ public interface MybatisMemberRepository extends MemberRepository{
 
     @Override
     String save(Member memberDto);
+
+    @Override
+    int update(@Param("_memberId") Long memberId,
+               @Param("_summonerName") String summonerName);
 }
