@@ -14,7 +14,7 @@ public class SummonerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(WebClientResponseException.class)
     public ResponseEntity<ErrorResult> webClientResponseHandler(WebClientResponseException e) {
-        ErrorResult errorResult = new ErrorResult("NOT FOUND", "해당 소환사가 존재하지 않습니다.");
+        ErrorResult errorResult = new ErrorResult("404", "해당 소환사가 존재하지 않습니다.");
         return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
     }
 }

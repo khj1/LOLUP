@@ -36,8 +36,9 @@ public class AuthService {
         Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("name", member.getName());
+        map.put("memberId", member.getMemberId());
         map.put("summonerName", member.getSummonerName());
+        map.put("nickname", null);
         map.put("login", true);
 
         return map;
