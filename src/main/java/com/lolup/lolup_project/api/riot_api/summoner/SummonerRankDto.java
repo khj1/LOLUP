@@ -11,16 +11,16 @@ public class SummonerRankDto {
     private String summonerName;
     private String tier;
     private String rank;
-    private int win;
-    private int lose;
+    private int wins;
+    private int losses;
 
     @Builder
-    public SummonerRankDto(int iconId, String summonerName, String tier, String rank, int win, int lose) {
+    public SummonerRankDto(int iconId, String summonerName, String tier, String rank, int wins, int losses) {
         this.iconId = iconId;
         this.summonerName = summonerName;
         this.tier = tier;
         this.rank = rank;
-        this.win = win;
-        this.lose = lose;
+        this.wins = wins;
+        this.losses = losses;
     }
 }

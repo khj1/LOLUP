@@ -125,6 +125,7 @@ class DuoControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("totalCount").description("DB에 저장된 총 듀오 데이터 수"),
+                                fieldWithPath("version").description("현재 게임 버전"),
                                 subsectionWithPath("data").type("List<DuoDto>").description("페이징 처리된 듀오 리스트")
                         ),
                         responseFields(beneathPath("data"),
@@ -136,8 +137,8 @@ class DuoControllerTest {
                                 fieldWithPath("tier").description("게임 티어"),
                                 fieldWithPath("rank").description("티어 등급"),
                                 subsectionWithPath("most3").type("List<MostInfo>").description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
-                                fieldWithPath("win").type("int").description("총 승리 횟수"),
-                                fieldWithPath("lose").type("int").description("총 패배 횟수"),
+                                fieldWithPath("wins").type("int").description("총 승리 횟수"),
+                                fieldWithPath("losses").type("int").description("총 패배 횟수"),
                                 fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
                                 fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
                                 fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
@@ -153,11 +154,9 @@ class DuoControllerTest {
         data.add(duoDto1);
         data.add(duoDto2);
 
-        int totalCount = 100;
-        int listSize = data.size();
-
         Map<String, Object> map = new HashMap<>();
-        map.put("totalCount", totalCount);
+        map.put("version", "11.16.0");
+        map.put("totalCount", 100);
         map.put("data", data);
 
         return map;
@@ -168,12 +167,12 @@ class DuoControllerTest {
                 .iconId(100)
                 .duoId(2L)
                 .latestWinRate("20%")
-                .lose(300)
+                .losses(300)
                 .most3(getMost3())
                 .rank("IV")
                 .tier(SummonerTier.BRONZE)
                 .desc("hi")
-                .win(400)
+                .wins(400)
                 .memberId(1L)
                 .postDate(LocalDateTime.now())
                 .summonerName("hideonbush")
@@ -215,8 +214,8 @@ class DuoControllerTest {
                                 fieldWithPath("tier").description("게임 티어"),
                                 fieldWithPath("rank").description("티어 등급"),
                                 subsectionWithPath("most3").type("List<MostInfo>").description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
-                                fieldWithPath("win").type("int").description("총 승리 횟수"),
-                                fieldWithPath("lose").type("int").description("총 패배 횟수"),
+                                fieldWithPath("wins").type("int").description("총 승리 횟수"),
+                                fieldWithPath("losses").type("int").description("총 패배 횟수"),
                                 fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
                                 fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
                                 fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")

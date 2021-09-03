@@ -1,6 +1,7 @@
 package com.lolup.lolup_project.duo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/duo")
@@ -29,6 +31,7 @@ public class DuoController {
 
     @PostMapping("/new")
     public ResponseEntity<Long> save(DuoForm form) {
+        log.info("add Duo form data ={}", form.toString());
         return new ResponseEntity<>(duoService.save(form), HttpStatus.OK);
     }
 

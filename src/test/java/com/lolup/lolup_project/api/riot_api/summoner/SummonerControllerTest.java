@@ -58,7 +58,7 @@ class SummonerControllerTest {
 
         SummonerAccountDto dto = SummonerAccountDto.builder()
                 .accountId("accountId")
-                .iconId(100)
+                .profileIconId(100)
                 .id("id")
                 .puuid("puuid")
                 .summonerLevel(100L)

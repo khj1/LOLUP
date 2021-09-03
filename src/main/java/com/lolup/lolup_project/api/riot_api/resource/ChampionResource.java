@@ -69,7 +69,7 @@ public class ChampionResource {
             case 240: championName = "Kled"; break;
             case 96: championName = "KogMaw"; break;
             case 7: championName = "Leblanc"; break;
-            case 64: championName = "Lee Sin"; break;
+            case 64: championName = "LeeSin"; break;
             case 89: championName = "Leona"; break;
             case 876: championName = "Lillia"; break;
             case 127: championName = "Lissandra"; break;
