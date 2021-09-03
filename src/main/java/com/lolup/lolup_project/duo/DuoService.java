@@ -20,6 +20,7 @@ public class DuoService {
         List<DuoDto> data = duoRepository.findAll(position, tier, (section * 20));
 
         Map<String, Object> map = new LinkedHashMap<>();
+        map.put("version", summonerService.getGameVersion());
         map.put("totalCount", duoRepository.getTotalCount());
         map.put("data", data);
 

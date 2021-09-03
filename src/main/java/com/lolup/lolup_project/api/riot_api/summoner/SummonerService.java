@@ -6,6 +6,7 @@ import com.lolup.lolup_project.api.riot_api.match.MatchReferenceDTO;
 import com.lolup.lolup_project.api.riot_api.match.MatchlistDTO;
 import com.lolup.lolup_project.api.riot_api.resource.ChampionResource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -13,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SummonerService {
@@ -31,7 +33,7 @@ public class SummonerService {
     private SummonerRankDto getSummonerTotalSoloRankInfo(String summonerName) {
         SummonerAccountDto summonerAccountInfo = getAccountInfo(summonerName);
         String id = summonerAccountInfo.getId();
-        int iconId = summonerAccountInfo.getIconId();
+        int iconId = summonerAccountInfo.getProfileIconId();
 
         SummonerRankDto summonerRankDTO = getRankInfo(id);
 
@@ -44,8 +46,8 @@ public class SummonerService {
                     .summonerName(summonerName)
                     .tier("UNRANKED")
                     .rank("언랭크")
-                    .win(0)
-                    .lose(0)
+                    .wins(0)
+                    .losses(0)
                     .build();
         }
 
@@ -59,8 +61,8 @@ public class SummonerService {
                 .summonerName(summonerName)
                 .tier("UNRANKED")
                 .rank("언랭크")
-                .win(0)
-                .lose(0)
+                .wins(0)
+                .losses(0)
                 .build();
     }
 
@@ -73,13 +75,15 @@ public class SummonerService {
                 .blockFirst();
     }
 
-    private String[] getGameVersion() {
-        return webClient
+    public String getGameVersion() {
+        String[] versions = webClient
                 .get()
                 .uri("https://ddragon.leagueoflegends.com/api/versions.json")
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();
+
+        return versions[0];
     }
 
     private List<MatchReferenceDTO> getLatestMatches(String summonerName) {
@@ -95,6 +99,8 @@ public class SummonerService {
     private String getLatestWinRate(List<MatchReferenceDTO> matches) {
         long winCount = matches.stream()
                 .filter(matchReferenceDTO -> matchReferenceDTO.getWin().equals("Win")).count();
+
+        log.info("winCount={}", winCount);
 
         return (double) (winCount * 10) + "%";
     }
@@ -116,9 +122,17 @@ public class SummonerService {
         return most3;
     }
 
+    //TODO
     private List<Map.Entry<String, Integer>> getMost3Entries(Stream<Map.Entry<String, Integer>> sortedMap) {
-        return sortedMap.collect(Collectors.toList())
-                .subList(0, 3);
+        List<Map.Entry<String, Integer>> most = sortedMap.collect(Collectors.toList());
+
+        if (most.size() >= 3) {
+            return most.subList(0, 3);
+        } else if (most.size() == 2) {
+            return most.subList(0, 2);
+        } else {
+            return most.subList(0, 1);
+        }
     }
 
     private Stream<Map.Entry<String, Integer>> getSortedMap(Map<String, Integer> most10) {
@@ -146,19 +160,16 @@ public class SummonerService {
     public SummonerDto find(String summonerName) {
 
         SummonerRankDto info = getSummonerTotalSoloRankInfo(summonerName);
-        String version = getGameVersion()[0];
 
         List<MatchReferenceDTO> matches = getLatestMatches(summonerName);
         String latestWinRate = getLatestWinRate(matches);
         List<MostInfo> most3 = getLatestMost3(matches);
 
         return SummonerDto.builder()
-                .version(version)
                 .latestWinRate(latestWinRate)
                 .info(info)
                 .most3(most3)
                 .build();
-
     }
 
     private List<MatchReferenceDTO> getMatchReferences(String summonerName) {

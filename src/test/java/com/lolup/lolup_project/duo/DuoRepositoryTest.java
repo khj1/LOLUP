@@ -125,14 +125,14 @@ class DuoRepositoryTest {
         most3.add(MostInfo.create("Zed", 2));
 
         return DuoDto.builder()
-                .win(100)
+                .wins(100)
                 .summonerName("summonerName")
                 .postDate(LocalDateTime.now())
                 .tier(tier)
                 .rank("3")
                 .position(position)
                 .most3(most3)
-                .lose(100)
+                .losses(100)
                 .memberId(1L)
                 .latestWinRate("20%")
                 .desc("hi")

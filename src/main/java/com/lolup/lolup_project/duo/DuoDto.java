@@ -23,15 +23,15 @@ public class DuoDto {
     private String tier;
     private String rank;
     private List<MostInfo> most3;
-    private int win;
-    private int lose;
+    private int wins;
+    private int losses;
     private String latestWinRate;
     private String desc;
     private LocalDateTime postDate;
 
     @Builder
     public DuoDto(Long duoId, Long memberId, int iconId, String summonerName, String position,
-                  String tier, String rank, List<MostInfo> most3, int win, int lose,
+                  String tier, String rank, List<MostInfo> most3, int wins, int losses,
                   String latestWinRate, String desc, LocalDateTime postDate) {
 
         this.duoId = duoId;
@@ -42,8 +42,8 @@ public class DuoDto {
         this.tier = tier;
         this.rank = rank;
         this.most3 = most3;
-        this.win = win;
-        this.lose = lose;
+        this.wins = wins;
+        this.losses = losses;
         this.latestWinRate = latestWinRate;
         this.desc = desc;
         this.postDate = postDate;
@@ -58,10 +58,10 @@ public class DuoDto {
                 .postDate(form.getPostDate())
                 .summonerName(form.getSummonerName())
                 .most3(summonerDto.getMost3())
-                .win(summonerDto.getInfo().getWin())
+                .wins(summonerDto.getInfo().getWins())
                 .rank(summonerDto.getInfo().getRank())
                 .tier(summonerDto.getInfo().getTier())
-                .lose(summonerDto.getInfo().getLose())
+                .losses(summonerDto.getInfo().getLosses())
                 .latestWinRate(summonerDto.getLatestWinRate())
                 .iconId(summonerDto.getInfo().getIconId())
                 .build();

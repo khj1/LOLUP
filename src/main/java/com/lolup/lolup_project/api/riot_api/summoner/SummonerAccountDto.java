@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class SummonerAccountDto {
 
     private String accountId;
-    private int IconId;
+    private int profileIconId;
     private Long revisionDate; // Date summoner was last modified
     private String name;
     private String id;
@@ -17,9 +17,9 @@ public class SummonerAccountDto {
     private Long summonerLevel;
 
     @Builder
-    public SummonerAccountDto(String accountId, int iconId, Long revisionDate, String name, String id, String puuid, Long summonerLevel) {
+    public SummonerAccountDto(String accountId, int profileIconId, Long revisionDate, String name, String id, String puuid, Long summonerLevel) {
         this.accountId = accountId;
-        IconId = iconId;
+        this.profileIconId = profileIconId;
         this.revisionDate = revisionDate;
         this.name = name;
         this.id = id;

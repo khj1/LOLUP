@@ -1,14 +1,12 @@
 package com.lolup.lolup_project.duo;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class DuoForm {
     private Long memberId;
