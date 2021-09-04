@@ -43,7 +43,7 @@ public class DuoService {
         return duoRepository.update(duoId, position, desc);
     }
 
-    public Long delete(Long duoId) {
-        return duoRepository.delete(duoId);
+    public Long delete(Long duoId, Long memberId) {
+        return duoRepository.delete(duoId, memberId);
     }
 }

@@ -18,5 +18,5 @@ public interface DuoRepository {
 
     Long update(Long duoId, String position, String desc);
 
-    Long delete(Long duoId);
+    Long delete(Long duoId, Long memberId);
 }

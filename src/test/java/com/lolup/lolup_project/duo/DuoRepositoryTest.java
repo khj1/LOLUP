@@ -106,10 +106,11 @@ class DuoRepositoryTest {
     public void 데이터_삭제() throws Exception {
         //given
         DuoDto duoDto = getDuoDto(SummonerTier.UNRANKED, SummonerPosition.SUP);
+        Long memberId = duoDto.getMemberId();
         Long duoId = duoRepository.save(duoDto);
 
         //when
-        duoRepository.delete(duoId);
+        duoRepository.delete(duoId, memberId);
 
         //then
         assertThat(duoId).isNotNull();

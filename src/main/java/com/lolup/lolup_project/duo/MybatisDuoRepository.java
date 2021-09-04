@@ -28,5 +28,7 @@ public interface MybatisDuoRepository extends DuoRepository{
     Long update(Long duoId, String position, String desc);
 
     @Override
-    Long delete(Long duoId);
+    Long delete(@Param("_duoId") Long duoId,
+                @Param("_memberId") Long memberId);
+
 }
