@@ -65,11 +65,8 @@ public class AuthService {
         return map;
     }
 
-    public Map<String, Object> logout(Principal principal, HttpServletResponse response) {
-        UserProfile userProfile = (UserProfile) ((Authentication) principal).getPrincipal();
-        Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
-
-        refreshTokenRepository.delete(member.getMemberId());
+    public Map<String, Object> logout(Long memberId, HttpServletResponse response) {
+        refreshTokenRepository.delete(memberId);
         deleteCookie(response);
 
         Map<String, Object> map = new HashMap<>();

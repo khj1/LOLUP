@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
@@ -37,9 +34,9 @@ public class AuthController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @DeleteMapping("/auth/logout")
-    public ResponseEntity<Map<String, Object>> logout(Principal principal, HttpServletResponse response) {
-        Map<String, Object> map = authService.logout(principal, response);
+    @DeleteMapping("/auth/{memberId}")
+    public ResponseEntity<Map<String, Object>> logout(@PathVariable Long memberId, HttpServletResponse response) {
+        Map<String, Object> map = authService.logout(memberId, response);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
