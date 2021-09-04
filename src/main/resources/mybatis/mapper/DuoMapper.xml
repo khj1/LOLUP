@@ -43,7 +43,7 @@
 
     <!-- 듀오 제거 -->
     <delete id="delete">
-        DELETE FROM duo WHERE duoId = #{duoId}
+        DELETE FROM duo WHERE duoId = #{_duoId} AND memberId = #{_memberId}
     </delete>
 
     <!--  듀오 수정  -->

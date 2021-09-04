@@ -41,7 +41,7 @@ public class DuoController {
     }
 
     @DeleteMapping("/{duoId}")
-    public ResponseEntity<Long> delete(@PathVariable Long duoId) {
-        return new ResponseEntity<>(duoService.delete(duoId), HttpStatus.OK);
+    public ResponseEntity<Long> delete(@PathVariable Long duoId, Long memberId) {
+        return new ResponseEntity<>(duoService.delete(duoId, memberId), HttpStatus.OK);
     }
 }
