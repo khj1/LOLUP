@@ -41,6 +41,7 @@ dependencies {
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.64'
+	implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
 
 	// JSON String-> Java Object
 	implementation 'com.google.code.gson:gson:2.8.8'

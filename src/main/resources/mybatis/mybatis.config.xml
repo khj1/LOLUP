@@ -8,5 +8,6 @@
         <mapper resource="DuoMapper.xml"/>
         <mapper resource="MemberMapper.xml"/>
         <mapper resource="RefreshTokenMapper.xml" />
+        <mapper resource="MessageMapper.xml" />
     </mappers>
 </configuration>
