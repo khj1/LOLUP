@@ -1,4 +1,4 @@
-package com.lolup.lolup_project;
+package com.lolup.lolup_project.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,18 +12,19 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/auth/check")
+    @GetMapping("/check")
     public ResponseEntity<Map<String, Object>> checkAuth(Principal principal) {
         Map<String, Object> map = authService.checkAuth(principal);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("/auth/refresh")
+    @GetMapping("/refresh")
     public ResponseEntity<Map<String, Object>> refresh(
             @CookieValue(value = "refreshToken", required = true) String refreshToken,
             HttpServletResponse response
@@ -34,7 +35,7 @@ public class AuthController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @DeleteMapping("/auth/{memberId}")
+    @DeleteMapping("/{memberId}")
     public ResponseEntity<Map<String, Object>> logout(@PathVariable Long memberId, HttpServletResponse response) {
         Map<String, Object> map = authService.logout(memberId, response);
         return new ResponseEntity<>(map, HttpStatus.OK);

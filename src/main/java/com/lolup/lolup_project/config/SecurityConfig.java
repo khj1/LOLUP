@@ -1,7 +1,10 @@
-package com.lolup.lolup_project.config.oauth;
+package com.lolup.lolup_project.config;
 
+import com.lolup.lolup_project.token.JwtAuthFilter;
+import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.oauth.OAuth2SuccessHandler;
+import com.lolup.lolup_project.oauth.OAuthService;
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

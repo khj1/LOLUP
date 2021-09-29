@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.config.oauth;
+package com.lolup.lolup_project.token;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

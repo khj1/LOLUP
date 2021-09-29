@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.config.mybatis;
+package com.lolup.lolup_project.mybatis;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

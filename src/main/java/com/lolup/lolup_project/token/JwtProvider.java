@@ -1,9 +1,9 @@
-package com.lolup.lolup_project.config.oauth;
+package com.lolup.lolup_project.token;
 
+import com.lolup.lolup_project.token.Token;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

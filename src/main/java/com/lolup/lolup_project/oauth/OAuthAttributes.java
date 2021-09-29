@@ -1,7 +1,6 @@
-package com.lolup.lolup_project.config.oauth;
+package com.lolup.lolup_project.oauth;
 
 import com.lolup.lolup_project.member.UserProfile;
-import lombok.Builder;
 
 import java.util.Arrays;
 import java.util.Map;

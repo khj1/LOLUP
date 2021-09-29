@@ -1,7 +1,7 @@
-package com.lolup.lolup_project;
+package com.lolup.lolup_project.auth;
 
-import com.lolup.lolup_project.config.oauth.JwtProvider;
-import com.lolup.lolup_project.config.oauth.Token;
+import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.token.Token;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.Role;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;

@@ -63,7 +63,7 @@ class DuoControllerTest {
         DuoForm duoForm = getDuoForm();
         
         //when
-        when(duoService.save(duoForm)).thenReturn(1L);
+        when(duoService.save(duoForm)).thenReturn(duoForm.getMemberId());
         
         //then
         webTestClient.mutateWith(csrf()).post().uri("duo/new")
@@ -229,10 +229,29 @@ class DuoControllerTest {
     }
 
     @Test
-    void update() {
-    }
+    void 모집글_삭제() {
+        //given
+        Long duoId = 1L;
+        Long memberId = 1L;
 
-    @Test
-    void delete() {
+        //when
+        when(duoService.delete(duoId, memberId)).thenReturn(1L);
+
+        //then
+        webTestClient.mutateWith(csrf()).delete().uri(uriBuilder ->
+                    uriBuilder
+                            .path("duo/{duoId}")
+                            .queryParam("memberId", memberId)
+                            .build(duoId)
+                )
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Long.class)
+                .consumeWith(document("duo/delete",
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(
+                                parameterWithName("memberId").description("로그인한 본인의 memberId를 전달합니다. duoId에 해당하는 memberId와 불일치하면 글이 삭제되지 않습니다.")
+                        )
+                ));
     }
 }
