@@ -71,19 +71,10 @@ include::{snippets}/duo/readAll/response-fields.adoc[]
 data
 include::{snippets}/duo/readAll/response-fields-beneath-data.adoc[]
 
-most3
-include::{snippets}/duo/readOne/response-fields-beneath-most3.adoc[]
-
 **Response HTTP Example**
 
 include::{snippets}/duo/readAll/http-response.adoc[]
 
-
-//==== Exception
-//
-//**Exception Example**
-//
-//include::{snippets}/duo/exception/http-response.adoc[]
 
 ***
 [[Duo_Post]]
@@ -117,6 +108,7 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 ***
 [[Duo_Patch]]
 === 수정
+<<<<<<< HEAD
 
 ==== Request
 **Parameters**
@@ -127,6 +119,18 @@ include::{snippets}/duo/create/request-fields.adoc[]
 
 include::{snippets}/duo/readAll/http-request.adoc[]
 
+=======
+
+==== Request
+**Parameters**
+
+include::{snippets}/duo/create/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/readAll/http-request.adoc[]
+
+>>>>>>> aff608fbbdfe1f3af58a45c20da78f2d341b97c9
 
 ==== Response
 **Response Status Code**
@@ -147,12 +151,11 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 ==== Request
 **Parameters**
 
-include::{snippets}/duo/create/request-fields.adoc[]
+include::{snippets}/duo/delete/request-parameters.adoc[]
 
 **Request HTTP Example**
 
-include::{snippets}/duo/readAll/http-request.adoc[]
-
+include::{snippets}/duo/delete/http-request.adoc[]
 
 ==== Response
 **Response Status Code**

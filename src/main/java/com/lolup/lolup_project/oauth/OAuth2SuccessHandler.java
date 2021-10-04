@@ -1,5 +1,6 @@
 package com.lolup.lolup_project.oauth;
 
+import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.UserProfile;
 import com.lolup.lolup_project.token.JwtProvider;
@@ -46,15 +47,15 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
 
-        Long memberId = memberRepository.findByEmail(userProfile.getEmail()).get().getMemberId();
+        Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
         Token token = jwtProvider.generateToken(userProfile.getEmail(), "USER");
 
         log.info("tokens={}", token);
 
-        RefreshToken refreshToken = RefreshToken.create(memberId, token.getRefreshToken());
-        String savedRefreshToken = refreshTokenRepository.save(refreshToken);
+        RefreshToken refreshToken = RefreshToken.create(member, token.getRefreshToken());
+        RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
 
-        log.info("get refresh token after refresh token saved = {}", savedRefreshToken);
+        log.info("get refresh token after refresh token saved = {}", savedRefreshToken.getRefreshToken());
 
         writeTokenResponse(response, token);
     }

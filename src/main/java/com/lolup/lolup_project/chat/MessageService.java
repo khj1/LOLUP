@@ -1,7 +1,5 @@
 package com.lolup.lolup_project.chat;
 
-import com.lolup.lolup_project.chat.model.ChatMessage;
-import com.lolup.lolup_project.chat.storage.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,8 +11,8 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public ChatMessage save(ChatMessage chatMessage) {
-        Long messageId = messageRepository.save(chatMessage);
-        return messageRepository.findById(messageId);
+    public Message save(Message message) {
+        messageRepository.save(message);
+        return messageRepository.findById(message.getId()).get();
     }
 }

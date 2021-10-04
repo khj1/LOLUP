@@ -1,0 +1,79 @@
+1633236254713|1|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633236254714|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633236254715|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633236254715|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633236254716|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633236254730|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633236254731|0|statement|connection 14|url jdbc:h2:mem:849e5fd4-6135-4aeb-81a9-f9b7c85a172e|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633236308222|1|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633236308223|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633236308224|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633236308224|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633236308224|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633236308225|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633236308225|0|statement|connection 14|url jdbc:h2:mem:2c624c7b-0e06-45aa-848e-cd08721c1ef1|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633236341949|1|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633236341951|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633236341951|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633236341952|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633236341952|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633236341953|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633236341953|0|statement|connection 10|url jdbc:h2:mem:2a4b021d-7398-4778-9a14-59fdeb332030|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633236365722|1|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633236365723|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633236365724|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633236365724|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633236365725|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633236365725|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633236365725|0|statement|connection 14|url jdbc:h2:mem:ef2e0cbe-71a3-4281-8346-3d7fd63c705c|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633236765687|1|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633236765689|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633236765689|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633236765689|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633236765690|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633236765690|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633236765691|0|statement|connection 14|url jdbc:h2:mem:23f52508-38ce-4d18-924c-95e61719905f|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633269417192|1|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633269417195|1|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633269417196|0|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633269417196|0|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633269417196|0|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633269417197|0|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633269417197|0|statement|connection 14|url jdbc:h2:mem:d7ec2556-8869-4b22-97ca-cbfa00c8b951|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633273682512|1|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633273682514|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633273682514|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633273682515|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633273682516|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633273682516|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop table if exists summoner_name CASCADE |     drop table if exists summoner_name CASCADE 
+1633273682517|0|statement|connection 14|url jdbc:h2:mem:e0aa2247-63f1-4308-89c8-78c971f5bcf0|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633321861497|1|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633321861519|0|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633321861519|0|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633321861519|0|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633321861520|0|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633321861520|0|statement|connection 14|url jdbc:h2:mem:21aca46d-bc3b-4320-9748-2db8e3b06d9b|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633322185685|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633322185686|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633322185687|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633322185687|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633322185687|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633322185688|0|statement|connection 14|url jdbc:h2:mem:f929136f-1a57-40d3-8ce5-8d1c15dc734e|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633322838586|1|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633322838588|0|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633322838588|0|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633322838588|0|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633322838589|0|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633322838589|0|statement|connection 14|url jdbc:h2:mem:c9b0e4ec-825f-47fe-a84c-1997b53671b8|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633326679467|1|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633326679469|1|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633326679470|0|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633326679471|0|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633326679471|0|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633326679473|0|statement|connection 14|url jdbc:h2:mem:bd3d828d-b83f-4f86-8f0b-9b5416742d97|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1633331143823|1|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop table if exists duo CASCADE |     drop table if exists duo CASCADE 
+1633331143825|0|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop table if exists member CASCADE |     drop table if exists member CASCADE 
+1633331143825|0|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop table if exists message CASCADE |     drop table if exists message CASCADE 
+1633331143825|0|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop table if exists most_info CASCADE |     drop table if exists most_info CASCADE 
+1633331143826|0|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop table if exists refresh_token CASCADE |     drop table if exists refresh_token CASCADE 
+1633331143826|0|statement|connection 14|url jdbc:h2:mem:ba870fda-bf9c-45c1-a622-b4efdd3d4593|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence

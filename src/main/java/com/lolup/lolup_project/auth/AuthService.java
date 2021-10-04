@@ -35,7 +35,7 @@ public class AuthService {
         Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("memberId", member.getMemberId());
+        map.put("memberId", member.getId());
         map.put("summonerName", member.getSummonerName());
         map.put("nickname", null);
         map.put("login", true);
@@ -53,10 +53,10 @@ public class AuthService {
         Token newToken = jwtProvider.generateToken(email, Role.USER.getKey());
         Member member = memberRepository.findByEmail(email).get();
 
-        RefreshToken newRefreshToken = RefreshToken.create(member.getMemberId(), refreshToken);
-        String savedRefreshToken = refreshTokenRepository.save(newRefreshToken);
+        RefreshToken newRefreshToken = RefreshToken.create(member, refreshToken);
+        RefreshToken savedRefreshToken = refreshTokenRepository.save(newRefreshToken);
 
-        setCookie(response, savedRefreshToken);
+        setCookie(response, savedRefreshToken.getRefreshToken());
 
         Map<String, Object> map = new HashMap<>();
         map.put("token", newToken.getToken());
@@ -65,7 +65,7 @@ public class AuthService {
     }
 
     public Map<String, Object> logout(Long memberId, HttpServletResponse response) {
-        refreshTokenRepository.delete(memberId);
+        refreshTokenRepository.deleteById(memberId);
         deleteCookie(response);
 
         Map<String, Object> map = new HashMap<>();
