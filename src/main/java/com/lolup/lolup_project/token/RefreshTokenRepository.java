@@ -1,10 +1,7 @@
 package com.lolup.lolup_project.token;
 
-public interface RefreshTokenRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    RefreshToken findByEmail(String email);
-
-    String save(RefreshToken refreshToken);
-
-    void delete(Long memberId);
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+    void deleteById(Long id);
 }

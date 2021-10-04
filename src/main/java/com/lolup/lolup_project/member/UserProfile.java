@@ -16,6 +16,6 @@ public class UserProfile {
     }
 
     public Member toMember() {
-        return new Member(name, email, Role.USER, picture, null);
+        return new Member(name, email, Role.USER, picture);
     }
 }

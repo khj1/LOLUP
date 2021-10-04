@@ -1,71 +1,69 @@
 package com.lolup.lolup_project.duo;
 
-import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
-import com.lolup.lolup_project.api.riot_api.summoner.SummonerPosition;
-import com.lolup.lolup_project.api.riot_api.summoner.SummonerTier;
-import com.lolup.lolup_project.config.JasyptConfig;
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesConfiguration;
+import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
+import com.lolup.lolup_project.config.TestConfig;
+import com.lolup.lolup_project.member.Member;
+import com.lolup.lolup_project.member.MemberRepository;
+import com.lolup.lolup_project.riot_api.summoner.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
-@ExtendWith(SpringExtension.class)
-@AutoConfigureTestDatabase(replace = NONE)
-@EnableEncryptableProperties
-@MybatisTest
-@Import(JasyptConfig.class)
+@DataJpaTest(showSql = false)
+@Transactional
+@Import(TestConfig.class)
+@ImportAutoConfiguration(DataSourceDecoratorAutoConfiguration.class)
 class DuoRepositoryTest {
 
-    @Autowired
-    private DuoRepository duoRepository;
-
+    @Autowired private EntityManager em;
+    @Autowired private DuoRepository duoRepository;
+    @Autowired private MemberRepository memberRepository;
 
     @Test
     public void 듀오_추가_테스트() throws Exception {
         //given
-        DuoDto duoDto = getDuoDto(SummonerTier.BRONZE, SummonerPosition.BOT);
+        Duo duo = getDuo(SummonerTier.BRONZE, SummonerPosition.BOT);
 
         //when
-        Long duoId = duoRepository.save(duoDto);
+        duoRepository.save(duo);
 
         //then
-        DuoDto resultDto = duoRepository.findById(duoId);
-        assertThat(duoDto.getDesc()).isEqualTo(resultDto.getDesc());
-        assertThat(duoId).isEqualTo(resultDto.getDuoId());
-
+        Duo findDuo = duoRepository.findById(duo.getId()).orElse(null);
+        assertThat(duo.getDesc()).isEqualTo(findDuo.getDesc());
+        assertThat(duo.getId()).isEqualTo(findDuo.getId());
     }
 
     @Test
     void 듀오_필터적용_조회() {
         // given
-        duoRepository.save(getDuoDto(SummonerTier.GOLD, SummonerPosition.JUG));
-        duoRepository.save(getDuoDto(SummonerTier.GOLD, SummonerPosition.TOP));
-        duoRepository.save(getDuoDto(SummonerTier.SILVER, SummonerPosition.JUG));
-        duoRepository.save(getDuoDto(SummonerTier.SILVER, SummonerPosition.TOP));
+        duoRepository.save(getDuo(SummonerTier.GOLD, SummonerPosition.JUG));
+        duoRepository.save(getDuo(SummonerTier.GOLD, SummonerPosition.TOP));
+        duoRepository.save(getDuo(SummonerTier.SILVER, SummonerPosition.JUG));
+        duoRepository.save(getDuo(SummonerTier.SILVER, SummonerPosition.TOP));
 
         // when
-        List<DuoDto> list_gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG, 1);
-        List<DuoDto> list_gold = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.ALL, 1);
-        List<DuoDto> list_all = duoRepository.findAll(SummonerTier.ALL, SummonerPosition.ALL, 1);
+        PageRequest page = PageRequest.of(0, 20);
 
-        int size_gold_jug = list_gold_jug.size();
+        Page<DuoDto> gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG, page);
+        Page<DuoDto> gold = duoRepository.findAll(SummonerTier.GOLD, null, page);
+        Page<DuoDto> all = duoRepository.findAll(null, null, page);
+
+        List<DuoDto> list_gold_jug = gold_jug.getContent();
+        List<DuoDto> list_gold = gold.getContent();
+        List<DuoDto> list_all = all.getContent();
+
+        long size_gold_jug = gold_jug.getNumberOfElements();
         long count_gold_jug = list_gold_jug.stream()
                         .filter(dto ->
                                     dto.getPosition().equals(SummonerPosition.JUG) &&
@@ -73,12 +71,12 @@ class DuoRepositoryTest {
                         )
                         .count();
 
-        int size_gold = list_gold.size();
+        long size_gold = gold.getNumberOfElements();
         long count_gold = list_gold.stream()
                     .filter(dto -> dto.getTier().equals(SummonerTier.GOLD))
                     .count();
 
-        int size_all = list_all.size();
+        long size_all = all.getTotalElements();
 
         //then
         assertThat(size_gold_jug).isEqualTo(count_gold_jug).isLessThan(size_all);
@@ -88,56 +86,61 @@ class DuoRepositoryTest {
     @Test
     void 데이터_수정() {
         //given
-        Long beforeId = duoRepository.save(getDuoDto(SummonerTier.UNRANKED, SummonerPosition.MID));
-        String desc = "updated";
-        String position = SummonerPosition.BOT;
+        Long beforeId = duoRepository.save(getDuo(SummonerTier.UNRANKED, SummonerPosition.MID)).getId();
+
+        em.flush();
+        em.clear();
 
         //when
-        duoRepository.update(beforeId, position, desc);
-        DuoDto afterDto = duoRepository.findById(beforeId);
+        duoRepository.update(beforeId, SummonerPosition.BOT, "updated");
+        Duo findDuo = duoRepository.findById(beforeId).orElse(null);
 
         //then
-        assertThat(afterDto.getDesc()).isEqualTo("updated");
-        assertThat(afterDto.getPosition()).isEqualTo(SummonerPosition.BOT);
+        assertThat(findDuo.getDesc()).isEqualTo("updated");
+        assertThat(findDuo.getPosition()).isEqualTo(SummonerPosition.BOT);
     }
 
 
     @Test
     public void 데이터_삭제() throws Exception {
         //given
-        DuoDto duoDto = getDuoDto(SummonerTier.UNRANKED, SummonerPosition.SUP);
-        Long memberId = duoDto.getMemberId();
-        Long duoId = duoRepository.save(duoDto);
+        Duo duo = getDuo(SummonerTier.UNRANKED, SummonerPosition.SUP);
+        duoRepository.save(duo);
+
+        Long duoId = duo.getId();
+        Long memberId = duo.getMember().getId();
+
+        em.flush();
+        em.clear();
 
         //when
         duoRepository.delete(duoId, memberId);
 
+        em.flush();
+        em.clear();
+
         //then
-        assertThat(duoId).isNotNull();
-        assertThat(duoRepository.findById(duoId)).isEqualTo(null);
+        assertThat(duoRepository.findById(duoId).orElse(null)).isNull();
     }
 
 
-    private DuoDto getDuoDto(String tier, String position) {
-        List<MostInfo> most3 = new ArrayList<>();
+    private Duo getDuo(String tier, String position) {
+        Member member = Member.builder().name(position + " " + tier).build();
+        memberRepository.save(member);
 
+        List<MostInfo> most3 = new ArrayList<>();
         most3.add(MostInfo.create("Syndra", 4));
         most3.add(MostInfo.create("Lucian", 3));
         most3.add(MostInfo.create("Zed", 2));
 
-        return DuoDto.builder()
-                .wins(100)
-                .summonerName("summonerName")
-                .postDate(LocalDateTime.now())
-                .tier(tier)
-                .rank("3")
-                .position(position)
-                .most3(most3)
-                .losses(100)
-                .memberId(1L)
-                .latestWinRate("20%")
-                .desc("hi")
-                .iconId(100)
+        SummonerRankInfo info = SummonerRankInfo.builder()
+                .iconId(100).summonerName("summonerName")
+                .rank("3").tier(tier)
+                .wins(100).losses(100)
                 .build();
+
+        SummonerDto summonerDto = new SummonerDto("20%", info, most3);
+
+        return Duo.create(member, summonerDto, position, "hi");
     }
 }
