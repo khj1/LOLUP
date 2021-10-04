@@ -49,7 +49,7 @@ public class JwtAuthFilter extends GenericFilterBean {
 
                     log.info("Decoded email from JWT={}", email);
 
-                    Member member = memberRepository.findByEmail(email).get();
+                    Member member = memberRepository.findByEmail(email).orElse(null);
                     UserProfile userProfile = Member.toUserProfileWithMember(member);
 
                     Authentication auth = getAuthentication(userProfile);

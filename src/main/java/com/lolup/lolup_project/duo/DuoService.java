@@ -1,49 +1,57 @@
 package com.lolup.lolup_project.duo;
 
-import com.lolup.lolup_project.api.riot_api.summoner.SummonerDto;
-import com.lolup.lolup_project.api.riot_api.summoner.SummonerService;
+import com.lolup.lolup_project.member.Member;
+import com.lolup.lolup_project.member.MemberRepository;
+import com.lolup.lolup_project.riot_api.summoner.SummonerDto;
+import com.lolup.lolup_project.riot_api.summoner.SummonerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class DuoService {
 
+    private final MemberRepository memberRepository;
     private final DuoRepository duoRepository;
     private final SummonerService summonerService;
 
-    public Map<String, Object> findAll(String position, String tier, int section) {
-        List<DuoDto> data = duoRepository.findAll(position, tier, (section * 20));
+    public Map<String, Object> findAll(String position, String tier, Pageable pageable) {
+        Page<DuoDto> data = duoRepository.findAll(position, tier, pageable);
 
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("version", summonerService.getGameVersion());
-        map.put("totalCount", duoRepository.getTotalCount());
-        map.put("data", data);
+        map.put("totalCount", data.getTotalElements());
+        map.put("data", data.getContent());
+        map.put("pageable", data.getPageable());
 
         return map;
     }
 
-    public DuoDto findById(Long duoId) {
-        return duoRepository.findById(duoId);
-    }
-
-
+    @Transactional
     public Long save(DuoForm form) {
         SummonerDto summonerDto = summonerService.find(form.getSummonerName());
-        DuoDto duoDto = DuoDto.create(summonerDto, form);
-        return duoRepository.save(duoDto);
+        Member member = memberRepository.findById(form.getMemberId()).orElse(null);
+
+        Duo duo = Duo.create(member, summonerDto, form.getPosition(), form.getDesc());
+        return duoRepository.save(duo).getId();
     }
 
 
+    @Transactional
     public Long update(Long duoId, String position, String desc) {
-        return duoRepository.update(duoId, position, desc);
+        duoRepository.update(duoId, position, desc);
+        return duoId;
     }
 
+    @Transactional
     public Long delete(Long duoId, Long memberId) {
-        return duoRepository.delete(duoId, memberId);
+        duoRepository.delete(duoId, memberId);
+        return duoId;
     }
 }
