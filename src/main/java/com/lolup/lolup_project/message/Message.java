@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.chat;
+package com.lolup.lolup_project.message;
 
 import com.lolup.lolup_project.base.BaseTimeEntity;
 import com.lolup.lolup_project.member.Member;
@@ -21,4 +21,19 @@ public class Message extends BaseTimeEntity {
 
     private Long roomId;
     private String message;
+
+    private void changeMember(Member member) {
+        this.member = member;
+        member.getMessages().add(this);
+    }
+
+    public Message(Member member, Long roomId, String message) {
+        changeMember(member);
+        this.roomId = roomId;
+        this.message = message;
+    }
+
+    public static Message create(Member member, Long roomId, String message) {
+        return new Message(member, roomId, message);
+    }
 }
