@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.chat;
+package com.lolup.lolup_project.message;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +16,12 @@ public class MessageController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/user-all")
-    public void sendToAll(@Payload Message message) {
-        log.info("서버로 전송된 메시지 = {}", message.getMessage());
-        log.info("메시지를 보낸 유저 ID = {}", message.getMember().getId());
+    public void sendToAll(@Payload MessageDto messageDto) {
+        log.info("서버로 전송된 메시지 = {}", messageDto.getMessage());
+        log.info("메시지를 보낸 유저 ID = {}", messageDto.getMemberId());
 
-        Message savedMessage = messageService.save(message);
+        MessageDto savedMessageDto = messageService.save(messageDto);
 
-        simpMessagingTemplate.convertAndSend("/queue/user/" + message.getRoomId() , savedMessage);
+        simpMessagingTemplate.convertAndSend("/queue/user/" +messageDto.getRoomId() , savedMessageDto);
     }
 }

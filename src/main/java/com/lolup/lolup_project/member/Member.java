@@ -1,7 +1,7 @@
 package com.lolup.lolup_project.member;
 
 import com.lolup.lolup_project.base.BaseTimeEntity;
-import com.lolup.lolup_project.chat.Message;
+import com.lolup.lolup_project.message.Message;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
