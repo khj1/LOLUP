@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot_api.summoner;
+package com.lolup.lolup_project.riotapi.summoner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,10 +2,10 @@ package com.lolup.lolup_project.duo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.config.SecurityConfig;
-import com.lolup.lolup_project.riot_api.summoner.MostInfo;
-import com.lolup.lolup_project.riot_api.summoner.MostInfoDto;
-import com.lolup.lolup_project.riot_api.summoner.SummonerPosition;
-import com.lolup.lolup_project.riot_api.summoner.SummonerTier;
+import com.lolup.lolup_project.riotapi.summoner.MostInfo;
+import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
+import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
+import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

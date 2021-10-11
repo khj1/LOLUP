@@ -1,6 +1,6 @@
-package com.lolup.lolup_project.riot_api.summoner;
+package com.lolup.lolup_project.riotapi.summoner;
 
-import com.lolup.lolup_project.riot_api.match.MatchInfoDto;
+import com.lolup.lolup_project.riotapi.match.MatchInfoDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

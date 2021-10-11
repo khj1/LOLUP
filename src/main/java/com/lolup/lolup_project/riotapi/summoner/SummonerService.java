@@ -1,8 +1,8 @@
-package com.lolup.lolup_project.riot_api.summoner;
+package com.lolup.lolup_project.riotapi.summoner;
 
-import com.lolup.lolup_project.riot_api.APIConst;
-import com.lolup.lolup_project.riot_api.match.MatchDto;
-import com.lolup.lolup_project.riot_api.match.MatchInfoDto;
+import com.lolup.lolup_project.riotapi.APIConst;
+import com.lolup.lolup_project.riotapi.match.MatchDto;
+import com.lolup.lolup_project.riotapi.match.MatchInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

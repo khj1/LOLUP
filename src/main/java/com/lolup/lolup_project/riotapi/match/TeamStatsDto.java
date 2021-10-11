@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot_api.match;
+package com.lolup.lolup_project.riotapi.match;
 
 import lombok.Data;
 

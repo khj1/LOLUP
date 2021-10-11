@@ -1,7 +1,6 @@
 package com.lolup.lolup_project.duo;
 
-import com.lolup.lolup_project.riot_api.summoner.MostInfo;
-import com.lolup.lolup_project.riot_api.summoner.MostInfoDto;
+import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,9 +2,9 @@ package com.lolup.lolup_project.duo;
 
 import com.lolup.lolup_project.base.BaseTimeEntity;
 import com.lolup.lolup_project.member.Member;
-import com.lolup.lolup_project.riot_api.summoner.MostInfo;
-import com.lolup.lolup_project.riot_api.summoner.SummonerDto;
-import com.lolup.lolup_project.riot_api.summoner.SummonerRankInfo;
+import com.lolup.lolup_project.riotapi.summoner.MostInfo;
+import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
+import com.lolup.lolup_project.riotapi.summoner.SummonerRankInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot_api;
+package com.lolup.lolup_project.riotapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

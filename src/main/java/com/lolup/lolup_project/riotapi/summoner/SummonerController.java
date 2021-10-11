@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot_api.summoner;
+package com.lolup.lolup_project.riotapi.summoner;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

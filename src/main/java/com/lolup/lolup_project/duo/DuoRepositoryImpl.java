@@ -1,6 +1,5 @@
 package com.lolup.lolup_project.duo;
 
-import com.lolup.lolup_project.riot_api.summoner.QMostInfo;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

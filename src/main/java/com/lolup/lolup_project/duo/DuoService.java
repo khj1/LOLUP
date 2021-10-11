@@ -2,8 +2,8 @@ package com.lolup.lolup_project.duo;
 
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.riot_api.summoner.SummonerDto;
-import com.lolup.lolup_project.riot_api.summoner.SummonerService;
+import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
+import com.lolup.lolup_project.riotapi.summoner.SummonerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

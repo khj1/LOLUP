@@ -4,7 +4,7 @@ import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfi
 import com.lolup.lolup_project.config.TestConfig;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.riot_api.summoner.*;
+import com.lolup.lolup_project.riotapi.summoner.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
