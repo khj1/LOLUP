@@ -32,11 +32,11 @@ public class AuthService {
 
     public Map<String, Object> checkAuth(Principal principal) {
         UserProfile userProfile = (UserProfile) ((Authentication) principal).getPrincipal();
-        Member member = memberRepository.findByEmail(userProfile.getEmail()).get();
+        Member findMember = memberRepository.findByEmail(userProfile.getEmail()).orElse(null);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("memberId", member.getId());
-        map.put("summonerName", member.getSummonerName());
+        map.put("memberId", findMember.getId());
+        map.put("summonerName", findMember.getSummonerName());
         map.put("nickname", null);
         map.put("login", true);
 
@@ -51,9 +51,9 @@ public class AuthService {
 
         String email = jwtProvider.getTokenClaims(refreshToken);
         Token newToken = jwtProvider.generateToken(email, Role.USER.getKey());
-        Member member = memberRepository.findByEmail(email).get();
+        Member findMember = memberRepository.findByEmail(email).orElse(null);
 
-        RefreshToken newRefreshToken = RefreshToken.create(member, refreshToken);
+        RefreshToken newRefreshToken = RefreshToken.create(findMember, refreshToken);
         RefreshToken savedRefreshToken = refreshTokenRepository.save(newRefreshToken);
 
         setCookie(response, savedRefreshToken.getRefreshToken());
@@ -65,7 +65,8 @@ public class AuthService {
     }
 
     public Map<String, Object> logout(Long memberId, HttpServletResponse response) {
-        refreshTokenRepository.deleteById(memberId);
+        Member findMember = memberRepository.findById(memberId).orElse(null);
+        refreshTokenRepository.deleteByMember(findMember);
         deleteCookie(response);
 
         Map<String, Object> map = new HashMap<>();
