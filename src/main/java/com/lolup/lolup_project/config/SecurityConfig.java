@@ -1,5 +1,6 @@
 package com.lolup.lolup_project.config;
 
+import com.lolup.lolup_project.member.Role;
 import com.lolup.lolup_project.token.JwtAuthFilter;
 import com.lolup.lolup_project.token.JwtProvider;
 import com.lolup.lolup_project.oauth.OAuth2SuccessHandler;
@@ -44,12 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 세션 비활성화
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                    .authorizeRequests()
-//                        .antMatchers("/").permitAll()
-//                        .antMatchers("/auth/check").hasRole(Role.USER.getKey())
-//                        .antMatchers("/duo/{duoId}").hasRole("USER")
-                        .anyRequest().permitAll()
                 .and()
                 // 스프링 MVC의 예외 처리( 오류 페이지 반환 )를 비활성화 한다.
                     .exceptionHandling().disable()
