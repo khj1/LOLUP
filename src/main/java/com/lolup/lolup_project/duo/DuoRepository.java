@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface DuoRepository extends JpaRepository<Duo, Long>, DuoRepositoryCustom {
+    void deleteByIdAndMemberId(Long duoId, Long memberId);
 }

@@ -53,13 +53,7 @@ public class DuoService {
 
     @Transactional
     public Long delete(Long duoId, Long memberId) {
-        Duo findDuo = duoRepository.findById(duoId).orElse(null);
-        findDuo.getMostInfos().clear();
-
-        em.flush();
-        em.clear();
-
-        duoRepository.delete(duoId, memberId);
+        duoRepository.deleteByIdAndMemberId(duoId, memberId);
         return duoId;
     }
 }

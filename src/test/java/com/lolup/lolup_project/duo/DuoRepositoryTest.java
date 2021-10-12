@@ -110,13 +110,10 @@ class DuoRepositoryTest {
         Long duoId = duo.getId();
         Long memberId = duo.getMember().getId();
 
-        //when
-        duoRepository.findById(duoId).get().getMostInfos().clear();
-
         em.flush();
         em.clear();
 
-        duoRepository.delete(duoId, memberId);
+        duoRepository.deleteByIdAndMemberId(duoId, memberId);
 
         em.flush();
         em.clear();
