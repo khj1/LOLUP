@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 
 @Service
@@ -17,6 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class DuoService {
 
+    private final EntityManager em;
     private final MemberRepository memberRepository;
     private final DuoRepository duoRepository;
     private final SummonerService summonerService;
@@ -51,6 +53,12 @@ public class DuoService {
 
     @Transactional
     public Long delete(Long duoId, Long memberId) {
+        Duo findDuo = duoRepository.findById(duoId).orElse(null);
+        findDuo.getMostInfos().clear();
+
+        em.flush();
+        em.clear();
+
         duoRepository.delete(duoId, memberId);
         return duoId;
     }
