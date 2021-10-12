@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Duo extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "duo_id")
     private Long id;
 
@@ -34,15 +34,22 @@ public class Duo extends BaseTimeEntity {
 
     private String position;
     private String latestWinRate;
+
+    @Column(name = "description")
     private String desc;
 
     public Duo(Member member, SummonerRankInfo info, List<MostInfo> mostInfos, String position, String latestWinRate, String desc) {
         this.member = member;
         this.info = info;
-        this.mostInfos = mostInfos;
+        addMostInfos(mostInfos);
         this.position = position;
         this.latestWinRate = latestWinRate;
         this.desc = desc;
+    }
+
+    private void addMostInfos(List<MostInfo> mostInfos) {
+        this.mostInfos = mostInfos;
+        mostInfos.forEach(mostInfo -> mostInfo.changeDuo(this));
     }
 
     public static Duo create(Member member, SummonerDto summonerDto, String position, String desc) {
