@@ -3,6 +3,7 @@ package com.lolup.lolup_project.riotapi.summoner;
 import com.lolup.lolup_project.base.BaseTimeEntity;
 import com.lolup.lolup_project.duo.Duo;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,5 +32,9 @@ public class MostInfo extends BaseTimeEntity {
 
     public static MostInfo create(String name, Integer play) {
         return new MostInfo(name, play);
+    }
+
+    public void changeDuo(Duo duo) {
+        this.duo = duo;
     }
 }
