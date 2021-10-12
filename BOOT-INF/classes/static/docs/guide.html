@@ -448,29 +448,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#summoner">Summoner</a>
+<li><a href="#Duo">Duo</a>
 <ul class="sectlevel2">
-<li><a href="#summoner_Get">조회</a>
+<li><a href="#Duo_Get">조회</a>
 <ul class="sectlevel3">
 <li><a href="#_request">Request</a></li>
 <li><a href="#_response">Response</a></li>
 </ul>
 </li>
-<li><a href="#_exception">Exception</a></li>
-</ul>
-</li>
-<li><a href="#Duo">Duo</a>
-<ul class="sectlevel2">
-<li><a href="#Duo_Get">조회</a>
+<li><a href="#Duo_Post">추가</a>
 <ul class="sectlevel3">
 <li><a href="#_request_2">Request</a></li>
 <li><a href="#_response_2">Response</a></li>
 </ul>
 </li>
-<li><a href="#Duo_Post">추가</a>
+<li><a href="#Duo_Patch">수정</a>
 <ul class="sectlevel3">
 <li><a href="#_request_3">Request</a></li>
 <li><a href="#_response_3">Response</a></li>
+</ul>
+</li>
+<li><a href="#Duo_Delete">삭제</a>
+<ul class="sectlevel3">
+<li><a href="#_request_4">Request</a></li>
+<li><a href="#_response_4">Response</a></li>
 </ul>
 </li>
 </ul>
@@ -482,88 +483,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <hr>
-</div>
-</div>
-<div class="sect1">
-<h2 id="summoner"><a class="link" href="#summoner">Summoner</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="summoner_Get"><a class="link" href="#summoner_Get">조회</a></h3>
-<div class="sect3">
-<h4 id="_request"><a class="link" href="#_request">Request</a></h4>
-<div class="paragraph">
-<p><strong>Path parameters</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/path-parameters.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>Request HTTP Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/http-request.adoc[]</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response"><a class="link" href="#_response">Response</a></h4>
-<div class="paragraph">
-<p><strong>Response Status Code</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Status code</th>
-<th class="tableblock halign-left valign-top">Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 조회됐습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>404</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">잘못된 소환사 명을 입력했거나, 해당 소환사명이 존재하지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Response fields</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>info</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields-beneath-info.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>most3</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields-beneath-most3.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>Response HTTP Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/http-response.adoc[]</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exception"><a class="link" href="#_exception">Exception</a></h3>
-<div class="paragraph">
-<p><strong>Exception Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/exception/http-response.adoc[]</p>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -611,12 +530,77 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <div class="sect2">
 <h3 id="Duo_Get"><a class="link" href="#Duo_Get">조회</a></h3>
 <div class="sect3">
-<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
+<h4 id="_request"><a class="link" href="#_request">Request</a></h4>
 <div class="paragraph">
 <p><strong>Parameters</strong></p>
 </div>
 <div class="paragraph">
 <p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/request-parameters.adoc[]</p>
+</div>
+<div class="paragraph">
+<p><strong>Request HTTP Example</strong></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-request.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response"><a class="link" href="#_response">Response</a></h4>
+<div class="paragraph">
+<p><strong>Response Status Code</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Status code</th>
+<th class="tableblock halign-left valign-top">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 조회됐습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Response fields</strong>
+Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/response-fields.adoc[]</p>
+</div>
+<div class="paragraph">
+<p>data
+Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/response-fields-beneath-data.adoc[]</p>
+</div>
+<div class="paragraph">
+<p>most3
+Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readOne/response-fields-beneath-most3.adoc[]</p>
+</div>
+<div class="paragraph">
+<p><strong>Response HTTP Example</strong></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-response.adoc[]</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Duo_Post"><a class="link" href="#Duo_Post">추가</a></h3>
+<div class="sect3">
+<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
+<div class="paragraph">
+<p><strong>Parameters</strong></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/create/request-fields.adoc[]</p>
 </div>
 <div class="paragraph">
 <p><strong>Request HTTP Example</strong></p>
@@ -647,30 +631,20 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 조회됐습니다.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>404</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주로 desc문을 너무 길게 입력했을 때 발생합니다.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p><strong>Response fields</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readOne/response-fields.adoc[]</p>
-</div>
-<div class="paragraph">
-<p>most3
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readOne/response-fields-beneath-most3.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>Response HTTP Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-response.adoc[]</p>
-</div>
 <hr>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Duo_Post"><a class="link" href="#Duo_Post">추가</a></h3>
+<h3 id="Duo_Patch"><a class="link" href="#Duo_Patch">수정</a></h3>
 <div class="sect3">
 <h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
 <div class="paragraph">
@@ -705,15 +679,58 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 조회됐습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>404</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주로 desc문을 너무 길게 입력했을 때 발생합니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 수정됐습니다.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Duo_Delete"><a class="link" href="#Duo_Delete">삭제</a></h3>
+<div class="sect3">
+<h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
+<div class="paragraph">
+<p><strong>Parameters</strong></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/delete/request-parameters.adoc[]</p>
+</div>
+<div class="paragraph">
+<p><strong>Request HTTP Example</strong></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/delete/http-request.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_4"><a class="link" href="#_response_4">Response</a></h4>
+<div class="paragraph">
+<p><strong>Response Status Code</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Status code</th>
+<th class="tableblock halign-left valign-top">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 삭제됐습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
 </tr>
 </tbody>
 </table>
@@ -725,7 +742,7 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-08-31 11:40:15 +0900
+Last updated 2021-10-03 11:56:03 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
