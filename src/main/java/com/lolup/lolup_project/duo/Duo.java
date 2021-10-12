@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Duo extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "duo_id")
     private Long id;
 
@@ -34,6 +34,8 @@ public class Duo extends BaseTimeEntity {
 
     private String position;
     private String latestWinRate;
+
+    @Column(name = "description")
     private String desc;
 
     public Duo(Member member, SummonerRankInfo info, List<MostInfo> mostInfos, String position, String latestWinRate, String desc) {
