@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,6 +74,6 @@ public class JwtAuthFilter extends GenericFilterBean {
 
     private Authentication getAuthentication(UserProfile userProfile) {
         return new UsernamePasswordAuthenticationToken(userProfile, "",
-                Arrays.asList(new SimpleGrantedAuthority(Role.USER.getKey())));
+                List.of(new SimpleGrantedAuthority(Role.USER.getKey())));
     }
 }
