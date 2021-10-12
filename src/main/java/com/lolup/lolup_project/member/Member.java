@@ -1,48 +1,55 @@
 package com.lolup.lolup_project.member;
 
+import com.lolup.lolup_project.base.BaseTimeEntity;
+import com.lolup.lolup_project.message.Message;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.util.List;
 
+@Entity
 @Getter
-@NoArgsConstructor
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends BaseTimeEntity {
 
-    private Long memberId;
+    @Id @GeneratedValue
+    @Column(name = "member_id")
+    private Long id;
+
     private String name;
     private String email;
     private String picture;
     private String summonerName;
 
-    @NotNull
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Member(String name, String email, Role role, String picture, String summonerName) {
+    @OneToMany(mappedBy = "member")
+    private List<Message> messages;
+
+    public Member(String name, String email, Role role, String picture) {
         this(null, name, email, role, picture, null);
     }
 
     @Builder
-    public Member(Long memberId, String name, String email, Role role, String picture, String summonerName) {
-        this.memberId = memberId;
+    public Member(Long id, String name, String email, Role role, String picture, String summonerName) {
+        this.id = id;
         this.name = name;
         this.email = email;
-        this.role = role;
         this.picture = picture;
         this.summonerName = summonerName;
+        this.role = role;
     }
 
     public Member update(String name, String email, String picture) {
         this.name = name;
         this.email = email;
         this.picture = picture;
-        return this;
-    }
 
-    public UserProfile toUserProfile(String name, String email, String picture) {
-        return new UserProfile(name, email, picture);
+        return this;
     }
 
     public static UserProfile toUserProfileWithMember(Member member) {
@@ -55,5 +62,9 @@ public class Member {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void changeSummonerName(String summonerName) {
+        this.summonerName = summonerName;
     }
 }

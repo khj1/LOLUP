@@ -1,20 +1,17 @@
 package com.lolup.lolup_project.duo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lolup.lolup_project.api.riot_api.summoner.MostInfo;
-import com.lolup.lolup_project.api.riot_api.summoner.SummonerDto;
-import lombok.*;
+import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class DuoDto {
-
     private Long duoId;
     private Long memberId;
     private int iconId;
@@ -22,7 +19,7 @@ public class DuoDto {
     private String position;
     private String tier;
     private String rank;
-    private List<MostInfo> most3;
+    private List<MostInfoDto> most3;
     private int wins;
     private int losses;
     private String latestWinRate;
@@ -30,10 +27,7 @@ public class DuoDto {
     private LocalDateTime postDate;
 
     @Builder
-    public DuoDto(Long duoId, Long memberId, int iconId, String summonerName, String position,
-                  String tier, String rank, List<MostInfo> most3, int wins, int losses,
-                  String latestWinRate, String desc, LocalDateTime postDate) {
-
+    public DuoDto(Long duoId, Long memberId, int iconId, String summonerName, String position, String tier, String rank, List<MostInfoDto> most3, int wins, int losses, String latestWinRate, String desc, LocalDateTime postDate) {
         this.duoId = duoId;
         this.memberId = memberId;
         this.iconId = iconId;
@@ -47,23 +41,23 @@ public class DuoDto {
         this.latestWinRate = latestWinRate;
         this.desc = desc;
         this.postDate = postDate;
-
     }
 
-    public static DuoDto create(SummonerDto summonerDto, DuoForm form) {
+    public static DuoDto create(Duo duo) {
         return DuoDto.builder()
-                .desc(form.getDesc())
-                .memberId(form.getMemberId())
-                .position(form.getPosition())
-                .postDate(form.getPostDate())
-                .summonerName(form.getSummonerName())
-                .most3(summonerDto.getMost3())
-                .wins(summonerDto.getInfo().getWins())
-                .rank(summonerDto.getInfo().getRank())
-                .tier(summonerDto.getInfo().getTier())
-                .losses(summonerDto.getInfo().getLosses())
-                .latestWinRate(summonerDto.getLatestWinRate())
-                .iconId(summonerDto.getInfo().getIconId())
+                .duoId(duo.getId())
+                .memberId(duo.getMember().getId())
+                .iconId(duo.getInfo().getIconId())
+                .summonerName(duo.getInfo().getSummonerName())
+                .position(duo.getPosition())
+                .tier(duo.getInfo().getTier())
+                .rank(duo.getInfo().getRank())
+                .most3(duo.getMostInfos().stream().map(MostInfoDto::create).collect(Collectors.toList()))
+                .wins(duo.getInfo().getWins())
+                .losses(duo.getInfo().getLosses())
+                .latestWinRate(duo.getLatestWinRate())
+                .desc(duo.getDesc())
+                .postDate(duo.getCreatedDate())
                 .build();
     }
 }

@@ -15,59 +15,6 @@ Hanjun Kim;
 
 ***
 
-[[summoner]]
-== Summoner
-
-[[summoner_Get]]
-=== 조회
-
-==== Request
-**Path parameters**
-
-include::{snippets}/summoner/success/path-parameters.adoc[]
-
-**Request HTTP Example**
-
-include::{snippets}/summoner/success/http-request.adoc[]
-
-
-==== Response
-**Response Status Code**
-|===
-| Status code | Usage
-
-| `200`
-| 데이터가 성공적으로 조회됐습니다.
-
-| `404`
-| 잘못된 소환사 명을 입력했거나, 해당 소환사명이 존재하지 않습니다.
-
-| `500`
-| 내부 서버에 오류가 발생했습니다.
-|===
-
-**Response fields**
-include::{snippets}/summoner/success/response-fields.adoc[]
-
-**info**
-include::{snippets}/summoner/success/response-fields-beneath-info.adoc[]
-
-**most3**
-include::{snippets}/summoner/success/response-fields-beneath-most3.adoc[]
-
-**Response HTTP Example**
-
-include::{snippets}/summoner/success/http-response.adoc[]
-
-
-=== Exception
-
-**Exception Example**
-
-include::{snippets}/summoner/exception/http-response.adoc[]
-
-
-
 [[Duo]]
 == Duo
 **path**
@@ -119,21 +66,15 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 |===
 
 **Response fields**
-include::{snippets}/duo/readOne/response-fields.adoc[]
+include::{snippets}/duo/readAll/response-fields.adoc[]
 
-most3
-include::{snippets}/duo/readOne/response-fields-beneath-most3.adoc[]
+data
+include::{snippets}/duo/readAll/response-fields-beneath-data.adoc[]
 
 **Response HTTP Example**
 
 include::{snippets}/duo/readAll/http-response.adoc[]
 
-
-//==== Exception
-//
-//**Exception Example**
-//
-//include::{snippets}/duo/exception/http-response.adoc[]
 
 ***
 [[Duo_Post]]
@@ -161,12 +102,69 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 | 주로 desc문을 너무 길게 입력했을 때 발생합니다.
 
 | `500`
-| 내부 서버에 오류가 발생했습니다.
+| 서버에서 오류가 발생했습니다.
 |===
 
+***
+[[Duo_Patch]]
+=== 수정
+<<<<<<< HEAD
 
-//==== Exception
-//
-//**Exception Example**
-//
-//include::{snippets}/duo/create/http-response.adoc[]
+==== Request
+**Parameters**
+
+include::{snippets}/duo/create/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/readAll/http-request.adoc[]
+
+=======
+
+==== Request
+**Parameters**
+
+include::{snippets}/duo/create/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/readAll/http-request.adoc[]
+
+>>>>>>> aff608fbbdfe1f3af58a45c20da78f2d341b97c9
+
+==== Response
+**Response Status Code**
+|===
+| Status code | Usage
+
+| `200`
+| 데이터가 성공적으로 수정됐습니다.
+
+| `500`
+| 서버에서 오류가 발생했습니다.
+|===
+
+***
+[[Duo_Delete]]
+=== 삭제
+
+==== Request
+**Parameters**
+
+include::{snippets}/duo/delete/request-parameters.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/delete/http-request.adoc[]
+
+==== Response
+**Response Status Code**
+|===
+| Status code | Usage
+
+| `200`
+| 데이터가 성공적으로 삭제됐습니다.
+
+| `500`
+| 서버에서 오류가 발생했습니다.
+|===
