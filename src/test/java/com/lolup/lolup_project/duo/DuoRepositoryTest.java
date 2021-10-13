@@ -116,7 +116,7 @@ class DuoRepositoryTest {
         em.flush();
         em.clear();
 
-        duoRepository.delete(duoId, memberId);
+        duoRepository.deleteByIdAndMemberId(duoId, memberId);
 
         em.flush();
         em.clear();
