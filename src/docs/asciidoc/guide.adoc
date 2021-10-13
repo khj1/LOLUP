@@ -1,6 +1,5 @@
 = LOL UP API Guide
 Hanjun Kim;
-:snippets: ../../../build/generated-snippets
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -9,11 +8,10 @@ Hanjun Kim;
 :sectlinks:
 :operation-curl-request-title: Example request
 :operation-http-response-title: Example response
-:basedir: {docdir}/../../../ :snippets: {basedir}/target/generated-snippets :sources-root: {basedir}/src :resources: {sources-root}/main/resources :resources-test: {sources-root}/test/resources :java: {sources-root}/main/java :java-test: {sources-root}/test/java
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
 
-
-
-***
 
 [[Duo]]
 == Duo
@@ -108,7 +106,6 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 ***
 [[Duo_Patch]]
 === 수정
-<<<<<<< HEAD
 
 ==== Request
 **Parameters**
@@ -118,19 +115,6 @@ include::{snippets}/duo/create/request-fields.adoc[]
 **Request HTTP Example**
 
 include::{snippets}/duo/readAll/http-request.adoc[]
-
-=======
-
-==== Request
-**Parameters**
-
-include::{snippets}/duo/create/request-fields.adoc[]
-
-**Request HTTP Example**
-
-include::{snippets}/duo/readAll/http-request.adoc[]
-
->>>>>>> aff608fbbdfe1f3af58a45c20da78f2d341b97c9
 
 ==== Response
 **Response Status Code**

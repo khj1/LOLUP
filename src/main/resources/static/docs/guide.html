@@ -448,29 +448,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#summoner">Summoner</a>
+<li><a href="#Duo">Duo</a>
 <ul class="sectlevel2">
-<li><a href="#summoner_Get">조회</a>
+<li><a href="#Duo_Get">조회</a>
 <ul class="sectlevel3">
 <li><a href="#_request">Request</a></li>
 <li><a href="#_response">Response</a></li>
 </ul>
 </li>
-<li><a href="#_exception">Exception</a></li>
-</ul>
-</li>
-<li><a href="#Duo">Duo</a>
-<ul class="sectlevel2">
-<li><a href="#Duo_Get">조회</a>
+<li><a href="#Duo_Post">추가</a>
 <ul class="sectlevel3">
 <li><a href="#_request_2">Request</a></li>
 <li><a href="#_response_2">Response</a></li>
 </ul>
 </li>
-<li><a href="#Duo_Post">추가</a>
+<li><a href="#Duo_Patch">수정</a>
 <ul class="sectlevel3">
 <li><a href="#_request_3">Request</a></li>
 <li><a href="#_response_3">Response</a></li>
+</ul>
+</li>
+<li><a href="#Duo_Delete">삭제</a>
+<ul class="sectlevel3">
+<li><a href="#_request_4">Request</a></li>
+<li><a href="#_response_4">Response</a></li>
 </ul>
 </li>
 </ul>
@@ -479,93 +480,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<hr>
-</div>
-</div>
-<div class="sect1">
-<h2 id="summoner"><a class="link" href="#summoner">Summoner</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="summoner_Get"><a class="link" href="#summoner_Get">조회</a></h3>
-<div class="sect3">
-<h4 id="_request"><a class="link" href="#_request">Request</a></h4>
-<div class="paragraph">
-<p><strong>Path parameters</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/path-parameters.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>Request HTTP Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/http-request.adoc[]</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response"><a class="link" href="#_response">Response</a></h4>
-<div class="paragraph">
-<p><strong>Response Status Code</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Status code</th>
-<th class="tableblock halign-left valign-top">Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 조회됐습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>404</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">잘못된 소환사 명을 입력했거나, 해당 소환사명이 존재하지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Response fields</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>info</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields-beneath-info.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>most3</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/response-fields-beneath-most3.adoc[]</p>
-</div>
-<div class="paragraph">
-<p><strong>Response HTTP Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/success/http-response.adoc[]</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exception"><a class="link" href="#_exception">Exception</a></h3>
-<div class="paragraph">
-<p><strong>Exception Example</strong></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/summoner/exception/http-response.adoc[]</p>
-</div>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="Duo"><a class="link" href="#Duo">Duo</a></h2>
 <div class="sectionbody">
@@ -611,22 +525,53 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <div class="sect2">
 <h3 id="Duo_Get"><a class="link" href="#Duo_Get">조회</a></h3>
 <div class="sect3">
-<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
+<h4 id="_request"><a class="link" href="#_request">Request</a></h4>
 <div class="paragraph">
 <p><strong>Parameters</strong></p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/request-parameters.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 포지션. 조회 항목을 필터링하기 위해 사용합니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 티어. 조회 항목을 필터링하기 위해 사용합니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 조회할 데이터 개수(생략하면 default 값, 20)</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p><strong>Request HTTP Example</strong></p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /duo?position=MID&amp;tier=PLATINUM&amp;page=0&amp;size=20 HTTP/1.1
+Accept: application/json
+Host: lolup-api.p-e.kr</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_2"><a class="link" href="#_response_2">Response</a></h4>
+<h4 id="_response"><a class="link" href="#_response">Response</a></h4>
 <div class="paragraph">
 <p><strong>Response Status Code</strong></p>
 </div>
@@ -653,18 +598,204 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 </tbody>
 </table>
 <div class="paragraph">
-<p><strong>Response fields</strong>
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readOne/response-fields.adoc[]</p>
+<p><strong>Response fields</strong></p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DB에 저장된 총 듀오 데이터 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 게임 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List&lt;DuoDto&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리된 듀오 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리와 관련된 데이터</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p>most3
-Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readOne/response-fields-beneath-most3.adoc[]</p>
+<p>data</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>duoId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성한 모집글의 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자의 회원 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>iconId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 아이콘 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>summonerName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인 게임에서 사용되는 소환사 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 포지션</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 티어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rank</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">티어 등급</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>most3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List&lt;MostInfo&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">최근 10 게임에서 가장 많이 플레이한 챔피언들</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wins</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 승리 횟수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>losses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 패배 횟수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latestWinRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">최근 10 게임의 승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>desc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신청자 모집을 위해 간단한 문구를 작성할 수 있습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모집글 작성 시간</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p><strong>Response HTTP Example</strong></p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 1273
+
+{
+  "data" : [ {
+    "duoId" : 2,
+    "memberId" : 1,
+    "iconId" : 100,
+    "summonerName" : "hideonbush",
+    "position" : "MID",
+    "tier" : "BRONZE",
+    "rank" : "IV",
+    "most3" : [ {
+      "name" : "Syndra",
+      "play" : 4
+    }, {
+      "name" : "Lucian",
+      "play" : 3
+    }, {
+      "name" : "Zed",
+      "play" : 2
+    } ],
+    "wins" : 400,
+    "losses" : 300,
+    "latestWinRate" : "20%",
+    "desc" : "hi",
+    "postDate" : "2021-10-14T03:05:03.372502"
+  }, {
+    "duoId" : 2,
+    "memberId" : 1,
+    "iconId" : 100,
+    "summonerName" : "hideonbush",
+    "position" : "MID",
+    "tier" : "BRONZE",
+    "rank" : "IV",
+    "most3" : [ {
+      "name" : "Syndra",
+      "play" : 4
+    }, {
+      "name" : "Lucian",
+      "play" : 3
+    }, {
+      "name" : "Zed",
+      "play" : 2
+    } ],
+    "wins" : 400,
+    "losses" : 300,
+    "latestWinRate" : "20%",
+    "desc" : "hi",
+    "postDate" : "2021-10-14T03:05:03.372502"
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : false,
+      "unsorted" : true,
+      "empty" : true
+    },
+    "pageSize" : 20,
+    "pageNumber" : 0,
+    "offset" : 0,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalCount" : 100,
+  "version" : "11.16.0"
+}</code></pre>
+</div>
 </div>
 <hr>
 </div>
@@ -672,22 +803,64 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <div class="sect2">
 <h3 id="Duo_Post"><a class="link" href="#Duo_Post">추가</a></h3>
 <div class="sect3">
-<h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
+<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
 <div class="paragraph">
 <p><strong>Parameters</strong></p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/create/request-fields.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>summonerName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인 게임에서 사용되는 소환사 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자의 회원 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 포지션</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>desc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신청자 모집을 위해 간단한 문구를 작성할 수 있습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모집글 작성 시간</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p><strong>Request HTTP Example</strong></p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in guide.adoc - include::../../../build/generated-snippets/duo/readAll/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /duo?position=MID&amp;tier=PLATINUM&amp;page=0&amp;size=20 HTTP/1.1
+Accept: application/json
+Host: lolup-api.p-e.kr</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
+<h4 id="_response_2"><a class="link" href="#_response_2">Response</a></h4>
 <div class="paragraph">
 <p><strong>Response Status Code</strong></p>
 </div>
@@ -713,7 +886,162 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내부 서버에 오류가 발생했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Duo_Patch"><a class="link" href="#Duo_Patch">수정</a></h3>
+<div class="sect3">
+<h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
+<div class="paragraph">
+<p><strong>Parameters</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>summonerName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인 게임에서 사용되는 소환사 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자의 회원 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 포지션</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>desc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신청자 모집을 위해 간단한 문구를 작성할 수 있습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모집글 작성 시간</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Request HTTP Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /duo?position=MID&amp;tier=PLATINUM&amp;page=0&amp;size=20 HTTP/1.1
+Accept: application/json
+Host: lolup-api.p-e.kr</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
+<div class="paragraph">
+<p><strong>Response Status Code</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Status code</th>
+<th class="tableblock halign-left valign-top">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 수정됐습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Duo_Delete"><a class="link" href="#Duo_Delete">삭제</a></h3>
+<div class="sect3">
+<h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
+<div class="paragraph">
+<p><strong>Parameters</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인한 본인의 memberId를 전달합니다. duoId에 해당하는 memberId와 불일치하면 글이 삭제되지 않습니다.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Request HTTP Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /duo/1?memberId=1 HTTP/1.1
+Accept: application/json
+Host: lolup-api.p-e.kr</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_4"><a class="link" href="#_response_4">Response</a></h4>
+<div class="paragraph">
+<p><strong>Response Status Code</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Status code</th>
+<th class="tableblock halign-left valign-top">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 성공적으로 삭제됐습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버에서 오류가 발생했습니다.</p></td>
 </tr>
 </tbody>
 </table>
@@ -725,7 +1053,7 @@ Unresolved directive in guide.adoc - include::../../../build/generated-snippets/
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-08-31 11:40:15 +0900
+Last updated 2021-10-14 03:04:45 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
