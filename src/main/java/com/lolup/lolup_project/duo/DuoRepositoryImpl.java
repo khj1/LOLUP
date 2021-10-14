@@ -52,29 +52,4 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
     private BooleanExpression positionEq(String position) {
         return StringUtils.hasText(position) ? duo.position.eq(position) : null;
     }
-
-    @Override
-    public void update(Long duoId, String position, String desc) {
-        queryFactory
-                .update(duo)
-                .set(duo.position, position)
-                .set(duo.desc, desc)
-                .where(duo.id.eq(duoId))
-                .execute();
-    }
-
-    /**
-     * findById 메서드로 Duo 엔티티 호출 후 findDuo.getMostInfos.clear() 하면
-     * orphanremoval = true 속성이 제대로 동작하지 않는 문제 발생
-     */
-    @Override
-    public void delete(Long duoId, Long memberId) {
-        queryFactory
-                .delete(duo)
-                .where(
-                        duo.id.eq(duoId),
-                        duo.member.id.eq(memberId)
-                )
-                .execute();
-    }
 }
