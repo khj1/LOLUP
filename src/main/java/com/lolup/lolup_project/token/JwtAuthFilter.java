@@ -4,7 +4,6 @@ import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.Role;
 import com.lolup.lolup_project.member.UserProfile;
-import com.lolup.lolup_project.token.JwtProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -51,7 +49,7 @@ public class JwtAuthFilter extends GenericFilterBean {
                     log.info("Decoded email from JWT={}", email);
 
                     Member member = memberRepository.findByEmail(email).orElse(null);
-                    UserProfile userProfile = Member.toUserProfileWithMember(member);
+                    UserProfile userProfile = Member.toUserProfile(member);
 
                     Authentication auth = getAuthentication(userProfile);
                     SecurityContextHolder.getContext().setAuthentication(auth);

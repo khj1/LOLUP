@@ -52,7 +52,7 @@ public class Member extends BaseTimeEntity {
         return this;
     }
 
-    public static UserProfile toUserProfileWithMember(Member member) {
+    public static UserProfile toUserProfile(Member member) {
         return new UserProfile(
                 member.getName(),
                 member.getEmail(),
