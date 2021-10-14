@@ -2,6 +2,7 @@ package com.lolup.lolup_project.config;
 
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,26 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JasyptConfigTest {
 
-    @Test
-    void jasypt_테스트() {
+    PooledPBEStringEncryptor encryptor;
+    SimpleStringPBEConfig config;
 
-        String url = "jdbc:mariadb://lolup-rds1.c7qm67jnhiks.ap-northeast-2.rds.amazonaws.com:3306/lolup";
-        String username = "admin";
-        String password = "lolup1234";
-
-        String naverClientId = "wW09JL4TM0LOkyLGm1uS";
-        String naverClientSecret = "g_tZBXBFgz";
-
-        String googleClientId = "988347019914-o7367lsmnq231633cerpshve1rth3lmj.apps.googleusercontent.com";
-        String googleClientSecret = "gW6W9qMnto02htjOez-I4YBK";
-
-        String kakaoClientId = "e284a5e53a80a3d3df7523acbc658c21";
-        String kakaoClientSecret = "VfyxkGau1MMQDRrQbSJkffmjtkenXb1X";
-
-        String jwtTokenSecret = "token-secret-key";
-
-        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
-        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+    @BeforeEach
+    void setup() {
+        encryptor = new PooledPBEStringEncryptor();
+        config = new SimpleStringPBEConfig();
 
         config.setPassword(System.getProperty("jasypt.encryptor.password"));
         config.setAlgorithm("PBEWithMD5AndDES");
@@ -36,34 +24,14 @@ class JasyptConfigTest {
         config.setPoolSize("1");
         config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
         config.setStringOutputType("base64");
+
         encryptor.setConfig(config);
+    }
 
+    @Test
+    void jasypt_테스트() {
+        String url = "https://test.url";
         String encryptUrl = encryptor.encrypt(url);
-        String encryptUsername = encryptor.encrypt(username);
-        String encryptPassword = encryptor.encrypt(password);
-
-        String encryptNCI = encryptor.encrypt(naverClientId);
-        String encryptNCS = encryptor.encrypt(naverClientSecret);
-
-        String encryptGCI = encryptor.encrypt(googleClientId);
-        String encryptGCS = encryptor.encrypt(googleClientSecret);
-
-        String encryptKCI = encryptor.encrypt(kakaoClientId);
-        String encryptKCS = encryptor.encrypt(kakaoClientSecret);
-
-        String encryptJwt = encryptor.encrypt(jwtTokenSecret);
-
-        System.out.println("encryptPassword = " + encryptPassword);
-        System.out.println("encryptUsername = " + encryptUsername);
-        System.out.println("encryptUrl = " + encryptUrl);
-        System.out.println("encryptNCI = " + encryptNCI);
-        System.out.println("encryptNCS = " + encryptNCS);
-        System.out.println("encryptGCI = " + encryptGCI);
-        System.out.println("encryptGCS = " + encryptGCS);
-        System.out.println("encryptKCI = " + encryptKCI);
-        System.out.println("encryptKCS = " + encryptKCS);
-        System.out.println("encryptJwt = " + encryptJwt);
-
 
         assertThat(url).isEqualTo(encryptor.decrypt(encryptUrl));
     }
