@@ -119,11 +119,11 @@ public class SummonerService {
     private List<Map.Entry<String, Integer>> getMost3Entries(List<Map.Entry<String, Integer>> sortedMosts) {
         if (sortedMosts.size() >= 3) {
             return sortedMosts.subList(0, 3);
-        } else if (sortedMosts.size() == 2) {
-            return sortedMosts.subList(0, 2);
-        } else {
-            return sortedMosts.subList(0, 1);
         }
+        if (sortedMosts.size() == 2) {
+            return sortedMosts.subList(0, 2);
+        }
+        return sortedMosts.subList(0, 1);
     }
 
     private List<Map.Entry<String, Integer>> getSortedMosts(Map<String, Integer> mostsIn30Games) {
@@ -138,15 +138,17 @@ public class SummonerService {
 
         for (MatchInfoDto matchInfoDto : matchInfoDtos) {
             String championName = getChampionName(summonerName, matchInfoDto);
-
-            if (mostsIn30Games.containsKey(championName)) {
-                mostsIn30Games.put(championName, mostsIn30Games.get(championName) + 1);
-            } else {
-                mostsIn30Games.put(championName, 1);
-            }
+            mostsIn30Games.put(championName, addChampionPlayCount(mostsIn30Games, championName));
         }
 
         return mostsIn30Games;
+    }
+
+    private Integer addChampionPlayCount(Map<String, Integer> mostsIn30Games, String championName) {
+        if (mostsIn30Games.containsKey(championName)) {
+            return mostsIn30Games.get(championName) + 1;
+        }
+        return 1;
     }
 
     private String[] getMatchIds(String summonerName) {

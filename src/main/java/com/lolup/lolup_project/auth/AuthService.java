@@ -37,7 +37,6 @@ public class AuthService {
         Map<String, Object> map = new HashMap<>();
         map.put("memberId", findMember.getId());
         map.put("summonerName", findMember.getSummonerName());
-        map.put("nickname", null);
         map.put("login", true);
 
         return map;

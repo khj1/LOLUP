@@ -92,7 +92,11 @@ class DuoRepositoryTest {
         em.clear();
 
         //when
-        duoRepository.update(beforeId, SummonerPosition.BOT, "updated");
+        duoRepository.findById(beforeId).orElse(null).update(SummonerPosition.BOT, "updated");
+
+        em.flush();
+        em.clear();
+
         Duo findDuo = duoRepository.findById(beforeId).orElse(null);
 
         //then

@@ -55,4 +55,9 @@ public class Duo extends BaseTimeEntity {
     public static Duo create(Member member, SummonerDto summonerDto, String position, String desc) {
         return new Duo(member, summonerDto.getInfo(), summonerDto.getMost3(), position, summonerDto.getLatestWinRate(), desc);
     }
+
+    public void update(String position, String desc) {
+        this.position = position;
+        this.desc = desc;
+    }
 }

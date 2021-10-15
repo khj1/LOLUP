@@ -24,6 +24,7 @@ public class MemberService {
 
         Member member = memberRepository.findById(memberId).orElse(null);
         member.changeSummonerName(summonerName);
+
         map.put("updatedSummonerName", summonerName);
 
         return map;
