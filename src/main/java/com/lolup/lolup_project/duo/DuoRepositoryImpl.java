@@ -32,6 +32,7 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
                         tierEq(tier)
                 )
                 .limit(pageable.getPageSize())
+                .orderBy(duo.id.desc())
                 .fetch();
 
         List<DuoDto> content = results.stream()
