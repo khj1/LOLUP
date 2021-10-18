@@ -8,6 +8,7 @@
 - 프론트엔드 소스코드: https://github.com/khj1/lolup-frontend-project
 
 <br>
+
 ---
 ## 사용방법
 
@@ -79,10 +80,10 @@
 > 화면 하단의 버튼을 클릭하면 '나에게온 채팅'으로 표시되고, <br>
 > 게시물 우측의 버튼을 클릭하면 '~님과의 채팅'으로 표시됩니다.
 
-<img src="src/main/resources/static/img/chat1.png" width="250px">
-<img src="src/main/resources/static/img/chat2.png" width="250px">
+<img src="src/main/resources/static/img/chat1.png" width="310px"><img src="src/main/resources/static/img/chat2.png" width="306px">
 
 <br>
+
 ---
 ## 프로젝트 구조
 
@@ -120,13 +121,13 @@ lolup_project
 - `oauth` 패키지에는 순수하게 소셜 로그인과 관련된 로직을 담았습니다.
 
 <br>
----
 
+---
 ## ERD & API
+
 ---
 ### ERD
-<img src = "src/main/resources/static/img/erd1.png" width="320px">
-<img src = "src/main/resources/static/img/erd2.png" width="347px">
+<img src = "src/main/resources/static/img/erd1.png" width="420px"><img src = "src/main/resources/static/img/erd2.png" width="456px">
 
 <br>
 
@@ -137,9 +138,11 @@ lolup_project
 API : http://lolup-api.p-e.kr/docs/guide.html
 
 <br>
+
 ---
 
 ## Spring-Data-JPA & QueryDSL
+
 ---
 ### Mybatis에서 JPA로 리팩토링
 > 수료이전에 해당 프로젝트를 MyBatis로 구현했었습니다. 다음과 같은 이유로 JPA로 리팩토링하게되었습니다.
@@ -175,9 +178,10 @@ API : http://lolup-api.p-e.kr/docs/guide.html
 
 
 <br>
----
 
+---
 ## OAuth2.0 + JWT (Login)
+
 ---
 > 카카오/구글 소셜로그인 API를 활용해 별도의 회원가입 없이 서비스를 이용할 수 있도록 구현했습니다. <br>
 > JWT 토큰을 사용해 Authorization Header 기반 인증 시스템을 구현했습니다.
@@ -187,18 +191,20 @@ API : http://lolup-api.p-e.kr/docs/guide.html
 
 
 <br>
----
 
+---
 ## Jasypt을 활용한 설정파일 암호화
+
 ---
 > 자바 암호화 라이브러리인 Jasypt을 활용해서 주요 설정 정보를 암호화했습니다.
 
 ![jasypt](src/main/resources/static/img/jasypt1.png)
 
 <br>
----
 
+---
 ## CI/CD
+
 ---
 ### API Server
 > Github-action, jenkins, Docker, AWS EC2를 활용해 CI/CD를 구현했습니다.
