@@ -3,7 +3,6 @@
 유저들은 원하는 파트너를 찾기위해 다양한 커뮤니티에 모집글을 올리곤 했습니다. <br>
 유저 매칭 플랫폼을 형성하고 유저들의 불편함을 해소하기 위해 '롤업'을 기획하게 되었습니다.
 
-- 롤업: http://d2fh37v4sikqk8.cloudfront.net/
 - 백엔드 소스코드: https://github.com/khj1/lolup-backend-project
 - 프론트엔드 소스코드: https://github.com/khj1/lolup-frontend-project
 
