@@ -1,6 +1,11 @@
 package com.lolup.lolup_project.duo;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -30,30 +35,28 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lolup.lolup_project.config.SecurityConfig;
 import com.lolup.lolup_project.riotapi.summoner.MostInfo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
 import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
+import com.lolup.lolup_project.token.JwtProvider;
 
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@WebMvcTest(value = DuoController.class, excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
-})
+@ExtendWith(RestDocumentationExtension.class)
+@WebMvcTest(DuoController.class)
 class DuoControllerTest {
+
+	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
 
 	@Autowired
 	MockMvc mockMvc;
@@ -64,14 +67,20 @@ class DuoControllerTest {
 	@MockBean
 	DuoService duoService;
 
+	@MockBean
+	JwtProvider jwtProvider;
+
 	@BeforeEach
-	public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-				.apply(documentationConfiguration(restDocumentation).uris()
-						.withHost("lolup-api.p-e.kr")
-						.withPort(80)
-				)
+	void setUp(
+			final WebApplicationContext context,
+			final RestDocumentationContextProvider provider
+	) {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+				.apply(documentationConfiguration(provider))
 				.build();
+
+		given(jwtProvider.getTokenClaims(any()))
+				.willReturn("aaa@bbb.ccc");
 	}
 
 	@Test
@@ -80,10 +89,11 @@ class DuoControllerTest {
 		DuoForm duoForm = getDuoForm();
 
 		//when
-		when(duoService.save(duoForm)).thenReturn(duoForm.getMemberId());
+		when(duoService.save(any())).thenReturn(1L);
 
 		ResultActions result = mockMvc.perform(
 				post("/duo/new")
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.content(objectMapper.writeValueAsString(duoForm))
 						.accept(MediaType.APPLICATION_JSON)
 		);
@@ -91,6 +101,9 @@ class DuoControllerTest {
 		result.andExpect(status().isOk())
 				.andDo(document("duo/create",
 						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("유저 식별 토큰(Bearer)")
+						),
 						requestFields(
 								fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
 								fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
@@ -117,7 +130,7 @@ class DuoControllerTest {
 		Map<String, Object> map = getDuoMap();
 
 		//when
-		when(duoService.findAll(Position.MID.toString(), SummonerTier.PLATINUM, PageRequest.of(0, 20))).thenReturn(map);
+		when(duoService.findAll(any(), any(), any())).thenReturn(map);
 
 		ResultActions result = mockMvc.perform(
 				get("/duo")
@@ -215,10 +228,11 @@ class DuoControllerTest {
 		Long memberId = 1L;
 
 		//when
-		when(duoService.delete(duoId, memberId)).thenReturn(1L);
+		when(duoService.delete(anyLong(), anyLong())).thenReturn(duoId);
 
 		ResultActions result = mockMvc.perform(
-				delete("/duo/{duoId}", 1L)
+				delete("/duo/{duoId}", duoId)
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.queryParam("memberId", String.valueOf(memberId))
 						.accept(MediaType.APPLICATION_JSON)
 		);
@@ -227,6 +241,9 @@ class DuoControllerTest {
 		result.andExpect(status().isOk())
 				.andDo(document("duo/delete",
 						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("유저 식별 토큰(Bearer)")
+						),
 						queryParameters(
 								parameterWithName("memberId").description(
 										"로그인한 본인의 memberId를 전달합니다. duoId에 해당하는 memberId와 불일치하면 글이 삭제되지 않습니다.")

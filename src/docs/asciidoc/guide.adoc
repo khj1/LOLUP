@@ -15,7 +15,9 @@ endif::[]
 
 [[Duo]]
 == Duo
+
 **path**
+
 |===
 | method | path | desc
 
@@ -37,22 +39,23 @@ endif::[]
 
 |===
 
-
 [[Duo_Get]]
 === 조회
 
 ==== Request
+
 **Parameters**
 
-include::{snippets}/duo/readAll/request-parameters.adoc[]
+include::{snippets}/duo/readAll/query-parameters.adoc[]
 
 **Request HTTP Example**
 
 include::{snippets}/duo/readAll/http-request.adoc[]
 
-
 ==== Response
+
 **Response Status Code**
+
 |===
 | Status code | Usage
 
@@ -64,9 +67,11 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 |===
 
 **Response fields**
+
 include::{snippets}/duo/readAll/response-fields.adoc[]
 
 data
+
 include::{snippets}/duo/readAll/response-fields-beneath-data.adoc[]
 
 **Response HTTP Example**
@@ -75,10 +80,16 @@ include::{snippets}/duo/readAll/http-response.adoc[]
 
 
 ***
+
 [[Duo_Post]]
 === 추가
 
 ==== Request
+
+**Header**
+
+include::{snippets}/duo/create/request-headers.adoc[]
+
 **Parameters**
 
 include::{snippets}/duo/create/request-fields.adoc[]
@@ -87,9 +98,10 @@ include::{snippets}/duo/create/request-fields.adoc[]
 
 include::{snippets}/duo/readAll/http-request.adoc[]
 
-
 ==== Response
+
 **Response Status Code**
+
 |===
 | Status code | Usage
 
@@ -104,10 +116,16 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 |===
 
 ***
+
 [[Duo_Patch]]
 === 수정
 
 ==== Request
+
+**Header**
+
+include::{snippets}/duo/create/request-headers.adoc[]
+
 **Parameters**
 
 include::{snippets}/duo/create/request-fields.adoc[]
@@ -117,7 +135,9 @@ include::{snippets}/duo/create/request-fields.adoc[]
 include::{snippets}/duo/readAll/http-request.adoc[]
 
 ==== Response
+
 **Response Status Code**
+
 |===
 | Status code | Usage
 
@@ -129,20 +149,28 @@ include::{snippets}/duo/readAll/http-request.adoc[]
 |===
 
 ***
+
 [[Duo_Delete]]
 === 삭제
 
 ==== Request
+
+**Header**
+
+include::{snippets}/duo/delete/request-headers.adoc[]
+
 **Parameters**
 
-include::{snippets}/duo/delete/request-parameters.adoc[]
+include::{snippets}/duo/delete/query-parameters.adoc[]
 
 **Request HTTP Example**
 
 include::{snippets}/duo/delete/http-request.adoc[]
 
 ==== Response
+
 **Response Status Code**
+
 |===
 | Status code | Usage
 
