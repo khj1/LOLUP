@@ -121,10 +121,10 @@ class DuoControllerTest {
 
 		ResultActions result = mockMvc.perform(
 				get("/duo")
-						.param("position", Position.MID.toString())
-						.param("tier", SummonerTier.PLATINUM)
-						.param("page", "0")
-						.param("size", "20")
+						.queryParam("position", Position.MID.toString())
+						.queryParam("tier", SummonerTier.PLATINUM)
+						.queryParam("page", "0")
+						.queryParam("size", "20")
 						.accept(MediaType.APPLICATION_JSON)
 		);
 
@@ -219,7 +219,7 @@ class DuoControllerTest {
 
 		ResultActions result = mockMvc.perform(
 				delete("/duo/{duoId}", 1L)
-						.param("memberId", String.valueOf(memberId))
+						.queryParam("memberId", String.valueOf(memberId))
 						.accept(MediaType.APPLICATION_JSON)
 		);
 
