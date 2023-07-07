@@ -56,7 +56,14 @@ spring:
             userInfoUri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-
+security:
+  jwt:
+    token:
+      secret-key: ENC(b/GysgadqZoCeK/Y4ctB8dumwZSuOuf5ppvC3K3v20A=)
+      access:
+        expire-length: 3600000 #1시간
+      refresh:
+        expire-length: 1210000000 #14일
 jwt:
   secret: ENC(b/GysgadqZoCeK/Y4ctB8dumwZSuOuf5ppvC3K3v20A=)
 
