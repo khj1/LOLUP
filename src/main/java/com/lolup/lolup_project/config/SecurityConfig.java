@@ -12,12 +12,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.oauth.CustomAuthenticationEntryPoint;
 import com.lolup.lolup_project.oauth.CustomOAuth2SuccessHandler;
 import com.lolup.lolup_project.oauth.CustomOAuth2UserService;
 import com.lolup.lolup_project.token.JwtAuthenticationFilter;
-import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.token.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +27,7 @@ public class SecurityConfig {
 
 	private static final String[] PATTERNS = {"/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**"};
 
-	private final JwtProvider jwtProvider;
-	private final MemberRepository memberRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -59,7 +57,7 @@ public class SecurityConfig {
 				.authenticationEntryPoint(customAuthenticationEntryPoint)
 		);
 
-		http.addFilterBefore(new JwtAuthenticationFilter(jwtProvider, memberRepository),
+		http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
 				UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

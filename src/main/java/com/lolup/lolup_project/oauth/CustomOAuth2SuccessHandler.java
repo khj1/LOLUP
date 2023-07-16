@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.UserProfile;
-import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.token.JwtTokenProvider;
 import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 
@@ -30,7 +30,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	private static final String REFRESH_TOKEN = "refreshToken";
 	private static final int COOKIE_MAX_AGE = 1210000000;
 
-	private final JwtProvider jwtProvider;
+	private final JwtTokenProvider jwtProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
@@ -45,8 +45,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		Member member = memberRepository.findByEmail(userProfile.getEmail())
 				.orElseThrow(IllegalArgumentException::new);
 
-		String accessToken = jwtProvider.createAccessToken(userProfile.getEmail());
-		String refreshToken = jwtProvider.createRefreshToken(userProfile.getEmail());
+		Long memberId = member.getId();
+		String accessToken = jwtProvider.createAccessToken(String.valueOf(memberId));
+		String refreshToken = jwtProvider.createRefreshToken(String.valueOf(memberId));
 
 		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 

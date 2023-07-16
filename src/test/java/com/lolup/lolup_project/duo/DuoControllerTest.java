@@ -2,7 +2,6 @@ package com.lolup.lolup_project.duo;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -50,7 +49,7 @@ import com.lolup.lolup_project.riotapi.summoner.MostInfo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
 import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
-import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.token.JwtTokenProvider;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(DuoController.class)
@@ -68,7 +67,7 @@ class DuoControllerTest {
 	DuoService duoService;
 
 	@MockBean
-	JwtProvider jwtProvider;
+	JwtTokenProvider jwtTokenProvider;
 
 	@BeforeEach
 	void setUp(
@@ -78,9 +77,6 @@ class DuoControllerTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(documentationConfiguration(provider))
 				.build();
-
-		given(jwtProvider.getTokenClaims(any()))
-				.willReturn("aaa@bbb.ccc");
 	}
 
 	@Test

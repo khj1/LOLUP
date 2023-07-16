@@ -20,15 +20,15 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 
 @Component
-public class JwtProvider {
+public class JwtTokenProvider {
 
 	private final SecretKey secretKey;
 	private final long accessTokenValidityInMilliseconds;
 	private final long refreshTokenValidityInMilliseconds;
 
-	public JwtProvider(@Value("${security.jwt.token.secret-key}") final java.lang.String secretKey,
-					   @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMilliseconds,
-					   @Value("${security.jwt.token.refresh.expire-length}") final long refreshTokenValidityInMilliseconds) {
+	public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
+							@Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMilliseconds,
+							@Value("${security.jwt.token.refresh.expire-length}") final long refreshTokenValidityInMilliseconds) {
 		this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 		this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
 		this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
@@ -54,7 +54,7 @@ public class JwtProvider {
 				.compact();
 	}
 
-	public java.lang.String getTokenClaims(final java.lang.String token) {
+	public String getPayload(final String token) {
 		return parseClaims(token)
 				.getBody()
 				.getSubject();
