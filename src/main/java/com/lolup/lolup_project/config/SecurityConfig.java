@@ -1,9 +1,10 @@
 package com.lolup.lolup_project.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -12,39 +13,53 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.oauth.OAuth2SuccessHandler;
-import com.lolup.lolup_project.oauth.OAuthService;
-import com.lolup.lolup_project.token.JwtAuthFilter;
+import com.lolup.lolup_project.oauth.CustomAuthenticationEntryPoint;
+import com.lolup.lolup_project.oauth.CustomOAuth2SuccessHandler;
+import com.lolup.lolup_project.oauth.CustomOAuth2UserService;
+import com.lolup.lolup_project.token.JwtAuthenticationFilter;
 import com.lolup.lolup_project.token.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터 체인에 등록된다.
+@Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final OAuthService oAuthService;
-	private final OAuth2SuccessHandler successHandler;
+	private static final String[] PATTERNS = {"/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**"};
+
 	private final JwtProvider jwtProvider;
 	private final MemberRepository memberRepository;
-
-	@Value("${front.domain}")
-	private String domain;
+	private final CustomOAuth2UserService customOAuth2UserService;
+	private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-				.formLogin().disable()
-				.httpBasic().disable()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-				.exceptionHandling().disable()
-				.oauth2Login()
-				.successHandler(successHandler)
-				.userInfoEndpoint().userService(oAuthService);
+		http.csrf(AbstractHttpConfigurer::disable);
+		http.formLogin(AbstractHttpConfigurer::disable);
+		http.httpBasic(AbstractHttpConfigurer::disable);
 
-		http.addFilterBefore(new JwtAuthFilter(jwtProvider, memberRepository),
+		http.sessionManagement(sessionManagement -> sessionManagement
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		http.authorizeHttpRequests(request -> request
+				.requestMatchers(PATTERNS).permitAll()
+				.anyRequest().authenticated()
+		);
+
+		http.oauth2Login(oauth2 -> oauth2
+				.userInfoEndpoint(userInfo -> userInfo
+						.userService(customOAuth2UserService)
+				)
+				.successHandler(customOAuth2SuccessHandler)
+		);
+
+		http.exceptionHandling(exception -> exception
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+		);
+
+		http.addFilterBefore(new JwtAuthenticationFilter(jwtProvider, memberRepository),
 				UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
@@ -54,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.addAllowedOrigin(domain);
+		configuration.addAllowedOrigin("/**");
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);
