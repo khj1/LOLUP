@@ -1,6 +1,5 @@
 package com.lolup.lolup_project.auth;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,31 +9,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.Role;
 import com.lolup.lolup_project.member.UserProfile;
 import com.lolup.lolup_project.token.JwtProvider;
 import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
-import com.lolup.lolup_project.token.Token;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class AuthService {
 
 	private final JwtProvider jwtProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
-	public Map<String, Object> checkAuth(Principal principal) {
-		UserProfile userProfile = (UserProfile)((Authentication)principal).getPrincipal();
-		Member findMember = memberRepository.findByEmail(userProfile.getEmail()).orElse(null);
+	public Map<String, Object> checkAuth(Authentication authentication) {
+		UserProfile userProfile = (UserProfile)(authentication.getPrincipal());
+		Member findMember = memberRepository.findByEmail(userProfile.getEmail())
+				.orElseThrow(IllegalArgumentException::new);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("memberId", findMember.getId());
@@ -45,22 +41,20 @@ public class AuthService {
 	}
 
 	public Map<String, Object> refresh(String refreshToken, HttpServletResponse response) {
-
-		if (!jwtProvider.verifyToken(refreshToken)) {
-			throw new IllegalArgumentException("리프레시 토큰이 만료되었습니다.");
-		}
+		jwtProvider.verifyToken(refreshToken);
 
 		String email = jwtProvider.getTokenClaims(refreshToken);
-		Token newToken = jwtProvider.generateToken(email, Role.USER.getKey());
-		Member findMember = memberRepository.findByEmail(email).orElse(null);
+		String newAccessToken = jwtProvider.createAccessToken(email);
+		String newRefreshToken = jwtProvider.createRefreshToken(email);
+		Member findMember = memberRepository.findByEmail(email)
+				.orElseThrow(IllegalArgumentException::new);
 
-		RefreshToken newRefreshToken = RefreshToken.create(findMember, refreshToken);
-		RefreshToken savedRefreshToken = refreshTokenRepository.save(newRefreshToken);
+		RefreshToken savedRefreshToken = refreshTokenRepository.save(RefreshToken.create(findMember, newRefreshToken));
 
 		setCookie(response, savedRefreshToken.getRefreshToken());
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("token", newToken.getToken());
+		map.put("token", newAccessToken);
 
 		return map;
 	}
