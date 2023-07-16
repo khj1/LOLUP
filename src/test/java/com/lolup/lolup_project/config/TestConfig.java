@@ -1,15 +1,15 @@
 package com.lolup.lolup_project.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@Configuration
+// @Configuration
 public class TestConfig {
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 
