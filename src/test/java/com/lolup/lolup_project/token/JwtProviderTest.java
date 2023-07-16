@@ -15,7 +15,7 @@ class JwtProviderTest {
 	public static final int ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS = 3600000; // 1시간
 	public static final int REFRESH_TOKEN_VALIDITY_IN_MILLISECONDS = 1210000000; // 14일
 
-	private final JwtProvider jwtProvider = new JwtProvider(
+	private final JwtTokenProvider jwtProvider = new JwtTokenProvider(
 			JWT_SECRET_KEY,
 			ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS,
 			REFRESH_TOKEN_VALIDITY_IN_MILLISECONDS
@@ -41,7 +41,7 @@ class JwtProviderTest {
 	@DisplayName("토큰이 만료되면 예외를 반환한다.")
 	@Test
 	void verifyExpiredToken() {
-		JwtProvider expiredJwtProvider = new JwtProvider(JWT_SECRET_KEY, 0, 0);
+		JwtTokenProvider expiredJwtProvider = new JwtTokenProvider(JWT_SECRET_KEY, 0, 0);
 
 		String expiredToken = expiredJwtProvider.createAccessToken(PAYLOAD);
 
@@ -63,7 +63,7 @@ class JwtProviderTest {
 	@DisplayName("토큰의 시그니쳐가 일치하지 않으면 예외를 반환한다.")
 	@Test
 	void verifyInvalidSignatureToken() {
-		JwtProvider otherJwtTokenProvider = new JwtProvider(
+		JwtTokenProvider otherJwtTokenProvider = new JwtTokenProvider(
 				"T".repeat(32),
 				ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS,
 				REFRESH_TOKEN_VALIDITY_IN_MILLISECONDS
@@ -81,7 +81,7 @@ class JwtProviderTest {
 	void getTokenClaims() {
 		String token = jwtProvider.createAccessToken(PAYLOAD);
 
-		String payload = jwtProvider.getTokenClaims(token);
+		String payload = jwtProvider.getPayload(token);
 
 		assertThat(payload).isEqualTo(PAYLOAD);
 	}

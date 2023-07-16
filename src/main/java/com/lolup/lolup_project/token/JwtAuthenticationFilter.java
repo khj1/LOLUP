@@ -13,10 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.lolup.lolup_project.auth.AuthorizationExtractor;
 import com.lolup.lolup_project.auth.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.InvalidTokenException;
-import com.lolup.lolup_project.member.Member;
-import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.Role;
-import com.lolup.lolup_project.member.UserProfile;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,8 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private static final String[] AUTHORIZED_PATTERN = {"/duo*", "/member*", "/auth*"};
 
-	private final JwtProvider jwtProvider;
-	private final MemberRepository memberRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Override
 	protected boolean shouldNotFilter(final HttpServletRequest request) {
@@ -42,10 +38,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 									final FilterChain filterChain) throws ServletException, IOException {
 		try {
 			String token = AuthorizationExtractor.extract(request);
-			jwtProvider.verifyToken(token);
+			jwtTokenProvider.verifyToken(token);
 
-			UserProfile userProfile = extractUserProfileFrom(token);
-			Authentication authentication = getAuthentication(userProfile);
+			String memberId = jwtTokenProvider.getPayload(token);
+			Authentication authentication = getAuthentication(memberId);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} catch (EmptyAuthorizationHeaderException | InvalidTokenException e) {
 			request.setAttribute("exception", e);
@@ -53,17 +49,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private UserProfile extractUserProfileFrom(final String token) {
-		String email = jwtProvider.getTokenClaims(token);
-		Member member = memberRepository.findByEmail(email)
-				.orElseThrow(IllegalArgumentException::new);
-
-		return UserProfile.create(member);
-	}
-
-	private Authentication getAuthentication(UserProfile userProfile) {
+	private Authentication getAuthentication(String memberId) {
 		return new UsernamePasswordAuthenticationToken(
-				userProfile,
+				Long.parseLong(memberId),
 				null,
 				List.of(new SimpleGrantedAuthority(Role.USER.getKey()))
 		);

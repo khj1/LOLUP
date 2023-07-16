@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.UserProfile;
-import com.lolup.lolup_project.token.JwtProvider;
+import com.lolup.lolup_project.token.JwtTokenProvider;
 import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 
@@ -23,13 +22,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final JwtProvider jwtProvider;
+	private final JwtTokenProvider jwtProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
 	public Map<String, Object> checkAuth(Authentication authentication) {
-		UserProfile userProfile = (UserProfile)(authentication.getPrincipal());
-		Member findMember = memberRepository.findByEmail(userProfile.getEmail())
+		Long memberId = (Long)(authentication.getPrincipal());
+		Member findMember = memberRepository.findById(memberId)
 				.orElseThrow(IllegalArgumentException::new);
 
 		Map<String, Object> map = new HashMap<>();
@@ -43,7 +42,7 @@ public class AuthService {
 	public Map<String, Object> refresh(String refreshToken, HttpServletResponse response) {
 		jwtProvider.verifyToken(refreshToken);
 
-		String email = jwtProvider.getTokenClaims(refreshToken);
+		String email = jwtProvider.getPayload(refreshToken);
 		String newAccessToken = jwtProvider.createAccessToken(email);
 		String newRefreshToken = jwtProvider.createRefreshToken(email);
 		Member findMember = memberRepository.findByEmail(email)
