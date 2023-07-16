@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final JwtTokenProvider jwtProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
@@ -40,11 +40,11 @@ public class AuthService {
 	}
 
 	public Map<String, Object> refresh(String refreshToken, HttpServletResponse response) {
-		jwtProvider.verifyToken(refreshToken);
+		jwtTokenProvider.verifyToken(refreshToken);
 
-		String email = jwtProvider.getPayload(refreshToken);
-		String newAccessToken = jwtProvider.createAccessToken(email);
-		String newRefreshToken = jwtProvider.createRefreshToken(email);
+		String email = jwtTokenProvider.getPayload(refreshToken);
+		String newAccessToken = jwtTokenProvider.createAccessToken(email);
+		String newRefreshToken = jwtTokenProvider.createRefreshToken(email);
 		Member findMember = memberRepository.findByEmail(email)
 				.orElseThrow(IllegalArgumentException::new);
 
