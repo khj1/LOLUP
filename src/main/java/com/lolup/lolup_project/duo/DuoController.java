@@ -1,9 +1,7 @@
 package com.lolup.lolup_project.duo;
 
 import java.net.URI;
-import java.util.Map;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,9 +26,9 @@ public class DuoController {
 	private final DuoService duoService;
 
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> findAll(String position, String tier, Pageable pageable) {
-		Map<String, Object> map = duoService.findAll(position, tier, pageable);
-		return new ResponseEntity<>(map, HttpStatus.OK);
+	public ResponseEntity<DuoResponse> findAll(final DuoFindRequest request) {
+		DuoResponse duoResponse = duoService.findAll(request.getPosition(), request.getTier(), request.getPageable());
+		return new ResponseEntity<>(duoResponse, HttpStatus.OK);
 	}
 
 	@PostMapping("/new")

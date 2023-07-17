@@ -1,8 +1,5 @@
 package com.lolup.lolup_project.duo;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,16 +22,10 @@ public class DuoService {
 	private final DuoRepository duoRepository;
 	private final SummonerService summonerService;
 
-	public Map<String, Object> findAll(String position, String tier, Pageable pageable) {
+	public DuoResponse findAll(final String position, final String tier, final Pageable pageable) {
 		Page<DuoDto> data = duoRepository.findAll(position, tier, pageable);
 
-		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("version", summonerService.getGameVersion());
-		map.put("totalCount", data.getTotalElements());
-		map.put("data", data.getContent());
-		map.put("pageable", data.getPageable());
-
-		return map;
+		return new DuoResponse(data, summonerService.getGameVersion());
 	}
 
 	@Transactional

@@ -2,8 +2,8 @@ package com.lolup.lolup_project.duo;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -27,9 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,12 +38,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -91,7 +89,7 @@ class DuoControllerTest {
 
 		willDoNothing()
 				.given(duoService)
-				.save(anyLong(), any());
+				.save(anyLong(), any(DuoSaveRequest.class));
 
 		mockMvc.perform(post("/duo/new")
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
@@ -122,26 +120,22 @@ class DuoControllerTest {
 				.build();
 	}
 
+	@DisplayName("모집글을 모두 조회한다.")
 	@Test
 	void 모집글_모두_조회() throws Exception {
-		//given
-		Map<String, Object> map = getDuoMap();
+		DuoResponse 모집글_조회_응답 = createDuoResponse();
 
-		//when
-		when(duoService.findAll(any(), any(), any())).thenReturn(map);
+		given(duoService.findAll(any(), any(), any()))
+				.willReturn(모집글_조회_응답);
 
-		ResultActions result = mockMvc.perform(
-				get("/duo")
+		mockMvc.perform(get("/duo")
 						.queryParam("position", Position.MID.toString())
 						.queryParam("tier", SummonerTier.PLATINUM)
 						.queryParam("page", "0")
 						.queryParam("size", "20")
-						.accept(MediaType.APPLICATION_JSON)
-		);
-
-		//then
-		result.andExpect(status().isOk())
-				.andDo(document("duo/readAll",
+				)
+				.andDo(document("duo/findAll",
+						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						queryParameters(
 								parameterWithName("position").description("주 포지션. 조회 항목을 필터링하기 위해 사용합니다.").optional(),
@@ -152,10 +146,10 @@ class DuoControllerTest {
 						responseFields(
 								fieldWithPath("totalCount").description("DB에 저장된 총 듀오 데이터 수"),
 								fieldWithPath("version").description("현재 게임 버전"),
-								subsectionWithPath("data").type("List<DuoDto>").description("페이징 처리된 듀오 리스트"),
+								subsectionWithPath("content").type("List<DuoDto>").description("페이징 처리된 듀오 리스트"),
 								subsectionWithPath("pageable").description("페이징 처리와 관련된 데이터")
 						),
-						responseFields(beneathPath("data"),
+						responseFields(beneathPath("content"),
 								fieldWithPath("duoId").type("Long").description("작성한 모집글의 고유 번호"),
 								fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
 								fieldWithPath("iconId").type("int").description("프로필 아이콘 번호"),
@@ -169,26 +163,23 @@ class DuoControllerTest {
 								fieldWithPath("losses").type("int").description("총 패배 횟수"),
 								fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
 								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
-								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
-						)
-						//                        responseFields(beneathPath("pageable"))
-				));
+								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간"))))
+				.andExpect(status().isOk());
 	}
 
-	private Map<String, Object> getDuoMap() {
-		DuoDto duoDto1 = getDuoDto();
-		DuoDto duoDto2 = getDuoDto();
-		List<DuoDto> data = new ArrayList<>();
-		data.add(duoDto1);
-		data.add(duoDto2);
+	private DuoResponse createDuoResponse() {
+		DuoDto duoDtoA = getDuoDto();
+		DuoDto duoDtoB = getDuoDto();
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("version", "11.16.0");
-		map.put("totalCount", 100);
-		map.put("data", data);
-		map.put("pageable", PageRequest.of(0, 20));
+		List<DuoDto> content = new ArrayList<>();
+		content.add(duoDtoA);
+		content.add(duoDtoB);
 
-		return map;
+		String version = "11.16.0";
+		long totalCount = 100L;
+		Pageable pageable = PageRequest.of(0, 20);
+
+		return new DuoResponse(version, totalCount, content, pageable);
 	}
 
 	private DuoDto getDuoDto() {
