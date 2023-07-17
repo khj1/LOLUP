@@ -1,42 +1,51 @@
 package com.lolup.lolup_project.duo;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.net.URI;
+import java.util.Map;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import com.lolup.lolup_project.auth.AuthenticationPrincipal;
 
-@Slf4j
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/duo")
 public class DuoController {
 
-    private final DuoService duoService;
+	private final DuoService duoService;
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> findAll(String position, String tier, Pageable pageable) {
-        Map<String, Object> map = duoService.findAll(position, tier, pageable);
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
+	@GetMapping
+	public ResponseEntity<Map<String, Object>> findAll(String position, String tier, Pageable pageable) {
+		Map<String, Object> map = duoService.findAll(position, tier, pageable);
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
 
-    @PostMapping("/new")
-    public ResponseEntity<Long> save(DuoForm form) {
-        log.info("add Duo form data ={}", form.toString());
-        return new ResponseEntity<>(duoService.save(form), HttpStatus.OK);
-    }
+	@PostMapping("/new")
+	public ResponseEntity<Void> save(@AuthenticationPrincipal final Long memberId,
+									 @RequestBody final DuoSaveRequest request) {
+		duoService.save(memberId, request);
+		return ResponseEntity.created(URI.create("/duo")).build();
+	}
 
-    @PatchMapping("/{duoId}")
-    public ResponseEntity<Long> update(@PathVariable Long duoId, String position, String desc) {
-        return new ResponseEntity<>(duoService.update(duoId, position, desc), HttpStatus.OK);
-    }
+	@PatchMapping("/{duoId}")
+	public ResponseEntity<Long> update(@PathVariable Long duoId, String position, String desc) {
+		return new ResponseEntity<>(duoService.update(duoId, position, desc), HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{duoId}")
-    public ResponseEntity<Long> delete(@PathVariable Long duoId, Long memberId) {
-        return new ResponseEntity<>(duoService.delete(duoId, memberId), HttpStatus.OK);
-    }
+	@DeleteMapping("/{duoId}")
+	public ResponseEntity<Long> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long duoId) {
+		return new ResponseEntity<>(duoService.delete(duoId, memberId), HttpStatus.OK);
+	}
 }

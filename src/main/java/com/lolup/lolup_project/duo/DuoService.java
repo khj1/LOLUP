@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
+import com.lolup.lolup_project.member.NoSuchMemberException;
 import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerService;
 
@@ -37,12 +38,13 @@ public class DuoService {
 	}
 
 	@Transactional
-	public Long save(DuoForm form) {
-		SummonerDto summonerDto = summonerService.find(form.getSummonerName());
-		Member member = memberRepository.findById(form.getMemberId()).orElse(null);
-		Duo duo = Duo.create(member, summonerDto, form.getPosition(), form.getDesc());
+	public void save(final Long memberId, final DuoSaveRequest request) {
+		SummonerDto summonerDto = summonerService.find(request.getSummonerName());
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(NoSuchMemberException::new);
 
-		return duoRepository.save(duo).getId();
+		Duo duo = Duo.create(member, summonerDto, request.getPosition(), request.getDesc());
+		duoRepository.save(duo);
 	}
 
 	@Transactional

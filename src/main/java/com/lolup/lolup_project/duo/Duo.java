@@ -21,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,6 +51,7 @@ public class Duo extends BaseTimeEntity {
 	@Column(name = "description")
 	private String desc;
 
+	@Builder
 	public Duo(Member member, SummonerRankInfo info, List<MostInfo> mostInfos, String position, String latestWinRate,
 			   String desc) {
 		this.member = member;
@@ -61,8 +63,14 @@ public class Duo extends BaseTimeEntity {
 	}
 
 	public static Duo create(Member member, SummonerDto summonerDto, String position, String desc) {
-		return new Duo(member, summonerDto.getInfo(), summonerDto.getMost3(), position, summonerDto.getLatestWinRate(),
-				desc);
+		return Duo.builder()
+				.member(member)
+				.info(summonerDto.getInfo())
+				.mostInfos(summonerDto.getMost3())
+				.position(position)
+				.latestWinRate(summonerDto.getLatestWinRate())
+				.desc(desc)
+				.build();
 	}
 
 	private void addMostInfos(List<MostInfo> mostInfos) {

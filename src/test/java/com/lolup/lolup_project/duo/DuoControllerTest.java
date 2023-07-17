@@ -2,6 +2,7 @@ package com.lolup.lolup_project.duo;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -81,42 +82,38 @@ class DuoControllerTest {
 
 	@Test
 	void 데이터_추가() throws Exception {
-		//given
-		DuoForm duoForm = getDuoForm();
+		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
 
-		//when
-		when(duoService.save(any())).thenReturn(1L);
+		willDoNothing()
+				.given(duoService)
+				.save(anyLong(), any());
 
-		ResultActions result = mockMvc.perform(
-				post("/duo/new")
+		mockMvc.perform(post("/duo/new")
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
-						.content(objectMapper.writeValueAsString(duoForm))
 						.accept(MediaType.APPLICATION_JSON)
-		);
-		//then
-		result.andExpect(status().isOk())
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(듀오_생성_요청))
+				)
 				.andDo(document("duo/create",
 						preprocessResponse(prettyPrint()),
 						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("유저 식별 토큰(Bearer)")
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
 						),
 						requestFields(
 								fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
-								fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
 								fieldWithPath("position").description("주 포지션"),
 								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
 								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
-						)
-				));
+						)))
+				.andExpect(status().isCreated());
 	}
 
-	private DuoForm getDuoForm() {
-		return DuoForm.builder()
+	private DuoSaveRequest createDuoSaveRequest() {
+		return DuoSaveRequest.builder()
 				.position(SummonerPosition.MID)
 				.summonerName("hideonbush")
 				.desc("hi")
 				.postDate(LocalDateTime.now())
-				.memberId(1L)
 				.build();
 	}
 
