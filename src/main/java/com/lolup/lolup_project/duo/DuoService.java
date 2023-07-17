@@ -56,9 +56,7 @@ public class DuoService {
 	}
 
 	@Transactional
-	public Long delete(Long duoId, Long memberId) {
+	public void delete(final Long duoId, final Long memberId) {
 		duoRepository.deleteByIdAndMemberId(duoId, memberId);
-
-		return duoId;
 	}
 }

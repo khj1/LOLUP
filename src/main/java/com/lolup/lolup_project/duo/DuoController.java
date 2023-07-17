@@ -48,7 +48,8 @@ public class DuoController {
 	}
 
 	@DeleteMapping("/{duoId}")
-	public ResponseEntity<Long> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long duoId) {
-		return new ResponseEntity<>(duoService.delete(duoId, memberId), HttpStatus.OK);
+	public ResponseEntity<Void> delete(@AuthenticationPrincipal final Long memberId, @PathVariable final Long duoId) {
+		duoService.delete(memberId, duoId);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -8,6 +8,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -20,7 +21,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.subsecti
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -84,8 +84,9 @@ class DuoControllerTest {
 				.build();
 	}
 
+	@DisplayName("모집글을 추가한다.")
 	@Test
-	void 데이터_추가() throws Exception {
+	void createDuo() throws Exception {
 		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
 
 		willDoNothing()
@@ -218,7 +219,7 @@ class DuoControllerTest {
 		return most3;
 	}
 
-	@DisplayName("모집글을 수정 기능")
+	@DisplayName("모집글을 수정한다.")
 	@Test
 	void updateDuo() throws Exception {
 		willDoNothing()
@@ -249,33 +250,29 @@ class DuoControllerTest {
 				.andExpect(status().isNoContent());
 	}
 
+	@DisplayName("모집글 제거한다.")
 	@Test
-	void 모집글_삭제() throws Exception {
-		//given
+	void deleteDuo() throws Exception {
 		Long duoId = 1L;
-		Long memberId = 1L;
 
-		//when
-		when(duoService.delete(anyLong(), anyLong())).thenReturn(duoId);
+		willDoNothing()
+				.given(duoService)
+				.delete(anyLong(), anyLong());
 
-		ResultActions result = mockMvc.perform(
-				delete("/duo/{duoId}", duoId)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
-						.queryParam("memberId", String.valueOf(memberId))
+		mockMvc.perform(delete("/duo/{duoId}", duoId)
 						.accept(MediaType.APPLICATION_JSON)
-		);
-
-		//then
-		result.andExpect(status().isOk())
+						.contentType(MediaType.APPLICATION_JSON)
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+				)
 				.andDo(document("duo/delete",
+						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("유저 식별 토큰(Bearer)")
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
 						),
-						queryParameters(
-								parameterWithName("memberId").description(
-										"로그인한 본인의 memberId를 전달합니다. duoId에 해당하는 memberId와 불일치하면 글이 삭제되지 않습니다.")
-						)
-				));
+						pathParameters(
+								parameterWithName("duoId").description("모집글 식별자")
+						)))
+				.andExpect(status().isNoContent());
 	}
 }
