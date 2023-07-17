@@ -48,11 +48,11 @@ public class DuoService {
 	}
 
 	@Transactional
-	public Long update(Long duoId, String position, String desc) {
-		Duo findDuo = duoRepository.findById(duoId).orElse(null);
-		findDuo.update(position, desc);
+	public void update(final Long duoId, final String position, final String desc) {
+		Duo duo = duoRepository.findById(duoId)
+				.orElseThrow(NoSuchDuoException::new);
 
-		return duoId;
+		duo.update(position, desc);
 	}
 
 	@Transactional

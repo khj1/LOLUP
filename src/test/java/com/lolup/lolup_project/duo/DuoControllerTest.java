@@ -8,6 +8,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
@@ -16,6 +18,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,6 +216,37 @@ class DuoControllerTest {
 		most3.add(MostInfo.create("Zed", 2));
 
 		return most3;
+	}
+
+	@DisplayName("모집글을 수정 기능")
+	@Test
+	void updateDuo() throws Exception {
+		willDoNothing()
+				.given(duoService)
+				.update(anyLong(), any(), any());
+
+		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
+
+		mockMvc.perform(patch("/duo/{duoId}", 1L)
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(듀오_수정_요청))
+				)
+				.andDo(document("duo/update",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
+						),
+						pathParameters(
+								parameterWithName("duoId").description("모집글 식별자")
+						),
+						requestFields(
+								fieldWithPath("position").description("주 포지션"),
+								fieldWithPath("desc").description("신청자 모집을 위한 간단한 문구")
+						)))
+				.andExpect(status().isNoContent());
 	}
 
 	@Test

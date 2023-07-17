@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.AuthenticationPrincipal;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,8 +41,10 @@ public class DuoController {
 	}
 
 	@PatchMapping("/{duoId}")
-	public ResponseEntity<Long> update(@PathVariable Long duoId, String position, String desc) {
-		return new ResponseEntity<>(duoService.update(duoId, position, desc), HttpStatus.OK);
+	public ResponseEntity<Void> update(@PathVariable final Long duoId,
+									   @Valid @RequestBody final DuoUpdateRequest request) {
+		duoService.update(duoId, request.getPosition(), request.getDesc());
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{duoId}")
