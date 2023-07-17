@@ -111,15 +111,6 @@ class DuoControllerTest {
 				.andExpect(status().isCreated());
 	}
 
-	private DuoSaveRequest createDuoSaveRequest() {
-		return DuoSaveRequest.builder()
-				.position(SummonerPosition.MID)
-				.summonerName("hideonbush")
-				.desc("hi")
-				.postDate(LocalDateTime.now())
-				.build();
-	}
-
 	@DisplayName("모집글을 모두 조회한다.")
 	@Test
 	void 모집글_모두_조회() throws Exception {
@@ -165,49 +156,6 @@ class DuoControllerTest {
 								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
 								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간"))))
 				.andExpect(status().isOk());
-	}
-
-	private DuoResponse createDuoResponse() {
-		DuoDto duoDtoA = getDuoDto();
-		DuoDto duoDtoB = getDuoDto();
-
-		List<DuoDto> content = new ArrayList<>();
-		content.add(duoDtoA);
-		content.add(duoDtoB);
-
-		String version = "11.16.0";
-		long totalCount = 100L;
-		Pageable pageable = PageRequest.of(0, 20);
-
-		return new DuoResponse(version, totalCount, content, pageable);
-	}
-
-	private DuoDto getDuoDto() {
-		return DuoDto.builder()
-				.iconId(100)
-				.duoId(2L)
-				.latestWinRate("20%")
-				.losses(300)
-				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
-				.rank("IV")
-				.tier(SummonerTier.BRONZE)
-				.desc("hi")
-				.wins(400)
-				.memberId(1L)
-				.postDate(LocalDateTime.now())
-				.summonerName("hideonbush")
-				.position(SummonerPosition.MID)
-				.build();
-	}
-
-	private List<MostInfo> getMost3() {
-		List<MostInfo> most3 = new ArrayList<>();
-
-		most3.add(MostInfo.create("Syndra", 4));
-		most3.add(MostInfo.create("Lucian", 3));
-		most3.add(MostInfo.create("Zed", 2));
-
-		return most3;
 	}
 
 	@DisplayName("모집글을 수정한다.")
@@ -265,5 +213,57 @@ class DuoControllerTest {
 								parameterWithName("duoId").description("모집글 식별자")
 						)))
 				.andExpect(status().isNoContent());
+	}
+
+	private DuoSaveRequest createDuoSaveRequest() {
+		return DuoSaveRequest.builder()
+				.position(SummonerPosition.MID)
+				.summonerName("hideonbush")
+				.desc("hi")
+				.postDate(LocalDateTime.now())
+				.build();
+	}
+
+	private DuoResponse createDuoResponse() {
+		DuoDto duoDtoA = getDuoDto(1L);
+		DuoDto duoDtoB = getDuoDto(2L);
+
+		List<DuoDto> content = new ArrayList<>();
+		content.add(duoDtoA);
+		content.add(duoDtoB);
+
+		String version = "11.16.0";
+		long totalCount = 100L;
+		Pageable pageable = PageRequest.of(0, 20);
+
+		return new DuoResponse(version, totalCount, content, pageable);
+	}
+
+	private DuoDto getDuoDto(Long duoId) {
+		return DuoDto.builder()
+				.iconId(100)
+				.duoId(duoId)
+				.latestWinRate("20%")
+				.losses(300)
+				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
+				.rank("IV")
+				.tier(SummonerTier.BRONZE)
+				.desc("hi")
+				.wins(400)
+				.memberId(1L)
+				.postDate(LocalDateTime.now())
+				.summonerName("hideonbush")
+				.position(SummonerPosition.MID)
+				.build();
+	}
+
+	private List<MostInfo> getMost3() {
+		List<MostInfo> most3 = new ArrayList<>();
+
+		most3.add(MostInfo.create("Syndra", 4));
+		most3.add(MostInfo.create("Lucian", 3));
+		most3.add(MostInfo.create("Zed", 2));
+
+		return most3;
 	}
 }
