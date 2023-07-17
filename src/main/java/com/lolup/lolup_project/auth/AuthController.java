@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,8 +23,8 @@ public class AuthController {
 	private final AuthService authService;
 
 	@GetMapping("/check")
-	public ResponseEntity<Map<String, Object>> checkAuth(@AuthenticationPrincipal Authentication authentication) {
-		Map<String, Object> map = authService.checkAuth(authentication);
+	public ResponseEntity<Map<String, Object>> checkAuth(@AuthenticationPrincipal Long memberId) {
+		Map<String, Object> map = authService.checkAuth(memberId);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 

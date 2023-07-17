@@ -3,7 +3,6 @@ package com.lolup.lolup_project.auth;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +21,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final JwtTokenProvider jwtProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
-	public Map<String, Object> checkAuth(Authentication authentication) {
-		Long memberId = (Long)(authentication.getPrincipal());
+	public Map<String, Object> checkAuth(Long memberId) {
 		Member findMember = memberRepository.findById(memberId)
 				.orElseThrow(IllegalArgumentException::new);
 
@@ -40,11 +38,11 @@ public class AuthService {
 	}
 
 	public Map<String, Object> refresh(String refreshToken, HttpServletResponse response) {
-		jwtProvider.verifyToken(refreshToken);
+		jwtTokenProvider.verifyToken(refreshToken);
 
-		String email = jwtProvider.getPayload(refreshToken);
-		String newAccessToken = jwtProvider.createAccessToken(email);
-		String newRefreshToken = jwtProvider.createRefreshToken(email);
+		String email = jwtTokenProvider.getPayload(refreshToken);
+		String newAccessToken = jwtTokenProvider.createAccessToken(email);
+		String newRefreshToken = jwtTokenProvider.createRefreshToken(email);
 		Member findMember = memberRepository.findByEmail(email)
 				.orElseThrow(IllegalArgumentException::new);
 

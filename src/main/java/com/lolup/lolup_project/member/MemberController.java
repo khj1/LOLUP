@@ -1,27 +1,27 @@
 package com.lolup.lolup_project.member;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Map;
-@Slf4j
+import com.lolup.lolup_project.auth.AuthenticationPrincipal;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
-    private final MemberService memberService;
+	private final MemberService memberService;
 
-    @PatchMapping("/member/{memberId}")
-    public ResponseEntity<Map<String, Object>> changeSummonerName(Long memberId, String summonerName){
-
-        log.info("memberController 호출");
-        Map<String, Object> map = memberService.updateSummonerName(memberId, summonerName);
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
+	@PatchMapping
+	public ResponseEntity<Void> updateSummonerName(@AuthenticationPrincipal final Long memberId,
+												   @Valid @RequestBody final MemberUpdateRequest request) {
+		memberService.updateSummonerName(memberId, request.getSummonerName());
+		return ResponseEntity.noContent().build();
+	}
 }

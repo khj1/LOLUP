@@ -30,7 +30,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	private static final String REFRESH_TOKEN = "refreshToken";
 	private static final int COOKIE_MAX_AGE = 1210000000;
 
-	private final JwtTokenProvider jwtProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
@@ -46,8 +46,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 				.orElseThrow(IllegalArgumentException::new);
 
 		Long memberId = member.getId();
-		String accessToken = jwtProvider.createAccessToken(String.valueOf(memberId));
-		String refreshToken = jwtProvider.createRefreshToken(String.valueOf(memberId));
+		String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(memberId));
+		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
 
 		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 
