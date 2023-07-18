@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.lolup.lolup_project.auth.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.InvalidTokenException;
+import com.lolup.lolup_project.auth.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.exception.ErrorResult;
 
 @RestControllerAdvice
 public class Oauth2ExceptionHandler {
 
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler({EmptyAuthorizationHeaderException.class, InvalidTokenException.class})
+	@ExceptionHandler({
+			EmptyAuthorizationHeaderException.class,
+			InvalidTokenException.class,
+			NoSuchRefreshTokenException.class
+	})
 	public ErrorResult emptyAuthorizationHeaderException(Exception e) {
 		return new ErrorResult("401", e.getMessage());
 	}

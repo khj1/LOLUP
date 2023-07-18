@@ -47,10 +47,10 @@ public class AuthService {
 	}
 
 	private void verifyRefreshToken(final String refreshToken) {
-		jwtTokenProvider.verifyToken(refreshToken);
-
 		refreshTokenRepository.findByRefreshToken(refreshToken)
 				.orElseThrow(NoSuchRefreshTokenException::new);
+		
+		jwtTokenProvider.verifyToken(refreshToken);
 	}
 
 	@Transactional
