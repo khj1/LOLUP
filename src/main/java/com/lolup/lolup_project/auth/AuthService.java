@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.token.JwtTokenProvider;
-import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 
 import jakarta.servlet.http.Cookie;
@@ -17,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -37,25 +36,24 @@ public class AuthService {
 		return map;
 	}
 
-	public Map<String, Object> refresh(String refreshToken, HttpServletResponse response) {
-		jwtTokenProvider.verifyToken(refreshToken);
+	@Transactional
+	public AccessTokenResponse refreshToken(String refreshToken) {
+		verifyRefreshToken(refreshToken);
 
-		String email = jwtTokenProvider.getPayload(refreshToken);
-		String newAccessToken = jwtTokenProvider.createAccessToken(email);
-		String newRefreshToken = jwtTokenProvider.createRefreshToken(email);
-		Member findMember = memberRepository.findByEmail(email)
-				.orElseThrow(IllegalArgumentException::new);
+		String memberId = jwtTokenProvider.getPayload(refreshToken);
+		String accessToken = jwtTokenProvider.createAccessToken(memberId);
 
-		RefreshToken savedRefreshToken = refreshTokenRepository.save(RefreshToken.create(findMember, newRefreshToken));
-
-		setCookie(response, savedRefreshToken.getRefreshToken());
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("token", newAccessToken);
-
-		return map;
+		return new AccessTokenResponse(accessToken);
 	}
 
+	private void verifyRefreshToken(final String refreshToken) {
+		refreshTokenRepository.findByRefreshToken(refreshToken)
+				.orElseThrow(NoSuchRefreshTokenException::new);
+		
+		jwtTokenProvider.verifyToken(refreshToken);
+	}
+
+	@Transactional
 	public Map<String, Object> logout(Long memberId, HttpServletResponse response) {
 		Member findMember = memberRepository.findById(memberId).orElse(null);
 		refreshTokenRepository.deleteByMember(findMember);
@@ -65,15 +63,6 @@ public class AuthService {
 		map.put("logout", true);
 
 		return map;
-	}
-
-	private void setCookie(HttpServletResponse response, String refreshToken) {
-		Cookie cookie = new Cookie("refreshToken", refreshToken);
-		cookie.setMaxAge(60 * 60 * 24 * 30); // 1달
-		cookie.setSecure(false);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
-		response.addCookie(cookie);
 	}
 
 	private void deleteCookie(HttpServletResponse response) {
