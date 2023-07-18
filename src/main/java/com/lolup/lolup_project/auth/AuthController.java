@@ -5,14 +5,16 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,12 +30,10 @@ public class AuthController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
-	@GetMapping("/refresh")
-	public ResponseEntity<Map<String, Object>> refresh(
-			@CookieValue(value = "refreshToken") String refreshToken,
-			HttpServletResponse response) {
-		Map<String, Object> map = authService.refresh(refreshToken, response);
-		return new ResponseEntity<>(map, HttpStatus.OK);
+	@PostMapping("/refresh")
+	public ResponseEntity<AccessTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+		AccessTokenResponse response = authService.refreshToken(request.getRefreshToken());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{memberId}")
