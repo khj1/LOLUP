@@ -3,6 +3,8 @@ package com.lolup.lolup_project.auth;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -10,6 +12,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,6 +25,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -57,6 +61,21 @@ class AuthControllerTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
 				.build();
+	}
+
+	@DisplayName("권한 체크가 완료되면 상태코드 204를 반환한다.")
+	@Test
+	void checkAuthorization() throws Exception {
+		mockMvc.perform(get("/auth/check")
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+				)
+				.andDo(document("auth/logout",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
+						)))
+				.andExpect(status().isNoContent());
 	}
 
 	@DisplayName("리프레시 토큰으로 엑세스 토큰을 재발급 받으면 상태코드 200을 반환한다.")

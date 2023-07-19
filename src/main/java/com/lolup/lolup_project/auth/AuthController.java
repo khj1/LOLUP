@@ -20,7 +20,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@GetMapping("/check")
-	public ResponseEntity<Void> checkAuth(@AuthenticationPrincipal Long memberId) {
+	public ResponseEntity<Void> checkAuthorization(@AuthenticationPrincipal Long memberId) {
 		return ResponseEntity.noContent().build();
 	}
 
