@@ -3,8 +3,6 @@ package com.lolup.lolup_project.auth;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -24,7 +22,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -71,7 +68,6 @@ class AuthControllerTest {
 		given(authService.refreshToken(anyString())).willReturn(토큰_재발급_응답);
 
 		mockMvc.perform(post("/auth/refresh")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(토큰_재발급_요청))
@@ -79,9 +75,6 @@ class AuthControllerTest {
 				.andDo(document("auth/refresh",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
-						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
-						),
 						requestFields(
 								fieldWithPath("refreshToken").description("리프레시 토큰")
 						),
@@ -101,7 +94,6 @@ class AuthControllerTest {
 		given(authService.refreshToken(anyString())).willThrow(expectedException);
 
 		mockMvc.perform(post("/auth/refresh")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(토큰_재발급_요청))
@@ -109,9 +101,6 @@ class AuthControllerTest {
 				.andDo(document("auth/refresh",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
-						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
-						),
 						requestFields(
 								fieldWithPath("refreshToken").description("리프레시 토큰")
 						)))
