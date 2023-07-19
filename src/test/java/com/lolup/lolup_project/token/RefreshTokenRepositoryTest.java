@@ -39,13 +39,13 @@ class RefreshTokenRepositoryTest {
 		assertThat(savedRefreshToken).isSameAs(findRefreshToken);
 	}
 
-	@DisplayName("회원 정보로 리프레시 토큰을 제거할 수 있다.")
+	@DisplayName("리프레스 토큰 값으로 리프레시 토큰을 제거할 수 있다.")
 	@Test
 	void deleteByMember() {
 		Member member = memberRepository.save(createMember());
 		refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
 
-		refreshTokenRepository.deleteByMember(member);
+		refreshTokenRepository.deleteByRefreshToken(REFRESH_TOKEN);
 
 		assertThat(refreshTokenRepository.findByRefreshToken(REFRESH_TOKEN))
 				.isEqualTo(Optional.empty());

@@ -64,7 +64,7 @@ class AuthControllerTest {
 	@DisplayName("리프레시 토큰으로 엑세스 토큰을 재발급 받으면 상태코드 200을 반환한다.")
 	@Test
 	void refreshToken() throws Exception {
-		RefreshTokenRequest 토큰_재발급_요청 = new RefreshTokenRequest(DUMMY_REFRESH_TOKEN);
+		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
 		given(authService.refreshToken(anyString())).willReturn(토큰_재발급_응답);
@@ -94,7 +94,7 @@ class AuthControllerTest {
 	@ParameterizedTest
 	@ValueSource(classes = {InvalidTokenException.class, NoSuchRefreshTokenException.class})
 	void refreshTokenWithInvalidToken(Class<? extends Throwable> expectedException) throws Exception {
-		RefreshTokenRequest 토큰_재발급_요청 = new RefreshTokenRequest(DUMMY_REFRESH_TOKEN);
+		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
 		given(authService.refreshToken(anyString())).willThrow(expectedException);
