@@ -2,8 +2,7 @@ package com.lolup.lolup_project.auth;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -23,7 +22,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -64,13 +62,12 @@ class AuthControllerTest {
 	@DisplayName("리프레시 토큰으로 엑세스 토큰을 재발급 받으면 상태코드 200을 반환한다.")
 	@Test
 	void refreshToken() throws Exception {
-		RefreshTokenRequest 토큰_재발급_요청 = new RefreshTokenRequest(DUMMY_REFRESH_TOKEN);
+		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
 		given(authService.refreshToken(anyString())).willReturn(토큰_재발급_응답);
 
 		mockMvc.perform(post("/auth/refresh")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(토큰_재발급_요청))
@@ -78,9 +75,6 @@ class AuthControllerTest {
 				.andDo(document("auth/refresh",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
-						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
-						),
 						requestFields(
 								fieldWithPath("refreshToken").description("리프레시 토큰")
 						),
@@ -94,13 +88,12 @@ class AuthControllerTest {
 	@ParameterizedTest
 	@ValueSource(classes = {InvalidTokenException.class, NoSuchRefreshTokenException.class})
 	void refreshTokenWithInvalidToken(Class<? extends Throwable> expectedException) throws Exception {
-		RefreshTokenRequest 토큰_재발급_요청 = new RefreshTokenRequest(DUMMY_REFRESH_TOKEN);
+		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
 		given(authService.refreshToken(anyString())).willThrow(expectedException);
 
 		mockMvc.perform(post("/auth/refresh")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(토큰_재발급_요청))
@@ -108,12 +101,30 @@ class AuthControllerTest {
 				.andDo(document("auth/refresh",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
-						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
-						),
 						requestFields(
 								fieldWithPath("refreshToken").description("리프레시 토큰")
 						)))
 				.andExpect(status().isUnauthorized());
+	}
+
+	@DisplayName("로그아웃을 하면 상태코드 204를 반환한다.")
+	@Test
+	void refreshTokenWithInvalidToken() throws Exception {
+		RefreshTokenDto 로그아웃_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
+
+		willDoNothing().given(authService).logout(anyString());
+
+		mockMvc.perform(post("/auth/logout")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(로그아웃_요청))
+				)
+				.andDo(document("auth/logout",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("refreshToken").description("리프레시 토큰")
+						)))
+				.andExpect(status().isNoContent());
 	}
 }

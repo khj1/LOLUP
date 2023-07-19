@@ -11,8 +11,6 @@ import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.token.JwtTokenProvider;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -49,28 +47,12 @@ public class AuthService {
 	private void verifyRefreshToken(final String refreshToken) {
 		refreshTokenRepository.findByRefreshToken(refreshToken)
 				.orElseThrow(NoSuchRefreshTokenException::new);
-		
+
 		jwtTokenProvider.verifyToken(refreshToken);
 	}
 
 	@Transactional
-	public Map<String, Object> logout(Long memberId, HttpServletResponse response) {
-		Member findMember = memberRepository.findById(memberId).orElse(null);
-		refreshTokenRepository.deleteByMember(findMember);
-		deleteCookie(response);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("logout", true);
-
-		return map;
-	}
-
-	private void deleteCookie(HttpServletResponse response) {
-		Cookie cookie = new Cookie("refreshToken", null);
-		cookie.setMaxAge(0);
-		cookie.setSecure(false);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
-		response.addCookie(cookie);
+	public void logout(final String refreshToken) {
+		refreshTokenRepository.deleteByRefreshToken(refreshToken);
 	}
 }

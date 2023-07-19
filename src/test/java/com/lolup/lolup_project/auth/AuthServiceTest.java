@@ -3,6 +3,8 @@ package com.lolup.lolup_project.auth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,20 @@ class AuthServiceTest {
 		assertThatThrownBy(() -> authService.refreshToken(refreshToken))
 				.isInstanceOf(NoSuchRefreshTokenException.class)
 				.hasMessage("존재하지 않는 리프레시 토큰입니다.");
+	}
+
+	@DisplayName("리프레시 토큰을 제거한다.")
+	@Test
+	void logout() {
+		Member member = memberRepository.save(createMember());
+		Long memberId = member.getId();
+
+		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
+		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
+
+		refreshTokenRepository.deleteByRefreshToken(refreshToken);
+
+		assertThat(refreshTokenRepository.findByRefreshToken(refreshToken)).isEqualTo(Optional.empty());
 	}
 
 	private Member createMember() {

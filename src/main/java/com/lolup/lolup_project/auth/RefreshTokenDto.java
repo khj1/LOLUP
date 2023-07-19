@@ -2,15 +2,15 @@ package com.lolup.lolup_project.auth;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class RefreshTokenRequest {
+public class RefreshTokenDto {
 
 	@NotBlank(message = "리프레시 토큰은 공백일 수 없습니다.")
 	private String refreshToken;
 
-	private RefreshTokenRequest() {
+	private RefreshTokenDto() {
 	}
 
-	public RefreshTokenRequest(final String refreshToken) {
+	public RefreshTokenDto(final String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 
