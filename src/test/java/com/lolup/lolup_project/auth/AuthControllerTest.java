@@ -2,6 +2,7 @@ package com.lolup.lolup_project.auth;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -115,5 +116,26 @@ class AuthControllerTest {
 								fieldWithPath("refreshToken").description("리프레시 토큰")
 						)))
 				.andExpect(status().isUnauthorized());
+	}
+
+	@DisplayName("로그아웃을 하면 상태코드 204를 반환한다.")
+	@Test
+	void refreshTokenWithInvalidToken() throws Exception {
+		RefreshTokenDto 로그아웃_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
+
+		willDoNothing().given(authService).logout(anyString());
+
+		mockMvc.perform(post("/auth/logout")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(로그아웃_요청))
+				)
+				.andDo(document("auth/logout",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("refreshToken").description("리프레시 토큰")
+						)))
+				.andExpect(status().isNoContent());
 	}
 }
