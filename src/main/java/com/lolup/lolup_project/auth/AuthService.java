@@ -17,7 +17,7 @@ public class AuthService {
 	private final RefreshTokenRepository refreshTokenRepository;
 
 	@Transactional
-	public AccessTokenResponse refreshToken(String refreshToken) {
+	public AccessTokenResponse refreshToken(final String refreshToken) {
 		verifyRefreshToken(refreshToken);
 
 		String memberId = jwtTokenProvider.getPayload(refreshToken);
