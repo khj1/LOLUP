@@ -1,7 +1,5 @@
 package com.lolup.lolup_project.auth;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,19 +20,18 @@ public class AuthController {
 	private final AuthService authService;
 
 	@GetMapping("/check")
-	public ResponseEntity<Map<String, Object>> checkAuth(@AuthenticationPrincipal Long memberId) {
-		Map<String, Object> map = authService.checkAuth(memberId);
-		return new ResponseEntity<>(map, HttpStatus.OK);
+	public ResponseEntity<Void> checkAuthorization(@AuthenticationPrincipal final Long memberId) {
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<AccessTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenDto refreshRequest) {
+	public ResponseEntity<AccessTokenResponse> refreshToken(@Valid @RequestBody final RefreshTokenDto refreshRequest) {
 		AccessTokenResponse response = authService.refreshToken(refreshRequest.getRefreshToken());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
+	public ResponseEntity<Void> logout(@Valid @RequestBody final RefreshTokenDto refreshTokenDto) {
 		authService.logout(refreshTokenDto.getRefreshToken());
 		return ResponseEntity.noContent().build();
 	}

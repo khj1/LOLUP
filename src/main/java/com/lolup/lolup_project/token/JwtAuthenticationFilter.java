@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private static final String[] AUTHORIZED_PATTERN = {"/duo*", "/member*", "/auth*"};
+	private static final String[] AUTHORIZED_PATTERN = {"/duo*", "/member*", "/auth/check"};
 
 	private final JwtTokenProvider jwtTokenProvider;
 
