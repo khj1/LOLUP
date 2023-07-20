@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.lolup.lolup_project.riotapi.summoner.MostInfo;
-import com.lolup.lolup_project.riotapi.summoner.SummonerService;
 
 @Service
 public class MatchService {
@@ -23,36 +22,31 @@ public class MatchService {
 
 	private final WebClient webClient;
 	private final String apiKey;
-	private final SummonerService summonerService;
 
 	public MatchService(@Qualifier("matchWebClient") final WebClient webClient,
-						@Value("${security.riot.api-key}") final String apiKey,
-						final SummonerService summonerService) {
+						@Value("${security.riot.api-key}") final String apiKey) {
 		this.webClient = webClient;
 		this.apiKey = apiKey;
-		this.summonerService = summonerService;
 	}
 
-	public RecentMatchStatsDto getRecentMatchStats(final String summonerName) {
-		List<MatchInfoDto> matchInfoDtos = getMatchInfos(summonerName);
+	public RecentMatchStatsDto getRecentMatchStats(final String summonerName, final String puuId) {
+		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
 		String latestWinRate = getLatestWinRate(summonerName, matchInfoDtos);
 		List<MostInfo> most3 = getLatestMost3(summonerName, matchInfoDtos);
 
 		return new RecentMatchStatsDto(latestWinRate, most3);
 	}
 
-	public List<MatchInfoDto> getMatchInfos(String summonerName) {
-
+	public List<MatchInfoDto> getMatchInfos(String puuId) {
 		List<MatchInfoDto> matchInfoDtos = new ArrayList<>();
-		String[] matchIds = getMatchIds(summonerName);
+		String[] matchIds = getMatchIds(puuId);
 
 		Arrays.stream(matchIds).forEach(matchId -> matchInfoDtos.add(getMatchDto(matchId).getInfo()));
 
 		return matchInfoDtos;
 	}
 
-	private String[] getMatchIds(String summonerName) {
-		String puuId = summonerService.getAccountInfo(summonerName).getPuuId();
+	private String[] getMatchIds(String puuId) {
 		return webClient
 				.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, apiKey)

@@ -8,9 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.NoSuchMemberException;
-import com.lolup.lolup_project.riotapi.RiotService;
+import com.lolup.lolup_project.riotapi.match.MatchService;
+import com.lolup.lolup_project.riotapi.match.RecentMatchStatsDto;
 import com.lolup.lolup_project.riotapi.riotstatic.RiotStaticService;
+import com.lolup.lolup_project.riotapi.summoner.SummonerAccountDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
+import com.lolup.lolup_project.riotapi.summoner.SummonerRankInfo;
+import com.lolup.lolup_project.riotapi.summoner.SummonerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DuoService {
 
-	private final MemberRepository memberRepository;
-	private final DuoRepository duoRepository;
-	private final RiotService riotService;
+	private final MatchService matchService;
+	private final SummonerService summonerService;
 	private final RiotStaticService riotStaticService;
+	private final DuoRepository duoRepository;
+	private final MemberRepository memberRepository;
 
 	public DuoResponse findAll(final String position, final String tier, final Pageable pageable) {
 		Page<DuoDto> data = duoRepository.findAll(position, tier, pageable);
@@ -32,12 +37,20 @@ public class DuoService {
 
 	@Transactional
 	public void save(final Long memberId, final DuoSaveRequest request) {
-		SummonerDto summonerDto = riotService.find(request.getSummonerName());
+		SummonerDto summonerDto = find(request.getSummonerName());
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
 
 		Duo duo = Duo.create(member, summonerDto, request.getPosition(), request.getDesc());
 		duoRepository.save(duo);
+	}
+
+	private SummonerDto find(final String summonerName) {
+		SummonerAccountDto accountDto = summonerService.getAccountInfo(summonerName);
+		SummonerRankInfo info = summonerService.getSummonerTotalSoloRankInfo(accountDto);
+		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(summonerName, accountDto.getPuuId());
+
+		return new SummonerDto(recentMatchStats.getLatestWinRate(), info, recentMatchStats.getMost3());
 	}
 
 	@Transactional

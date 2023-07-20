@@ -10,6 +10,8 @@ public class SummonerService {
 
 	private static final String ACCOUNT_INFO_REQUEST_URI = "/lol/summoner/v4/summoners/by-name/{summonerName}?api_key={apiKey}";
 	private static final String RANK_INFO_REQUEST_URI = "/lol/league/v4/entries/by-summoner/{encryptedSummonerId}?api_key={apiKey}";
+	private static final int INITIAL_WINS = 0;
+	private static final int INITIAL_LOSSES = 0;
 
 	private final WebClient webClient;
 	private final String apiKey;
@@ -20,18 +22,13 @@ public class SummonerService {
 		this.apiKey = apiKey;
 	}
 
-	public SummonerRankInfo getSummonerTotalSoloRankInfo(String summonerName) {
-		SummonerAccountDto summonerAccountInfo = getAccountInfo(summonerName);
-		String id = summonerAccountInfo.getId();
-		int iconId = summonerAccountInfo.getProfileIconId();
-
-		SummonerRankInfoDto summonerRankInfoDto = getRankInfoDto(id);
+	public SummonerRankInfo getSummonerTotalSoloRankInfo(final SummonerAccountDto accountDto) {
+		SummonerRankInfoDto summonerRankInfoDto = getRankInfoDto(accountDto.getId());
 
 		if (summonerRankInfoDto == null) {
-			return getUnrankedInfo(summonerName);
+			return getUnrankedInfo(accountDto.getName());
 		}
-
-		return getRankInfo(summonerRankInfoDto, iconId);
+		return getRankInfo(summonerRankInfoDto, accountDto.getProfileIconId());
 	}
 
 	public SummonerAccountDto getAccountInfo(String summonerName) {
@@ -43,7 +40,7 @@ public class SummonerService {
 				.block();
 	}
 
-	public SummonerRankInfoDto getRankInfoDto(String encryptedSummonerId) {
+	private SummonerRankInfoDto getRankInfoDto(String encryptedSummonerId) {
 		return webClient
 				.get()
 				.uri(RANK_INFO_REQUEST_URI, encryptedSummonerId, apiKey)
@@ -57,8 +54,8 @@ public class SummonerService {
 				.summonerName(summonerName)
 				.tier("UNRANKED")
 				.rank("언랭크")
-				.wins(0)
-				.losses(0)
+				.wins(INITIAL_WINS)
+				.losses(INITIAL_LOSSES)
 				.build();
 	}
 
