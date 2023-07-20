@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SummonerService {
 
+	private static final String ACCOUNT_INFO_REQUEST_URI = "/lol/summoner/v4/summoners/by-name/{summonerName}?api_key={apiKey}";
+
 	private final WebClient webClient;
 
 	@Value("${security.riot.api-key}")
@@ -30,7 +32,7 @@ public class SummonerService {
 	public SummonerAccountDto getAccountInfo(String summonerName) {
 		return webClient
 				.get()
-				.uri("/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + apiKey)
+				.uri(ACCOUNT_INFO_REQUEST_URI, summonerName, apiKey)
 				.retrieve()
 				.bodyToMono(SummonerAccountDto.class)
 				.block();
@@ -161,7 +163,7 @@ public class SummonerService {
 	}
 
 	private String[] getMatchIds(String summonerName) {
-		String puuid = getAccountInfo(summonerName).getPuuid();
+		String puuid = getAccountInfo(summonerName).getPuuId();
 		return webClient
 				.get()
 				.uri("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?api_key="
