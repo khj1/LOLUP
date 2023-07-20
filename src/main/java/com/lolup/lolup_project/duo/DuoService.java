@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lolup.lolup_project.member.Member;
 import com.lolup.lolup_project.member.MemberRepository;
 import com.lolup.lolup_project.member.NoSuchMemberException;
+import com.lolup.lolup_project.riotapi.RiotService;
+import com.lolup.lolup_project.riotapi.riotstatic.RiotStaticService;
 import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
-import com.lolup.lolup_project.riotapi.summoner.SummonerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,17 +21,18 @@ public class DuoService {
 
 	private final MemberRepository memberRepository;
 	private final DuoRepository duoRepository;
-	private final SummonerService summonerService;
+	private final RiotService riotService;
+	private final RiotStaticService riotStaticService;
 
 	public DuoResponse findAll(final String position, final String tier, final Pageable pageable) {
 		Page<DuoDto> data = duoRepository.findAll(position, tier, pageable);
 
-		return new DuoResponse(data, summonerService.getGameVersion());
+		return new DuoResponse(data, riotStaticService.getLatestGameVersion());
 	}
 
 	@Transactional
 	public void save(final Long memberId, final DuoSaveRequest request) {
-		SummonerDto summonerDto = summonerService.find(request.getSummonerName());
+		SummonerDto summonerDto = riotService.find(request.getSummonerName());
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
 

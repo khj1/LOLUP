@@ -8,8 +8,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,16 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-@SpringBootTest
 class SummonerServiceTest {
 
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
+	private static final String TEST_API_KEY = "testApiKey";
 
 	private static MockWebServer mockWebServer;
 	private static SummonerService summonerService;
-
-	@Autowired
-	private ObjectMapper objectMapper;
+	private static ObjectMapper objectMapper;
 
 	@BeforeAll
 	static void setUp() throws IOException {
@@ -38,7 +34,9 @@ class SummonerServiceTest {
 
 		String baseUrl = String.format(MOCK_SERVER_BASE_URL, mockWebServer.getPort());
 		WebClient webClient = WebClient.create(baseUrl);
-		summonerService = new SummonerService(webClient);
+		summonerService = new SummonerService(webClient, TEST_API_KEY);
+
+		objectMapper = new ObjectMapper();
 	}
 
 	@AfterAll
