@@ -1,7 +1,6 @@
 package com.lolup.lolup_project.riotapi.match;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,20 +37,21 @@ public class MatchService {
 	}
 
 	private List<MatchInfoDto> getMatchInfos(final String puuId) {
-		List<MatchInfoDto> matchInfoDtos = new ArrayList<>();
-		String[] matchIds = getMatchIds(puuId);
+		List<String> matchIds = getMatchIds(puuId);
 
-		Arrays.stream(matchIds).forEach(matchId -> matchInfoDtos.add(getMatchDto(matchId).getInfo()));
-
-		return matchInfoDtos;
+		return matchIds.stream()
+				.map(this::getMatchDto)
+				.map(MatchDto::getInfo)
+				.toList();
 	}
 
-	private String[] getMatchIds(final String puuId) {
+	private List<String> getMatchIds(final String puuId) {
 		return webClient
 				.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, apiKey)
 				.retrieve()
-				.bodyToMono(String[].class)
+				.bodyToFlux(String.class)
+				.collectList()
 				.block();
 	}
 
