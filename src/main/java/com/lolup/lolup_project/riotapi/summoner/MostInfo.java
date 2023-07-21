@@ -26,18 +26,18 @@ public class MostInfo extends BaseTimeEntity {
 	private Long id;
 
 	private String name;
-	private Integer play;
+	private Long play;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "duo_id")
 	private Duo duo;
 
-	public MostInfo(String name, Integer play) {
+	public MostInfo(final String name, final Long play) {
 		this.name = name;
 		this.play = play;
 	}
 
-	public static MostInfo create(String name, Integer play) {
+	public static MostInfo create(final String name, final Long play) {
 		return new MostInfo(name, play);
 	}
 

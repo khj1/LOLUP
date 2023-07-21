@@ -260,9 +260,9 @@ class DuoControllerTest {
 	private List<MostInfo> getMost3() {
 		List<MostInfo> most3 = new ArrayList<>();
 
-		most3.add(MostInfo.create("Syndra", 4));
-		most3.add(MostInfo.create("Lucian", 3));
-		most3.add(MostInfo.create("Zed", 2));
+		most3.add(MostInfo.create("Syndra", 4L));
+		most3.add(MostInfo.create("Lucian", 3L));
+		most3.add(MostInfo.create("Zed", 2L));
 
 		return most3;
 	}
