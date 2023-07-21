@@ -150,7 +150,7 @@ class DuoRepositoryTest {
 				.wins(100).losses(100)
 				.build();
 
-		SummonerDto summonerDto = new SummonerDto("20%", info, most3);
+		SummonerDto summonerDto = new SummonerDto(0.2d, info, most3);
 
 		return Duo.create(member, summonerDto, position, "hi");
 	}

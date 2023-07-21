@@ -243,7 +243,7 @@ class DuoControllerTest {
 		return DuoDto.builder()
 				.iconId(100)
 				.duoId(duoId)
-				.latestWinRate("20%")
+				.latestWinRate(0.2d)
 				.losses(300)
 				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
 				.rank("IV")

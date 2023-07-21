@@ -31,7 +31,7 @@ public class MatchService {
 
 	public RecentMatchStatsDto getRecentMatchStats(final String summonerName, final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
-		String latestWinRate = getLatestWinRate(summonerName, matchInfoDtos);
+		double latestWinRate = getLatestWinRate(summonerName, matchInfoDtos);
 		List<MostInfo> most3 = getLatestMost3(summonerName, matchInfoDtos);
 
 		return new RecentMatchStatsDto(latestWinRate, most3);
@@ -64,11 +64,11 @@ public class MatchService {
 				.block();
 	}
 
-	private String getLatestWinRate(String summonerName, List<MatchInfoDto> matchInfoDtos) {
+	private double getLatestWinRate(String summonerName, List<MatchInfoDto> matchInfoDtos) {
 		long winCount = matchInfoDtos.stream()
 				.filter(matchInfo -> getWin(summonerName, matchInfo)).count();
 
-		return ((double)winCount / 30) * 100 + "%";
+		return (double)winCount / 30;
 	}
 
 	private Boolean getWin(String summonerName, MatchInfoDto matchInfoDto) {

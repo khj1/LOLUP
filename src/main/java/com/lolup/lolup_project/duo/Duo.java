@@ -46,14 +46,14 @@ public class Duo extends BaseTimeEntity {
 	private List<MostInfo> mostInfos = new ArrayList<>();
 
 	private String position;
-	private String latestWinRate;
+	private double latestWinRate;
 
 	@Column(name = "description")
 	private String desc;
 
 	@Builder
-	public Duo(Member member, SummonerRankInfo info, List<MostInfo> mostInfos, String position, String latestWinRate,
-			   String desc) {
+	public Duo(final Member member, final SummonerRankInfo info, final List<MostInfo> mostInfos, final String position,
+			   final double latestWinRate, final String desc) {
 		this.member = member;
 		this.info = info;
 		addMostInfos(mostInfos);
@@ -62,7 +62,8 @@ public class Duo extends BaseTimeEntity {
 		this.desc = desc;
 	}
 
-	public static Duo create(Member member, SummonerDto summonerDto, String position, String desc) {
+	public static Duo create(final Member member, final SummonerDto summonerDto, final String position,
+							 final String desc) {
 		return Duo.builder()
 				.member(member)
 				.info(summonerDto.getInfo())
@@ -73,12 +74,12 @@ public class Duo extends BaseTimeEntity {
 				.build();
 	}
 
-	private void addMostInfos(List<MostInfo> mostInfos) {
+	private void addMostInfos(final List<MostInfo> mostInfos) {
 		this.mostInfos = mostInfos;
 		mostInfos.forEach(mostInfo -> mostInfo.changeDuo(this));
 	}
 
-	public void update(String position, String desc) {
+	public void update(final String position, final String desc) {
 		this.position = position;
 		this.desc = desc;
 	}
