@@ -14,18 +14,18 @@ public class SummonerAccountDto {
 	private Long revisionDate; //소환사 정보가 갱신된 날짜
 	private String name;
 	private String id;
-	private String puuId;
+	private String puuid;
 	private Long summonerLevel;
 
 	@Builder
 	public SummonerAccountDto(String accountId, int profileIconId, Long revisionDate, String name, String id,
-							  String puuId, Long summonerLevel) {
+							  String puuid, Long summonerLevel) {
 		this.accountId = accountId;
 		this.profileIconId = profileIconId;
 		this.revisionDate = revisionDate;
 		this.name = name;
 		this.id = id;
-		this.puuId = puuId;
+		this.puuid = puuid;
 		this.summonerLevel = summonerLevel;
 	}
 }

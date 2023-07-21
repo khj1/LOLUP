@@ -101,7 +101,7 @@ class SummonerServiceTest {
 		return SummonerAccountDto.builder()
 				.id("id")
 				.name("testName")
-				.puuId("puuId")
+				.puuid("puuid")
 				.accountId("accountId")
 				.revisionDate(1L)
 				.summonerLevel(1L)

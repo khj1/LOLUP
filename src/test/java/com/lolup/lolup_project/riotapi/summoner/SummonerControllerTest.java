@@ -48,7 +48,7 @@ class SummonerControllerTest {
 				.accountId("accountId")
 				.profileIconId(100)
 				.id("id")
-				.puuId("puuid")
+				.puuid("puuid")
 				.summonerLevel(100L)
 				.name("summonerName")
 				.build();
