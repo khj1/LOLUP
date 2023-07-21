@@ -47,10 +47,11 @@ public class DuoService {
 
 	private SummonerDto find(final String summonerName) {
 		SummonerAccountDto accountDto = summonerService.getAccountInfo(summonerName);
-		SummonerRankInfo info = summonerService.getSummonerTotalSoloRankInfo(accountDto);
+		SummonerRankInfo info = summonerService.getSummonerTotalSoloRankInfo(accountDto.getId(), accountDto.getName());
 		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(summonerName, accountDto.getPuuId());
 
-		return new SummonerDto(recentMatchStats.getLatestWinRate(), info, recentMatchStats.getMost3());
+		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), info,
+				recentMatchStats.getMost3());
 	}
 
 	@Transactional

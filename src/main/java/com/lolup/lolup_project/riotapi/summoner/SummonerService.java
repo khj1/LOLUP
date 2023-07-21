@@ -22,16 +22,7 @@ public class SummonerService {
 		this.apiKey = apiKey;
 	}
 
-	public SummonerRankInfo getSummonerTotalSoloRankInfo(final SummonerAccountDto accountDto) {
-		SummonerRankInfoDto summonerRankInfoDto = getRankInfoDto(accountDto.getId());
-
-		if (summonerRankInfoDto == null) {
-			return getUnrankedInfo(accountDto.getName());
-		}
-		return getRankInfo(summonerRankInfoDto, accountDto.getProfileIconId());
-	}
-
-	public SummonerAccountDto getAccountInfo(String summonerName) {
+	public SummonerAccountDto getAccountInfo(final String summonerName) {
 		return webClient
 				.get()
 				.uri(ACCOUNT_INFO_REQUEST_URI, summonerName, apiKey)
@@ -40,33 +31,27 @@ public class SummonerService {
 				.block();
 	}
 
-	private SummonerRankInfoDto getRankInfoDto(String encryptedSummonerId) {
+	public SummonerRankInfo getSummonerTotalSoloRankInfo(final String encryptedSummonerId, final String summonerName) {
+		return createSummonerRankInfo(encryptedSummonerId, summonerName);
+	}
+
+	private SummonerRankInfo createSummonerRankInfo(final String encryptedSummonerId, final String summonerName) {
 		return webClient
 				.get()
 				.uri(RANK_INFO_REQUEST_URI, encryptedSummonerId, apiKey)
 				.retrieve()
-				.bodyToFlux(SummonerRankInfoDto.class)
-				.blockFirst();
+				.bodyToMono(SummonerRankInfo.class)
+				.blockOptional()
+				.orElse(createUnrankedInfo(summonerName));
 	}
 
-	private SummonerRankInfo getUnrankedInfo(String summonerName) {
+	private SummonerRankInfo createUnrankedInfo(final String summonerName) {
 		return SummonerRankInfo.builder()
 				.summonerName(summonerName)
-				.tier("UNRANKED")
+				.tier(SummonerTier.UNRANKED)
 				.rank("언랭크")
 				.wins(INITIAL_WINS)
 				.losses(INITIAL_LOSSES)
-				.build();
-	}
-
-	private SummonerRankInfo getRankInfo(SummonerRankInfoDto summonerRankInfoDto, int iconId) {
-		return SummonerRankInfo.builder()
-				.summonerName(summonerRankInfoDto.getSummonerName())
-				.tier(summonerRankInfoDto.getTier())
-				.rank(summonerRankInfoDto.getRank())
-				.wins(summonerRankInfoDto.getWins())
-				.losses(summonerRankInfoDto.getLosses())
-				.iconId(iconId)
 				.build();
 	}
 }

@@ -19,8 +19,7 @@ public class SummonerRankInfo {
 	private int losses;
 
 	@Builder
-	public SummonerRankInfo(int iconId, String summonerName, String tier, String rank, int wins, int losses) {
-		this.iconId = iconId;
+	public SummonerRankInfo(String summonerName, String tier, String rank, int wins, int losses) {
 		this.summonerName = summonerName;
 		this.tier = tier;
 		this.rank = rank;

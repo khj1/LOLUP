@@ -145,12 +145,12 @@ class DuoRepositoryTest {
 		most3.add(MostInfo.create("Zed", 2L));
 
 		SummonerRankInfo info = SummonerRankInfo.builder()
-				.iconId(100).summonerName("summonerName")
+				.summonerName("summonerName")
 				.rank("3").tier(tier)
 				.wins(100).losses(100)
 				.build();
 
-		SummonerDto summonerDto = new SummonerDto(0.2d, info, most3);
+		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
 
 		return Duo.create(member, summonerDto, position, "hi");
 	}
