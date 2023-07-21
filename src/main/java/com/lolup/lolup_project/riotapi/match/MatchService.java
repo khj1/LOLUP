@@ -37,7 +37,7 @@ public class MatchService {
 		return new RecentMatchStatsDto(latestWinRate, most3);
 	}
 
-	private List<MatchInfoDto> getMatchInfos(String puuId) {
+	private List<MatchInfoDto> getMatchInfos(final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = new ArrayList<>();
 		String[] matchIds = getMatchIds(puuId);
 
@@ -46,7 +46,7 @@ public class MatchService {
 		return matchInfoDtos;
 	}
 
-	private String[] getMatchIds(String puuId) {
+	private String[] getMatchIds(final String puuId) {
 		return webClient
 				.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, apiKey)
@@ -55,7 +55,7 @@ public class MatchService {
 				.block();
 	}
 
-	private MatchDto getMatchDto(String matchId) {
+	private MatchDto getMatchDto(final String matchId) {
 		return webClient
 				.get()
 				.uri(MATCH_REQUEST_URI, matchId, apiKey)
@@ -64,14 +64,14 @@ public class MatchService {
 				.block();
 	}
 
-	private double getLatestWinRate(String summonerName, List<MatchInfoDto> matchInfoDtos) {
+	private double getLatestWinRate(final String summonerName, final List<MatchInfoDto> matchInfoDtos) {
 		long winCount = matchInfoDtos.stream()
 				.filter(matchInfo -> getWin(summonerName, matchInfo)).count();
 
 		return (double)winCount / 30;
 	}
 
-	private Boolean getWin(String summonerName, MatchInfoDto matchInfoDto) {
+	private Boolean getWin(final String summonerName, final MatchInfoDto matchInfoDto) {
 		return matchInfoDto
 				.getParticipants()
 				.stream().filter(participantDto -> participantDto.getSummonerName().equals(summonerName))
@@ -80,7 +80,7 @@ public class MatchService {
 				.isWin();
 	}
 
-	private List<MostInfo> getLatestMost3(String summonerName, List<MatchInfoDto> matches) {
+	private List<MostInfo> getLatestMost3(final String summonerName, final List<MatchInfoDto> matches) {
 		Map<String, Integer> mostsIn30Games = getMostsIn30Games(summonerName, matches);
 		List<Map.Entry<String, Integer>> sortedMosts = getSortedMosts(mostsIn30Games);
 		List<Map.Entry<String, Integer>> most3Entries = getMost3Entries(sortedMosts);
@@ -88,7 +88,7 @@ public class MatchService {
 		return getMost3List(most3Entries);
 	}
 
-	private List<MostInfo> getMost3List(List<Map.Entry<String, Integer>> entries) {
+	private List<MostInfo> getMost3List(final List<Map.Entry<String, Integer>> entries) {
 		List<MostInfo> mostInfos = new ArrayList<>();
 		for (Map.Entry<String, Integer> entry : entries) {
 			MostInfo mostInfo = MostInfo.create(entry.getKey(), entry.getValue());
@@ -97,7 +97,7 @@ public class MatchService {
 		return mostInfos;
 	}
 
-	private List<Map.Entry<String, Integer>> getMost3Entries(List<Map.Entry<String, Integer>> sortedMosts) {
+	private List<Map.Entry<String, Integer>> getMost3Entries(final List<Map.Entry<String, Integer>> sortedMosts) {
 		if (sortedMosts.size() >= 3) {
 			return sortedMosts.subList(0, 3);
 		}
@@ -107,14 +107,14 @@ public class MatchService {
 		return sortedMosts.subList(0, 1);
 	}
 
-	private List<Map.Entry<String, Integer>> getSortedMosts(Map<String, Integer> mostsIn30Games) {
+	private List<Map.Entry<String, Integer>> getSortedMosts(final Map<String, Integer> mostsIn30Games) {
 		return mostsIn30Games
 				.entrySet().stream()
 				.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
 				.collect(Collectors.toList());
 	}
 
-	private Map<String, Integer> getMostsIn30Games(String summonerName, List<MatchInfoDto> matchInfoDtos) {
+	private Map<String, Integer> getMostsIn30Games(final String summonerName, final List<MatchInfoDto> matchInfoDtos) {
 		Map<String, Integer> mostsIn30Games = new HashMap<>();
 
 		for (MatchInfoDto matchInfoDto : matchInfoDtos) {
@@ -125,14 +125,14 @@ public class MatchService {
 		return mostsIn30Games;
 	}
 
-	private Integer addChampionPlayCount(Map<String, Integer> mostsIn30Games, String championName) {
+	private Integer addChampionPlayCount(final Map<String, Integer> mostsIn30Games, final String championName) {
 		if (mostsIn30Games.containsKey(championName)) {
 			return mostsIn30Games.get(championName) + 1;
 		}
 		return 1;
 	}
 
-	private String getChampionName(String summonerName, MatchInfoDto matchInfoDto) {
+	private String getChampionName(final String summonerName, final MatchInfoDto matchInfoDto) {
 		return matchInfoDto
 				.getParticipants()
 				.stream().filter(participantDto -> participantDto.getSummonerName().equals(summonerName))
