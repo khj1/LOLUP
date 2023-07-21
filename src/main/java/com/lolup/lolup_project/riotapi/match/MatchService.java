@@ -37,7 +37,7 @@ public class MatchService {
 		return new RecentMatchStatsDto(latestWinRate, most3);
 	}
 
-	public List<MatchInfoDto> getMatchInfos(String puuId) {
+	private List<MatchInfoDto> getMatchInfos(String puuId) {
 		List<MatchInfoDto> matchInfoDtos = new ArrayList<>();
 		String[] matchIds = getMatchIds(puuId);
 
