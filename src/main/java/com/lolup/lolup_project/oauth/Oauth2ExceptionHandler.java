@@ -9,7 +9,7 @@ import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.auth.exception.NoAuthenticationException;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
-import com.lolup.lolup_project.common.ErrorResult;
+import com.lolup.lolup_project.common.ErrorResponse;
 
 @RestControllerAdvice
 public class Oauth2ExceptionHandler {
@@ -21,7 +21,7 @@ public class Oauth2ExceptionHandler {
 			NoSuchRefreshTokenException.class,
 			NoAuthenticationException.class
 	})
-	public ErrorResult emptyAuthorizationHeaderException(Exception e) {
-		return new ErrorResult("401", e.getMessage());
+	public ErrorResponse emptyAuthorizationHeaderException(Exception e) {
+		return new ErrorResponse("401", e.getMessage());
 	}
 }
