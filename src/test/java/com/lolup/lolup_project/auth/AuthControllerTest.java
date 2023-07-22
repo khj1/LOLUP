@@ -35,6 +35,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.auth.application.AuthService;
+import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
+import com.lolup.lolup_project.auth.dto.RefreshTokenDto;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
+import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
+import com.lolup.lolup_project.auth.presentation.AuthController;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(AuthController.class)

@@ -1,6 +1,9 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.application;
 
 import org.springframework.http.HttpHeaders;
+
+import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 
 import jakarta.servlet.http.HttpServletRequest;
 

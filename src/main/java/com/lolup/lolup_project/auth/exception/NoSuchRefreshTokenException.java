@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.exception;
 
 public class NoSuchRefreshTokenException extends RuntimeException {
 

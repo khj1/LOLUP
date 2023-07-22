@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.presentation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lolup.lolup_project.auth.application.AuthService;
+import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
+import com.lolup.lolup_project.auth.dto.RefreshTokenDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

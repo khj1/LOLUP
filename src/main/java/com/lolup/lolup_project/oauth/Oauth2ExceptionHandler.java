@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.lolup.lolup_project.auth.EmptyAuthorizationHeaderException;
-import com.lolup.lolup_project.auth.InvalidTokenException;
-import com.lolup.lolup_project.auth.NoAuthenticationException;
-import com.lolup.lolup_project.auth.NoSuchRefreshTokenException;
+import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
+import com.lolup.lolup_project.auth.exception.NoAuthenticationException;
+import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.exception.ErrorResult;
 
 @RestControllerAdvice

@@ -10,9 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.lolup.lolup_project.auth.AuthorizationExtractor;
-import com.lolup.lolup_project.auth.EmptyAuthorizationHeaderException;
-import com.lolup.lolup_project.auth.InvalidTokenException;
+import com.lolup.lolup_project.auth.application.AuthorizationExtractor;
+import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.member.Role;
 
 import jakarta.servlet.FilterChain;

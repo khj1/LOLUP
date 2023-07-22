@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.lolup.lolup_project.auth.InvalidTokenException;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 
 class JwtProviderTest {
 

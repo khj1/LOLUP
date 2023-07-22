@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.lolup.lolup_project.auth.application.AuthorizationExtractor;
+import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
+import com.lolup.lolup_project.auth.exception.InvalidTokenException;
+
 class AuthorizationExtractorTest {
 
 	public static final String BEARER_TYPE = "Bearer ";

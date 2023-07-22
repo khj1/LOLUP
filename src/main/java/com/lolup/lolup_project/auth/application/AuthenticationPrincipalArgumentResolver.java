@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.application;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -9,6 +9,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import com.lolup.lolup_project.auth.exception.NoAuthenticationException;
 
 @Component
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {

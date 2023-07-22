@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lolup.lolup_project.auth.AuthenticationPrincipal;
+import com.lolup.lolup_project.auth.application.AuthenticationPrincipal;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

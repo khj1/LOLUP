@@ -1,8 +1,10 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
+import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.token.JwtTokenProvider;
 import com.lolup.lolup_project.token.RefreshTokenRepository;
 

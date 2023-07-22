@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.application;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
