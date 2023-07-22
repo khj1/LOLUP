@@ -1,6 +1,7 @@
 package com.lolup.lolup_project.riotapi.summoner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.riotapi.match.NoSuchSummonerException;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -24,6 +26,9 @@ class SummonerServiceTest {
 	private static final String TEST_API_KEY = "testApiKey";
 	private static final String SUMMONER_NAME = "testSummonerName";
 	private static final String ENCRYPTED_SUMMONER_ID = "testEncryptedSummonerId";
+	private static final String WEB_CLIENT_BAD_REQUEST = "HTTP/1.1 404";
+	private static final String WEB_CLIENT_BAD_RESPONSE = "HTTP/1.1 500";
+	private static final String UNRANKED = "언랭크";
 
 	private static MockWebServer mockWebServer;
 	private static SummonerService summonerService;
@@ -61,6 +66,42 @@ class SummonerServiceTest {
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
 				.isEqualTo(라이엇_계정_정보_응답);
+	}
+
+	@DisplayName("계정 정보 호출 시 잘못된 소환사 이름을 입력하면 예외를 반환한다.")
+	@Test
+	void getAccountInfoWithWrongSummonerName() throws JsonProcessingException {
+		RiotErrorResponse 라이엇_에러_응답 = createRiotErrorResponse(404);
+
+		mockWebServer.enqueue(new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+				.setStatus(WEB_CLIENT_BAD_REQUEST)
+				.setBody(objectMapper.writeValueAsString(라이엇_에러_응답)));
+
+		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
+				.isInstanceOf(NoSuchSummonerException.class);
+	}
+
+	@DisplayName("계정 정보 호출 시 라이엇 API 서버 내부에서 문제가 발생하면 예외를 반환한다.")
+	@Test
+	void getAccountInfoWithBadResponseFromRiotApi() throws JsonProcessingException {
+		RiotErrorResponse 라이엇_에러_응답 = createRiotErrorResponse(500);
+
+		mockWebServer.enqueue(new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+				.setStatus(WEB_CLIENT_BAD_RESPONSE)
+				.setBody(objectMapper.writeValueAsString(라이엇_에러_응답)));
+
+		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
+				.isInstanceOf(RiotApiBadResponseException.class);
+	}
+
+	private RiotErrorResponse createRiotErrorResponse(int statusCode) {
+		ErrorStatus status = new ErrorStatus("error message", statusCode);
+
+		return new RiotErrorResponse(status);
 	}
 
 	@DisplayName("소환사의 랭크 정보를 불러온다.")
@@ -123,9 +164,29 @@ class SummonerServiceTest {
 		return SummonerRankInfo.builder()
 				.summonerName(SUMMONER_NAME)
 				.tier(SummonerTier.UNRANKED)
-				.rank("언랭크")
+				.rank(UNRANKED)
 				.wins(0)
 				.losses(0)
 				.build();
+	}
+
+	private class RiotErrorResponse {
+
+		private final ErrorStatus status;
+
+		public RiotErrorResponse(final ErrorStatus status) {
+			this.status = status;
+		}
+	}
+
+	private class ErrorStatus {
+
+		private final String message;
+		private final int statusCode;
+
+		public ErrorStatus(final String message, final int statusCode) {
+			this.message = message;
+			this.statusCode = statusCode;
+		}
 	}
 }
