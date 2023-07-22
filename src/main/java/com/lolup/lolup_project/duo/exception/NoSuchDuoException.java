@@ -1,7 +1,7 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.exception;
 
 public class NoSuchDuoException extends RuntimeException {
-	
+
 	public NoSuchDuoException(final String message) {
 		super(message);
 	}

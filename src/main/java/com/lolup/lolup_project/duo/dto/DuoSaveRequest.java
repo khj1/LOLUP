@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.dto;
 
 import java.time.LocalDateTime;
 

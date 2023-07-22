@@ -1,6 +1,6 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.domain;
 
-import static com.lolup.lolup_project.duo.QDuo.duo;
+import static com.lolup.lolup_project.duo.domain.QDuo.duo;
 import static com.lolup.lolup_project.member.QMember.member;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import com.lolup.lolup_project.duo.dto.DuoDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

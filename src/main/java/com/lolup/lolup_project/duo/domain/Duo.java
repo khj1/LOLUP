@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.domain;
 
 import java.util.ArrayList;
 import java.util.List;

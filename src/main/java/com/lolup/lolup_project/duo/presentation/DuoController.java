@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.presentation;
 
 import java.net.URI;
 
@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.application.AuthenticationPrincipal;
+import com.lolup.lolup_project.duo.application.DuoService;
+import com.lolup.lolup_project.duo.dto.DuoFindRequest;
+import com.lolup.lolup_project.duo.dto.DuoResponse;
+import com.lolup.lolup_project.duo.dto.DuoSaveRequest;
+import com.lolup.lolup_project.duo.dto.DuoUpdateRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

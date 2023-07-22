@@ -1,9 +1,10 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 
 import lombok.Builder;

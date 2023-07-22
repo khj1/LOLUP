@@ -48,6 +48,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.duo.application.DuoService;
+import com.lolup.lolup_project.duo.domain.Position;
+import com.lolup.lolup_project.duo.dto.DuoDto;
+import com.lolup.lolup_project.duo.dto.DuoResponse;
+import com.lolup.lolup_project.duo.dto.DuoSaveRequest;
+import com.lolup.lolup_project.duo.dto.DuoUpdateRequest;
+import com.lolup.lolup_project.duo.presentation.DuoController;
 import com.lolup.lolup_project.riotapi.summoner.MostInfo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
