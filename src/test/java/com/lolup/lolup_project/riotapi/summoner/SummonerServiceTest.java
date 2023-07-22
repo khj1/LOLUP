@@ -70,14 +70,11 @@ class SummonerServiceTest {
 
 	@DisplayName("계정 정보 호출 시 잘못된 소환사 이름을 입력하면 예외를 반환한다.")
 	@Test
-	void getAccountInfoWithWrongSummonerName() throws JsonProcessingException {
-		RiotErrorResponse 라이엇_에러_응답 = createRiotErrorResponse(404);
-
+	void getAccountInfoWithWrongSummonerName() {
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setStatus(WEB_CLIENT_BAD_REQUEST)
-				.setBody(objectMapper.writeValueAsString(라이엇_에러_응답)));
+				.setStatus(WEB_CLIENT_BAD_REQUEST));
 
 		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
 				.isInstanceOf(NoSuchSummonerException.class);
@@ -85,23 +82,14 @@ class SummonerServiceTest {
 
 	@DisplayName("계정 정보 호출 시 라이엇 API 서버 내부에서 문제가 발생하면 예외를 반환한다.")
 	@Test
-	void getAccountInfoWithBadResponseFromRiotApi() throws JsonProcessingException {
-		RiotErrorResponse 라이엇_에러_응답 = createRiotErrorResponse(500);
-
+	void getAccountInfoWithBadResponseFromRiotApi() {
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setStatus(WEB_CLIENT_BAD_RESPONSE)
-				.setBody(objectMapper.writeValueAsString(라이엇_에러_응답)));
+				.setStatus(WEB_CLIENT_BAD_RESPONSE));
 
 		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
 				.isInstanceOf(RiotApiBadResponseException.class);
-	}
-
-	private RiotErrorResponse createRiotErrorResponse(int statusCode) {
-		ErrorStatus status = new ErrorStatus("error message", statusCode);
-
-		return new RiotErrorResponse(status);
 	}
 
 	@DisplayName("소환사의 랭크 정보를 불러온다.")
@@ -168,25 +156,5 @@ class SummonerServiceTest {
 				.wins(0)
 				.losses(0)
 				.build();
-	}
-
-	private class RiotErrorResponse {
-
-		private final ErrorStatus status;
-
-		public RiotErrorResponse(final ErrorStatus status) {
-			this.status = status;
-		}
-	}
-
-	private class ErrorStatus {
-
-		private final String message;
-		private final int statusCode;
-
-		public ErrorStatus(final String message, final int statusCode) {
-			this.message = message;
-			this.statusCode = statusCode;
-		}
 	}
 }
