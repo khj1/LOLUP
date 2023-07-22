@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.oauth;
+package com.lolup.lolup_project.config.oauth;
 
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.Role;

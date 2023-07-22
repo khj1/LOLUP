@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.oauth;
+package com.lolup.lolup_project.config.oauth;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;

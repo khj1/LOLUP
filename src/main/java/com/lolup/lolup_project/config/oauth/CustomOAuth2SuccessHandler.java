@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.oauth;
+package com.lolup.lolup_project.config.oauth;
 
 import java.io.IOException;
 import java.util.Map;

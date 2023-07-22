@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.oauth;
+package com.lolup.lolup_project.auth.presentation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +21,7 @@ public class Oauth2ExceptionHandler {
 			NoSuchRefreshTokenException.class,
 			NoAuthenticationException.class
 	})
-	public ErrorResponse emptyAuthorizationHeaderException(Exception e) {
+	public ErrorResponse authorizationException(Exception e) {
 		return new ErrorResponse("401", e.getMessage());
 	}
 }
