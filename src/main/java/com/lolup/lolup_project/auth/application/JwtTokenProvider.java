@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.token;
+package com.lolup.lolup_project.auth.application;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.auth.application.AuthService;
+import com.lolup.lolup_project.auth.application.JwtTokenProvider;
+import com.lolup.lolup_project.auth.domain.RefreshToken;
+import com.lolup.lolup_project.auth.domain.RefreshTokenRepository;
 import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.member.domain.Role;
-import com.lolup.lolup_project.token.JwtTokenProvider;
-import com.lolup.lolup_project.token.RefreshToken;
-import com.lolup.lolup_project.token.RefreshTokenRepository;
 
 @SpringBootTest
 @Transactional

@@ -12,11 +12,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.lolup.lolup_project.auth.application.JwtTokenProvider;
+import com.lolup.lolup_project.auth.presentation.JwtAuthenticationFilter;
 import com.lolup.lolup_project.oauth.CustomAuthenticationEntryPoint;
 import com.lolup.lolup_project.oauth.CustomOAuth2SuccessHandler;
 import com.lolup.lolup_project.oauth.CustomOAuth2UserService;
-import com.lolup.lolup_project.token.JwtAuthenticationFilter;
-import com.lolup.lolup_project.token.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 

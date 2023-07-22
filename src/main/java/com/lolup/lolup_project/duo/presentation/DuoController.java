@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lolup.lolup_project.auth.application.AuthenticationPrincipal;
+import com.lolup.lolup_project.auth.presentation.AuthenticationPrincipal;
 import com.lolup.lolup_project.duo.application.DuoService;
 import com.lolup.lolup_project.duo.dto.DuoFindRequest;
 import com.lolup.lolup_project.duo.dto.DuoResponse;

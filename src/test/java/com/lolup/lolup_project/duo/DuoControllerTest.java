@@ -48,6 +48,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.auth.application.JwtTokenProvider;
 import com.lolup.lolup_project.duo.application.DuoService;
 import com.lolup.lolup_project.duo.domain.Position;
 import com.lolup.lolup_project.duo.dto.DuoDto;
@@ -59,7 +60,6 @@ import com.lolup.lolup_project.riotapi.summoner.MostInfo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
 import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
-import com.lolup.lolup_project.token.JwtTokenProvider;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(DuoController.class)

@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.token;
+package com.lolup.lolup_project.auth.presentation;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.lolup.lolup_project.auth.application.AuthorizationExtractor;
+import com.lolup.lolup_project.auth.application.JwtTokenProvider;
 import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.member.domain.Role;

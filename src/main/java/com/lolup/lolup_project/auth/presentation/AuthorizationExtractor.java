@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth.application;
+package com.lolup.lolup_project.auth.presentation;
 
 import org.springframework.http.HttpHeaders;
 
