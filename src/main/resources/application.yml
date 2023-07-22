@@ -81,6 +81,8 @@ security:
         expire-length: 3600000 #1시간
       refresh:
         expire-length: 1210000000 #14일
+  riot:
+    api-key: ENC(UjtUGvJFfPY1c8twycp9iYHGCIx+4N2Un5wJLsStZvvgMIED72wbT/q5cXJsX3qSINEzfCc1XR8=)
 
 jasypt:
   encryptor:
