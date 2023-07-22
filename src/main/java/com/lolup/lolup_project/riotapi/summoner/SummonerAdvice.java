@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import com.lolup.lolup_project.exception.ErrorResult;
+import com.lolup.lolup_project.common.ErrorResult;
 
 @RestControllerAdvice(assignableTypes = SummonerController.class)
 public class SummonerAdvice {

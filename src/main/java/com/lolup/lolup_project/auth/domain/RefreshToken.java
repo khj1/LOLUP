@@ -1,6 +1,6 @@
 package com.lolup.lolup_project.auth.domain;
 
-import com.lolup.lolup_project.base.BaseTimeEntity;
+import com.lolup.lolup_project.common.BaseTimeEntity;
 import com.lolup.lolup_project.member.domain.Member;
 
 import jakarta.persistence.Column;

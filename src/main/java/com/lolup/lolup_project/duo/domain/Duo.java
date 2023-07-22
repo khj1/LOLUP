@@ -3,7 +3,7 @@ package com.lolup.lolup_project.duo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lolup.lolup_project.base.BaseTimeEntity;
+import com.lolup.lolup_project.common.BaseTimeEntity;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.riotapi.summoner.MostInfo;
 import com.lolup.lolup_project.riotapi.summoner.SummonerDto;

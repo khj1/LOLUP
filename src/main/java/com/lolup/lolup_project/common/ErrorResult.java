@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.exception;
+package com.lolup.lolup_project.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.lolup.lolup_project.riotapi.summoner;
 
-import com.lolup.lolup_project.base.BaseTimeEntity;
+import com.lolup.lolup_project.common.BaseTimeEntity;
 import com.lolup.lolup_project.duo.domain.Duo;
 
 import jakarta.persistence.Column;

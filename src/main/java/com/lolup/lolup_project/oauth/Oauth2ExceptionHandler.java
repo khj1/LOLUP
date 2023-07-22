@@ -9,7 +9,7 @@ import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.auth.exception.NoAuthenticationException;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
-import com.lolup.lolup_project.exception.ErrorResult;
+import com.lolup.lolup_project.common.ErrorResult;
 
 @RestControllerAdvice
 public class Oauth2ExceptionHandler {

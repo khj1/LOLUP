@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.base;
+package com.lolup.lolup_project.common;
 
 import java.time.LocalDateTime;
 
