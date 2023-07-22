@@ -12,9 +12,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.lolup.lolup_project.member.Member;
-import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.UserProfile;
+import com.lolup.lolup_project.member.domain.Member;
+import com.lolup.lolup_project.member.domain.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.member.domain;
 
 import java.util.List;
 

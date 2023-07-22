@@ -1,7 +1,7 @@
 package com.lolup.lolup_project.duo.domain;
 
 import static com.lolup.lolup_project.duo.domain.QDuo.duo;
-import static com.lolup.lolup_project.member.QMember.member;
+import static com.lolup.lolup_project.member.domain.QMember.member;
 
 import java.util.List;
 import java.util.stream.Collectors;

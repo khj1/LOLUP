@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

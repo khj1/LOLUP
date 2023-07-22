@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.member.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.application.AuthenticationPrincipal;
+import com.lolup.lolup_project.member.application.MemberService;
+import com.lolup.lolup_project.member.dto.MemberUpdateRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

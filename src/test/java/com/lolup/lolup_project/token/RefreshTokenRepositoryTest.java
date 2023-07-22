@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Import;
 
 import com.lolup.lolup_project.config.JpaAuditingConfig;
 import com.lolup.lolup_project.config.QuerydslConfig;
-import com.lolup.lolup_project.member.Member;
-import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.Role;
+import com.lolup.lolup_project.member.domain.Member;
+import com.lolup.lolup_project.member.domain.MemberRepository;
+import com.lolup.lolup_project.member.domain.Role;
 
 @DataJpaTest
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})

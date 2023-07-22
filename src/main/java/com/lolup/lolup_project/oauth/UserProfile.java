@@ -1,4 +1,7 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.oauth;
+
+import com.lolup.lolup_project.member.domain.Member;
+import com.lolup.lolup_project.member.domain.Role;
 
 import lombok.Builder;
 import lombok.Getter;

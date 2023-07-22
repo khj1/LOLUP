@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.lolup.lolup_project.auth.application.AuthorizationExtractor;
 import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
-import com.lolup.lolup_project.member.Role;
+import com.lolup.lolup_project.member.domain.Role;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -10,9 +10,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.lolup.lolup_project.member.Member;
-import com.lolup.lolup_project.member.MemberRepository;
-import com.lolup.lolup_project.member.UserProfile;
+import com.lolup.lolup_project.member.domain.Member;
+import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.token.JwtTokenProvider;
 import com.lolup.lolup_project.token.RefreshToken;
 import com.lolup.lolup_project.token.RefreshTokenRepository;

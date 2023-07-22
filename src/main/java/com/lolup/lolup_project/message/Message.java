@@ -1,7 +1,7 @@
 package com.lolup.lolup_project.message;
 
 import com.lolup.lolup_project.base.BaseTimeEntity;
-import com.lolup.lolup_project.member.Member;
+import com.lolup.lolup_project.member.domain.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
