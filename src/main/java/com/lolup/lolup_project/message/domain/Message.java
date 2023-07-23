@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.message;
+package com.lolup.lolup_project.message.domain;
 
 import com.lolup.lolup_project.common.BaseTimeEntity;
 import com.lolup.lolup_project.member.domain.Member;

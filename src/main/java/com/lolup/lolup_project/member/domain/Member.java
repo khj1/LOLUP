@@ -3,7 +3,7 @@ package com.lolup.lolup_project.member.domain;
 import java.util.List;
 
 import com.lolup.lolup_project.common.BaseTimeEntity;
-import com.lolup.lolup_project.message.Message;
+import com.lolup.lolup_project.message.domain.Message;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

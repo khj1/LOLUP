@@ -1,10 +1,13 @@
-package com.lolup.lolup_project.message;
+package com.lolup.lolup_project.message.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
+import com.lolup.lolup_project.message.application.dto.MessageDto;
+import com.lolup.lolup_project.message.domain.Message;
+import com.lolup.lolup_project.message.domain.MessageRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

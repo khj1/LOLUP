@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.message;
+package com.lolup.lolup_project.message.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
