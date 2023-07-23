@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -55,7 +55,6 @@ import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
 import com.lolup.lolup_project.duo.domain.Position;
-import com.lolup.lolup_project.duo.presentation.DuoController;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
 import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;
 import com.lolup.lolup_project.riot.summoner.application.SummonerTier;

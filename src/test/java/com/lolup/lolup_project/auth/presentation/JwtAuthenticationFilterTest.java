@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.token;
+package com.lolup.lolup_project.auth.presentation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

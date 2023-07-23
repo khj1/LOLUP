@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot.summoner;
+package com.lolup.lolup_project.riot.summoner.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,8 +17,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
-import com.lolup.lolup_project.riot.summoner.application.SummonerService;
-import com.lolup.lolup_project.riot.summoner.application.SummonerTier;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 import com.lolup.lolup_project.riot.summoner.exception.RiotApiBadResponseException;
 

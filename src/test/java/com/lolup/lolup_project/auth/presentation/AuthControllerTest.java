@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -39,7 +39,6 @@ import com.lolup.lolup_project.auth.application.AuthService;
 import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
-import com.lolup.lolup_project.auth.presentation.AuthController;
 import com.lolup.lolup_project.auth.presentation.dto.RefreshTokenDto;
 
 @ExtendWith(RestDocumentationExtension.class)

@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot.match;
+package com.lolup.lolup_project.riot.match.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lolup.lolup_project.riot.match.application.MatchService;
 import com.lolup.lolup_project.riot.match.application.dto.MatchDto;
 import com.lolup.lolup_project.riot.match.application.dto.MatchInfoDto;
 import com.lolup.lolup_project.riot.match.application.dto.ParticipantDto;

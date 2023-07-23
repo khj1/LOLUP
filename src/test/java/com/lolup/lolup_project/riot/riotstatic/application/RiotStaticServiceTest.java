@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot.riotstatic;
+package com.lolup.lolup_project.riot.riotstatic.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.riot.riotstatic.RiotStaticService;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;

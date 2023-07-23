@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo;
+package com.lolup.lolup_project.duo.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,9 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import com.lolup.lolup_project.config.QuerydslConfig;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
-import com.lolup.lolup_project.duo.domain.Duo;
-import com.lolup.lolup_project.duo.domain.DuoRepository;
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;

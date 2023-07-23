@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.presentation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -10,7 +10,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.lolup.lolup_project.auth.exception.EmptyAuthorizationHeaderException;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
-import com.lolup.lolup_project.auth.presentation.AuthorizationExtractor;
 
 class AuthorizationExtractorTest {
 

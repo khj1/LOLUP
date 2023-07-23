@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.riot.summoner;
+package com.lolup.lolup_project.riot.summoner.presentation;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -26,7 +26,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import com.lolup.lolup_project.riot.summoner.application.SummonerService;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
-import com.lolup.lolup_project.riot.summoner.presentation.SummonerController;
 
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 @WithMockUser

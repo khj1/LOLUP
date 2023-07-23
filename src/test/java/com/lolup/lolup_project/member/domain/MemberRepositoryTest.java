@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.member;
+package com.lolup.lolup_project.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,9 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
 import com.lolup.lolup_project.config.TestConfig;
-import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.member.domain.MemberRepository;
-import com.lolup.lolup_project.member.domain.Role;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest(showSql = false)

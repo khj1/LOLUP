@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth;
+package com.lolup.lolup_project.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lolup.lolup_project.auth.application.AuthService;
-import com.lolup.lolup_project.auth.application.JwtTokenProvider;
 import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.domain.RefreshToken;
 import com.lolup.lolup_project.auth.domain.RefreshTokenRepository;

@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.token;
+package com.lolup.lolup_project.auth.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import com.lolup.lolup_project.auth.domain.RefreshToken;
-import com.lolup.lolup_project.auth.domain.RefreshTokenRepository;
 import com.lolup.lolup_project.config.JpaAuditingConfig;
 import com.lolup.lolup_project.config.QuerydslConfig;
 import com.lolup.lolup_project.member.domain.Member;
