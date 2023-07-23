@@ -1,22 +1,23 @@
-package com.lolup.lolup_project.duo.dto;
+package com.lolup.lolup_project.duo.application.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DuoSaveRequest {
 	private String summonerName;
 	private String position;
 	private String desc;
 	private LocalDateTime postDate;
 
-	private DuoSaveRequest() {
-	}
-
 	@Builder
-	public DuoSaveRequest(String summonerName, String position, String desc, LocalDateTime postDate) {
+	public DuoSaveRequest(final String summonerName, final String position, final String desc,
+						  final LocalDateTime postDate) {
 		this.summonerName = summonerName;
 		this.position = position;
 		this.desc = desc;

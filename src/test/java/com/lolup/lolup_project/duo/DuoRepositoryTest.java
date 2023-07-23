@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
 import com.lolup.lolup_project.config.TestConfig;
+import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
-import com.lolup.lolup_project.duo.dto.DuoDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.riotapi.summoner.MostInfo;

@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.presentation.AuthenticationPrincipal;
 import com.lolup.lolup_project.duo.application.DuoService;
-import com.lolup.lolup_project.duo.dto.DuoFindRequest;
-import com.lolup.lolup_project.duo.dto.DuoResponse;
-import com.lolup.lolup_project.duo.dto.DuoSaveRequest;
-import com.lolup.lolup_project.duo.dto.DuoUpdateRequest;
+import com.lolup.lolup_project.duo.application.dto.DuoResponse;
+import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
+import com.lolup.lolup_project.duo.presentation.dto.DuoFindRequest;
+import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

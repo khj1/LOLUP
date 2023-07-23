@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.duo.dto;
+package com.lolup.lolup_project.duo.application.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,12 +7,13 @@ import java.util.stream.Collectors;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DuoDto {
 	private Long duoId;
 	private Long memberId;

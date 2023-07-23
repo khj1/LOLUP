@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-import com.lolup.lolup_project.duo.dto.DuoDto;
+import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

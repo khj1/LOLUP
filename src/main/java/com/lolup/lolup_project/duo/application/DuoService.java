@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lolup.lolup_project.duo.application.dto.DuoDto;
+import com.lolup.lolup_project.duo.application.dto.DuoResponse;
+import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
-import com.lolup.lolup_project.duo.dto.DuoDto;
-import com.lolup.lolup_project.duo.dto.DuoResponse;
-import com.lolup.lolup_project.duo.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
