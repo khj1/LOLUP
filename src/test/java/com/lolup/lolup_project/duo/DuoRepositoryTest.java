@@ -7,43 +7,40 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
-import com.lolup.lolup_project.config.TestConfig;
+import com.lolup.lolup_project.config.QuerydslConfig;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
+import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
+import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
-import com.lolup.lolup_project.riotapi.summoner.MostInfo;
-import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
-import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
-import com.lolup.lolup_project.riotapi.summoner.SummonerRankInfo;
-import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
+import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;
+import com.lolup.lolup_project.riot.summoner.application.SummonerTier;
+import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
 
 import jakarta.persistence.EntityManager;
 
-@DataJpaTest(showSql = false)
-@Transactional
-@Import(TestConfig.class)
-@ImportAutoConfiguration(DataSourceDecoratorAutoConfiguration.class)
+@Import(QuerydslConfig.class)
+@DataJpaTest
 class DuoRepositoryTest {
 
 	@Autowired
 	private EntityManager em;
+
 	@Autowired
 	private DuoRepository duoRepository;
+
 	@Autowired
 	private MemberRepository memberRepository;
 
 	@Test
-	public void 듀오_추가_테스트() throws Exception {
+	public void 듀오_추가_테스트() {
 		//given
 		Duo duo = getDuo(SummonerTier.BRONZE, SummonerPosition.BOT);
 

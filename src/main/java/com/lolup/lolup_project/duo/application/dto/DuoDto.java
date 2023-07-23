@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lolup.lolup_project.duo.domain.Duo;
-import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DuoDto {
+
 	private Long duoId;
 	private Long memberId;
 	private int iconId;

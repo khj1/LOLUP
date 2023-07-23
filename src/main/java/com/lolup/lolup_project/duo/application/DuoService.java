@@ -8,19 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
+import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
+import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.member.exception.NoSuchMemberException;
-import com.lolup.lolup_project.riotapi.match.MatchService;
-import com.lolup.lolup_project.riotapi.match.RecentMatchStatsDto;
-import com.lolup.lolup_project.riotapi.riotstatic.RiotStaticService;
-import com.lolup.lolup_project.riotapi.summoner.SummonerAccountDto;
-import com.lolup.lolup_project.riotapi.summoner.SummonerDto;
-import com.lolup.lolup_project.riotapi.summoner.SummonerRankInfo;
-import com.lolup.lolup_project.riotapi.summoner.SummonerService;
+import com.lolup.lolup_project.riot.match.application.MatchService;
+import com.lolup.lolup_project.riot.match.application.dto.RecentMatchStatsDto;
+import com.lolup.lolup_project.riot.riotstatic.RiotStaticService;
+import com.lolup.lolup_project.riot.summoner.application.SummonerService;
+import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 
 import lombok.RequiredArgsConstructor;
 

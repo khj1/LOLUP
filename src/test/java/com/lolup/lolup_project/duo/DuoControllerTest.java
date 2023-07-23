@@ -53,13 +53,13 @@ import com.lolup.lolup_project.duo.application.DuoService;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
+import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
 import com.lolup.lolup_project.duo.domain.Position;
 import com.lolup.lolup_project.duo.presentation.DuoController;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
-import com.lolup.lolup_project.riotapi.summoner.MostInfo;
-import com.lolup.lolup_project.riotapi.summoner.MostInfoDto;
-import com.lolup.lolup_project.riotapi.summoner.SummonerPosition;
-import com.lolup.lolup_project.riotapi.summoner.SummonerTier;
+import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;
+import com.lolup.lolup_project.riot.summoner.application.SummonerTier;
+import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(DuoController.class)
