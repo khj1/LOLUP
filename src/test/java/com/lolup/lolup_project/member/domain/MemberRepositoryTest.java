@@ -3,27 +3,21 @@ package com.lolup.lolup_project.member.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
-import com.lolup.lolup_project.config.TestConfig;
+import com.lolup.lolup_project.config.QuerydslConfig;
 
-@ExtendWith(SpringExtension.class)
-@DataJpaTest(showSql = false)
-@Import(TestConfig.class)
-@ImportAutoConfiguration(DataSourceDecoratorAutoConfiguration.class)
+@Import(QuerydslConfig.class)
+@DataJpaTest
 class MemberRepositoryTest {
 
 	@Autowired
 	MemberRepository memberRepository;
 
 	@Test
-	public void 중복은_업데이트() throws Exception {
+	public void 중복은_업데이트() {
 		//given
 		String email = "my@email.com";
 
