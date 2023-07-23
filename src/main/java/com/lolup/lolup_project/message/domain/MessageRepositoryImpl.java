@@ -1,7 +1,7 @@
 package com.lolup.lolup_project.message.domain;
 
-import static com.lolup.lolup_project.member.QMember.member;
-import static com.lolup.lolup_project.message.QMessage.message1;
+import static com.lolup.lolup_project.member.domain.QMember.member;
+import static com.lolup.lolup_project.message.domain.QMessage.message1;
 
 import java.util.Optional;
 
