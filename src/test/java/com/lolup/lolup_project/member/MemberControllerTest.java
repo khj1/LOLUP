@@ -33,8 +33,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.auth.application.JwtTokenProvider;
 import com.lolup.lolup_project.member.application.MemberService;
-import com.lolup.lolup_project.member.dto.MemberUpdateRequest;
 import com.lolup.lolup_project.member.presentation.MemberController;
+import com.lolup.lolup_project.member.presentation.dto.MemberUpdateRequest;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(MemberController.class)

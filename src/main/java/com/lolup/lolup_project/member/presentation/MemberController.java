@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.presentation.AuthenticationPrincipal;
 import com.lolup.lolup_project.member.application.MemberService;
-import com.lolup.lolup_project.member.dto.MemberUpdateRequest;
+import com.lolup.lolup_project.member.presentation.dto.MemberUpdateRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
