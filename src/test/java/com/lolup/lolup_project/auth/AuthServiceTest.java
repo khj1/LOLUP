@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.auth.application.AuthService;
 import com.lolup.lolup_project.auth.application.JwtTokenProvider;
+import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.domain.RefreshToken;
 import com.lolup.lolup_project.auth.domain.RefreshTokenRepository;
-import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;

@@ -1,6 +1,5 @@
 package com.lolup.lolup_project.auth.presentation;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.lolup_project.auth.application.AuthService;
-import com.lolup.lolup_project.auth.dto.AccessTokenResponse;
-import com.lolup.lolup_project.auth.dto.RefreshTokenDto;
+import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
+import com.lolup.lolup_project.auth.presentation.dto.RefreshTokenDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +29,8 @@ public class AuthController {
 
 	@PostMapping("/refresh")
 	public ResponseEntity<AccessTokenResponse> refreshToken(@Valid @RequestBody final RefreshTokenDto refreshRequest) {
-		AccessTokenResponse response = authService.refreshToken(refreshRequest.getRefreshToken());
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		AccessTokenResponse accessTokenResponse = authService.refreshToken(refreshRequest.getRefreshToken());
+		return ResponseEntity.ok().body(accessTokenResponse);
 	}
 
 	@PostMapping("/logout")

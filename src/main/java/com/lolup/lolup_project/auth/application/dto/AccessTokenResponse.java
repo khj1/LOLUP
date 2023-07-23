@@ -1,4 +1,4 @@
-package com.lolup.lolup_project.auth.dto;
+package com.lolup.lolup_project.auth.application.dto;
 
 public class AccessTokenResponse {
 
