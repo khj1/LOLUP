@@ -15,6 +15,7 @@ import lombok.Getter;
 @MappedSuperclass
 @Getter
 public class BaseTimeEntity {
+	
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime createdDate;
