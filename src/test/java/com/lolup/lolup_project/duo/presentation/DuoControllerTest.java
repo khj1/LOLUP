@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -56,7 +57,10 @@ import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
+import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
+import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
+import com.lolup.lolup_project.member.exception.NoSuchMemberException;
 import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -87,9 +91,9 @@ class DuoControllerTest {
 				.build();
 	}
 
-	@DisplayName("모집글을 추가한다.")
+	@DisplayName("모집글 추가에 성공하면 상태코드 201을 반환한다.")
 	@Test
-	void createDuo() throws Exception {
+	void save() throws Exception {
 		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
 
 		willDoNothing()
@@ -115,9 +119,38 @@ class DuoControllerTest {
 				.andExpect(status().isCreated());
 	}
 
-	@DisplayName("모집글을 모두 조회한다.")
+	@DisplayName("유효하지 않은 멤버 ID로 듀오 모집글을 생성하면 상태코드 404를 반환한다.")
 	@Test
-	void 모집글_모두_조회() throws Exception {
+	void saveWithInvalidMemberId() throws Exception {
+		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
+
+		willThrow(new NoSuchMemberException())
+				.given(duoService)
+				.save(anyLong(), any(DuoSaveRequest.class));
+
+		mockMvc.perform(post("/duo/new/failByNoMember")
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(듀오_생성_요청))
+				)
+				.andDo(document("duo/create",
+						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
+						),
+						requestFields(
+								fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
+								fieldWithPath("position").description("주 포지션"),
+								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다.")
+						)))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@DisplayName("모집글 조회에 성공하면 상태코드 200을 반환한다.")
+	@Test
+	void findAll() throws Exception {
 		DuoResponse 모집글_조회_응답 = createDuoResponse();
 
 		given(duoService.findAll(any(), any(), any()))
@@ -162,9 +195,9 @@ class DuoControllerTest {
 				.andExpect(status().isOk());
 	}
 
-	@DisplayName("모집글을 수정한다.")
+	@DisplayName("모집글을 수정에 성공하면 상태코드 204를 반환한다.")
 	@Test
-	void updateDuo() throws Exception {
+	void update() throws Exception {
 		willDoNothing()
 				.given(duoService)
 				.update(anyLong(), any(), any());
@@ -193,11 +226,41 @@ class DuoControllerTest {
 				.andExpect(status().isNoContent());
 	}
 
-	@DisplayName("모집글 제거한다.")
+	@DisplayName("잘못된 멤버 ID로 모집글을 수정하면 시도하면 상태코드 404를 반환한다.")
+	@Test
+	void updateWithInvalidDuoId() throws Exception {
+		willThrow(new NoSuchDuoException())
+				.given(duoService)
+				.update(anyLong(), any(), any());
+
+		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
+
+		mockMvc.perform(patch("/duo/{duoId}", 1L)
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(듀오_수정_요청))
+				)
+				.andDo(document("duo/update/failByNoDuo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
+						),
+						pathParameters(
+								parameterWithName("duoId").description("모집글 식별자")
+						),
+						requestFields(
+								fieldWithPath("position").description("주 포지션"),
+								fieldWithPath("desc").description("신청자 모집을 위한 간단한 문구")
+						)))
+				.andExpect(status().isNotFound());
+	}
+
+	@DisplayName("모집글 제거에 성공하면 상태코드 204를 반환한다.")
 	@Test
 	void deleteDuo() throws Exception {
 		Long duoId = 1L;
-
 		willDoNothing()
 				.given(duoService)
 				.delete(anyLong(), anyLong());
@@ -217,6 +280,31 @@ class DuoControllerTest {
 								parameterWithName("duoId").description("모집글 식별자")
 						)))
 				.andExpect(status().isNoContent());
+	}
+
+	@DisplayName("모집글 제거 시 잘못된 멤버 ID 또는 듀오 ID를 입력하면 상태코드 404를 반환한다.")
+	@Test
+	void deleteDuoWithInvalidID() throws Exception {
+		Long duoId = 1L;
+		willThrow(new DuoDeleteFailureException())
+				.given(duoService)
+				.delete(any(), any());
+
+		mockMvc.perform(delete("/duo/{duoId}", duoId)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+				)
+				.andDo(document("duo/delete/failByInvalidId",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestHeaders(
+								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 엑세스 토큰")
+						),
+						pathParameters(
+								parameterWithName("duoId").description("모집글 식별자")
+						)))
+				.andExpect(status().isNotFound());
 	}
 
 	private DuoSaveRequest createDuoSaveRequest() {
