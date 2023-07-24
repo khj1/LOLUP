@@ -18,7 +18,7 @@ public class SummonerService {
 
 	private static final String ACCOUNT_INFO_REQUEST_URI = "/lol/summoner/v4/summoners/by-name/{summonerName}?api_key={apiKey}";
 	private static final String RANK_INFO_REQUEST_URI = "/lol/league/v4/entries/by-summoner/{encryptedSummonerId}?api_key={apiKey}";
-	private static final String UNRANKED = "언랭크";
+	private static final String UNRANKED = "UNRANKED";
 	private static final int INITIAL_WINS = 0;
 	private static final int INITIAL_LOSSES = 0;
 
@@ -55,7 +55,7 @@ public class SummonerService {
 	private SummonerRankInfo createUnrankedInfo(final String summonerName) {
 		return SummonerRankInfo.builder()
 				.summonerName(summonerName)
-				.tier(SummonerTier.UNRANKED)
+				.tier(UNRANKED)
 				.rank(UNRANKED)
 				.wins(INITIAL_WINS)
 				.losses(INITIAL_LOSSES)

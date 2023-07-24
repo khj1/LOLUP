@@ -53,10 +53,9 @@ import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
-import com.lolup.lolup_project.duo.domain.Position;
+import com.lolup.lolup_project.duo.domain.SummonerPosition;
+import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
-import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;
-import com.lolup.lolup_project.riot.summoner.application.SummonerTier;
 import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -124,8 +123,8 @@ class DuoControllerTest {
 				.willReturn(모집글_조회_응답);
 
 		mockMvc.perform(get("/duo")
-						.queryParam("position", Position.MID.toString())
-						.queryParam("tier", SummonerTier.PLATINUM)
+						.queryParam("position", SummonerPosition.MID.name())
+						.queryParam("tier", SummonerTier.PLATINUM.name())
 						.queryParam("page", "0")
 						.queryParam("size", "20")
 				)
@@ -169,7 +168,7 @@ class DuoControllerTest {
 				.given(duoService)
 				.update(anyLong(), any(), any());
 
-		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
+		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID.name(), "description");
 
 		mockMvc.perform(patch("/duo/{duoId}", 1L)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
@@ -221,7 +220,7 @@ class DuoControllerTest {
 
 	private DuoSaveRequest createDuoSaveRequest() {
 		return DuoSaveRequest.builder()
-				.position(SummonerPosition.MID)
+				.position(SummonerPosition.MID.name())
 				.summonerName("hideonbush")
 				.desc("hi")
 				.build();
@@ -250,12 +249,12 @@ class DuoControllerTest {
 				.losses(300)
 				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
 				.rank("IV")
-				.tier(SummonerTier.BRONZE)
+				.tier(SummonerTier.BRONZE.name())
 				.desc("hi")
 				.wins(400)
 				.memberId(1L)
 				.summonerName("hideonbush")
-				.position(SummonerPosition.MID)
+				.position(SummonerPosition.MID.name())
 				.build();
 	}
 

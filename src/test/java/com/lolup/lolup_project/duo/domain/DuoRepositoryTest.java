@@ -17,8 +17,6 @@ import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
-import com.lolup.lolup_project.riot.summoner.application.SummonerPosition;
-import com.lolup.lolup_project.riot.summoner.application.SummonerTier;
 import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
 
 import jakarta.persistence.EntityManager;
@@ -61,8 +59,8 @@ class DuoRepositoryTest {
 		// when
 		PageRequest page = PageRequest.of(0, 20);
 
-		Page<DuoDto> gold_jug = duoRepository.findAll(SummonerTier.GOLD, SummonerPosition.JUG, page);
-		Page<DuoDto> gold = duoRepository.findAll(SummonerTier.GOLD, null, page);
+		Page<DuoDto> gold_jug = duoRepository.findAll(SummonerTier.GOLD.name(), SummonerPosition.JUG.name(), page);
+		Page<DuoDto> gold = duoRepository.findAll(SummonerTier.GOLD.name(), null, page);
 		Page<DuoDto> all = duoRepository.findAll(null, null, page);
 
 		List<DuoDto> list_gold_jug = gold_jug.getContent();
@@ -72,14 +70,14 @@ class DuoRepositoryTest {
 		long size_gold_jug = gold_jug.getNumberOfElements();
 		long count_gold_jug = list_gold_jug.stream()
 				.filter(dto ->
-						dto.getPosition().equals(SummonerPosition.JUG) &&
-								dto.getTier().equals(SummonerTier.GOLD)
+						dto.getPosition().equals(SummonerPosition.JUG.name()) &&
+								dto.getTier().equals(SummonerTier.GOLD.name())
 				)
 				.count();
 
 		long size_gold = gold.getNumberOfElements();
 		long count_gold = list_gold.stream()
-				.filter(dto -> dto.getTier().equals(SummonerTier.GOLD))
+				.filter(dto -> dto.getTier().equals(SummonerTier.GOLD.name()))
 				.count();
 
 		long size_all = all.getTotalElements();
@@ -98,7 +96,7 @@ class DuoRepositoryTest {
 		em.clear();
 
 		//when
-		duoRepository.findById(beforeId).orElse(null).update(SummonerPosition.BOT, "updated");
+		duoRepository.findById(beforeId).orElse(null).update(SummonerPosition.BOT.name(), "updated");
 
 		em.flush();
 		em.clear();
@@ -107,7 +105,7 @@ class DuoRepositoryTest {
 
 		//then
 		assertThat(findDuo.getDesc()).isEqualTo("updated");
-		assertThat(findDuo.getPosition()).isEqualTo(SummonerPosition.BOT);
+		assertThat(findDuo.getPosition()).isEqualTo(SummonerPosition.BOT.name());
 	}
 
 	@Test
@@ -132,8 +130,11 @@ class DuoRepositoryTest {
 		assertThat(duoRepository.findById(duoId).orElse(null)).isNull();
 	}
 
-	private Duo getDuo(final String tier, final String position) {
-		Member member = Member.builder().name(position + " " + tier).build();
+	private Duo getDuo(final SummonerTier tier, final SummonerPosition position) {
+		Member member = Member.builder()
+				.name(position.name() + " " + tier.name())
+				.build();
+
 		memberRepository.save(member);
 
 		List<MostInfo> most3 = new ArrayList<>();
@@ -143,12 +144,12 @@ class DuoRepositoryTest {
 
 		SummonerRankInfo info = SummonerRankInfo.builder()
 				.summonerName("summonerName")
-				.rank("3").tier(tier)
+				.rank(SummonerRank.III.name()).tier(tier.name())
 				.wins(100).losses(100)
 				.build();
 
 		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
 
-		return Duo.create(member, summonerDto, position, "hi");
+		return Duo.create(member, summonerDto, position.name(), "hi");
 	}
 }
