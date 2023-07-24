@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -111,8 +110,7 @@ class DuoControllerTest {
 						requestFields(
 								fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
 								fieldWithPath("position").description("주 포지션"),
-								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
-								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간")
+								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다.")
 						)))
 				.andExpect(status().isCreated());
 	}
@@ -226,7 +224,6 @@ class DuoControllerTest {
 				.position(SummonerPosition.MID)
 				.summonerName("hideonbush")
 				.desc("hi")
-				.postDate(LocalDateTime.now())
 				.build();
 	}
 
@@ -257,7 +254,6 @@ class DuoControllerTest {
 				.desc("hi")
 				.wins(400)
 				.memberId(1L)
-				.postDate(LocalDateTime.now())
 				.summonerName("hideonbush")
 				.position(SummonerPosition.MID)
 				.build();
