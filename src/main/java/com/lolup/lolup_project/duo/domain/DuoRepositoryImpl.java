@@ -36,22 +36,30 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 				.orderBy(duo.id.desc())
 				.fetch();
 
-		List<DuoDto> content = results.stream()
-				.map(DuoDto::create)
-				.collect(Collectors.toList());
-
-		long total = queryFactory
-				.selectFrom(duo)
-				.fetchCount();
+		List<DuoDto> content = toDto(results);
+		long total = countTotal();
 
 		return new PageImpl<>(content, pageable, total);
+	}
+
+	private BooleanExpression positionEq(final SummonerPosition position) {
+		return position == null ? null : duo.position.eq(position);
 	}
 
 	private BooleanExpression tierEq(final SummonerTier tier) {
 		return tier == null ? null : duo.info.tier.eq(tier);
 	}
 
-	private BooleanExpression positionEq(final SummonerPosition position) {
-		return position == null ? null : duo.position.eq(position);
+	private List<DuoDto> toDto(final List<Duo> results) {
+		return results.stream()
+				.map(DuoDto::create)
+				.collect(Collectors.toList());
+	}
+
+	private int countTotal() {
+		return queryFactory
+				.selectFrom(duo)
+				.fetch()
+				.size();
 	}
 }
