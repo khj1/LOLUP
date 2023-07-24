@@ -25,7 +25,7 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<DuoDto> findAll(String position, String tier, Pageable pageable) {
+	public Page<DuoDto> findAll(final String position, final String tier, final Pageable pageable) {
 		List<Duo> results = queryFactory
 				.selectFrom(duo)
 				.join(duo.member, member).fetchJoin()
@@ -48,11 +48,11 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 		return new PageImpl<>(content, pageable, total);
 	}
 
-	private BooleanExpression tierEq(String tier) {
+	private BooleanExpression tierEq(final String tier) {
 		return StringUtils.hasText(tier) ? duo.info.tier.eq(tier) : null;
 	}
 
-	private BooleanExpression positionEq(String position) {
+	private BooleanExpression positionEq(final String position) {
 		return StringUtils.hasText(position) ? duo.position.eq(position) : null;
 	}
 }

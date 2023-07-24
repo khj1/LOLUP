@@ -242,7 +242,7 @@ class DuoControllerTest {
 		return new DuoResponse(version, totalCount, content, pageable);
 	}
 
-	private DuoDto getDuoDto(Long duoId) {
+	private DuoDto getDuoDto(final Long duoId) {
 		return DuoDto.builder()
 				.iconId(100)
 				.duoId(duoId)

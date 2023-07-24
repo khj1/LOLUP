@@ -132,7 +132,7 @@ class DuoRepositoryTest {
 		assertThat(duoRepository.findById(duoId).orElse(null)).isNull();
 	}
 
-	private Duo getDuo(String tier, String position) {
+	private Duo getDuo(final String tier, final String position) {
 		Member member = Member.builder().name(position + " " + tier).build();
 		memberRepository.save(member);
 
