@@ -1,5 +1,6 @@
 package com.lolup.lolup_project.duo.domain;
 
-public enum Position {
+public enum SummonerPosition {
+
 	TOP, JUG, MID, BOT, SUP, ALL
 }

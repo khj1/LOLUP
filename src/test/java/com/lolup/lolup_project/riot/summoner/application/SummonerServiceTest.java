@@ -15,7 +15,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 import com.lolup.lolup_project.riot.summoner.exception.RiotApiBadResponseException;
@@ -31,7 +33,6 @@ class SummonerServiceTest {
 	private static final String ENCRYPTED_SUMMONER_ID = "testEncryptedSummonerId";
 	private static final String WEB_CLIENT_BAD_REQUEST = "HTTP/1.1 404";
 	private static final String WEB_CLIENT_BAD_RESPONSE = "HTTP/1.1 500";
-	private static final String UNRANKED = "언랭크";
 
 	private static MockWebServer mockWebServer;
 	private static SummonerService summonerService;
@@ -145,7 +146,7 @@ class SummonerServiceTest {
 		return SummonerRankInfo.builder()
 				.summonerName(SUMMONER_NAME)
 				.tier(SummonerTier.CHALLENGER)
-				.rank("I")
+				.rank(SummonerRank.I)
 				.wins(100)
 				.losses(100)
 				.build();
@@ -155,7 +156,7 @@ class SummonerServiceTest {
 		return SummonerRankInfo.builder()
 				.summonerName(SUMMONER_NAME)
 				.tier(SummonerTier.UNRANKED)
-				.rank(UNRANKED)
+				.rank(SummonerRank.UNRANKED)
 				.wins(0)
 				.losses(0)
 				.build();

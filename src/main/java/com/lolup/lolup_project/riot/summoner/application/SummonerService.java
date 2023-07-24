@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 import com.lolup.lolup_project.riot.summoner.exception.RiotApiBadResponseException;
@@ -18,7 +20,7 @@ public class SummonerService {
 
 	private static final String ACCOUNT_INFO_REQUEST_URI = "/lol/summoner/v4/summoners/by-name/{summonerName}?api_key={apiKey}";
 	private static final String RANK_INFO_REQUEST_URI = "/lol/league/v4/entries/by-summoner/{encryptedSummonerId}?api_key={apiKey}";
-	private static final String UNRANKED = "언랭크";
+	private static final String UNRANKED = "UNRANKED";
 	private static final int INITIAL_WINS = 0;
 	private static final int INITIAL_LOSSES = 0;
 
@@ -56,7 +58,7 @@ public class SummonerService {
 		return SummonerRankInfo.builder()
 				.summonerName(summonerName)
 				.tier(SummonerTier.UNRANKED)
-				.rank(UNRANKED)
+				.rank(SummonerRank.UNRANKED)
 				.wins(INITIAL_WINS)
 				.losses(INITIAL_LOSSES)
 				.build();

@@ -12,6 +12,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,15 +46,17 @@ public class Duo extends BaseTimeEntity {
 	@OneToMany(mappedBy = "duo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<MostInfo> mostInfos = new ArrayList<>();
 
-	private String position;
+	@Enumerated(EnumType.STRING)
+	private SummonerPosition position;
+
 	private double latestWinRate;
 
 	@Column(name = "description")
 	private String desc;
 
 	@Builder
-	public Duo(final Member member, final SummonerRankInfo info, final List<MostInfo> mostInfos, final String position,
-			   final double latestWinRate, final String desc) {
+	public Duo(final Member member, final SummonerRankInfo info, final List<MostInfo> mostInfos,
+			   final SummonerPosition position, final double latestWinRate, final String desc) {
 		this.member = member;
 		this.info = info;
 		addMostInfos(mostInfos);
@@ -61,7 +65,7 @@ public class Duo extends BaseTimeEntity {
 		this.desc = desc;
 	}
 
-	public static Duo create(final Member member, final SummonerDto summonerDto, final String position,
+	public static Duo create(final Member member, final SummonerDto summonerDto, final SummonerPosition position,
 							 final String desc) {
 		return Duo.builder()
 				.member(member)
@@ -78,7 +82,7 @@ public class Duo extends BaseTimeEntity {
 		mostInfos.forEach(mostInfo -> mostInfo.changeDuo(this));
 	}
 
-	public void update(final String position, final String desc) {
+	public void update(final SummonerPosition position, final String desc) {
 		this.position = position;
 		this.desc = desc;
 	}
