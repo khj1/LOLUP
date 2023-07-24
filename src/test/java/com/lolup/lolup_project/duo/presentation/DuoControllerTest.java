@@ -54,6 +54,7 @@ import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
+import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
 import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
@@ -168,7 +169,7 @@ class DuoControllerTest {
 				.given(duoService)
 				.update(anyLong(), any(), any());
 
-		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID.name(), "description");
+		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
 
 		mockMvc.perform(patch("/duo/{duoId}", 1L)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
@@ -220,7 +221,7 @@ class DuoControllerTest {
 
 	private DuoSaveRequest createDuoSaveRequest() {
 		return DuoSaveRequest.builder()
-				.position(SummonerPosition.MID.name())
+				.position(SummonerPosition.MID)
 				.summonerName("hideonbush")
 				.desc("hi")
 				.build();
@@ -248,13 +249,13 @@ class DuoControllerTest {
 				.latestWinRate(0.2d)
 				.losses(300)
 				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
-				.rank("IV")
-				.tier(SummonerTier.BRONZE.name())
+				.rank(SummonerRank.IV)
+				.tier(SummonerTier.BRONZE)
 				.desc("hi")
 				.wins(400)
 				.memberId(1L)
 				.summonerName("hideonbush")
-				.position(SummonerPosition.MID.name())
+				.position(SummonerPosition.MID)
 				.build();
 	}
 

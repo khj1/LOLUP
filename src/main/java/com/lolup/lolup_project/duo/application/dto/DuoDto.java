@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lolup.lolup_project.duo.domain.Duo;
+import com.lolup.lolup_project.duo.domain.SummonerPosition;
+import com.lolup.lolup_project.duo.domain.SummonerRank;
+import com.lolup.lolup_project.duo.domain.SummonerTier;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,9 +22,9 @@ public class DuoDto {
 	private Long memberId;
 	private int iconId;
 	private String summonerName;
-	private String position;
-	private String tier;
-	private String rank;
+	private SummonerPosition position;
+	private SummonerTier tier;
+	private SummonerRank rank;
 	private List<MostInfoDto> most3;
 	private int wins;
 	private int losses;
@@ -31,7 +34,8 @@ public class DuoDto {
 
 	@Builder
 	public DuoDto(final Long duoId, final Long memberId, final int iconId, final String summonerName,
-				  final String position, final String tier, final String rank, final List<MostInfoDto> most3,
+				  final SummonerPosition position, final SummonerTier tier, final SummonerRank rank,
+				  final List<MostInfoDto> most3,
 				  final int wins, final int losses, final double latestWinRate, final String desc,
 				  final LocalDateTime postDate) {
 		this.duoId = duoId;

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
 
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,7 +24,7 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<DuoDto> findAll(final String position, final String tier, final Pageable pageable) {
+	public Page<DuoDto> findAll(final SummonerPosition position, final SummonerTier tier, final Pageable pageable) {
 		List<Duo> results = queryFactory
 				.selectFrom(duo)
 				.join(duo.member, member).fetchJoin()
@@ -48,11 +47,11 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 		return new PageImpl<>(content, pageable, total);
 	}
 
-	private BooleanExpression tierEq(final String tier) {
-		return StringUtils.hasText(tier) ? duo.info.tier.eq(tier) : null;
+	private BooleanExpression tierEq(final SummonerTier tier) {
+		return tier == null ? null : duo.info.tier.eq(tier);
 	}
 
-	private BooleanExpression positionEq(final String position) {
-		return StringUtils.hasText(position) ? duo.position.eq(position) : null;
+	private BooleanExpression positionEq(final SummonerPosition position) {
+		return position == null ? null : duo.position.eq(position);
 	}
 }

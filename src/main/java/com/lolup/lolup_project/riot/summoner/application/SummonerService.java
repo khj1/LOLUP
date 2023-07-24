@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 import com.lolup.lolup_project.riot.summoner.exception.RiotApiBadResponseException;
@@ -55,8 +57,8 @@ public class SummonerService {
 	private SummonerRankInfo createUnrankedInfo(final String summonerName) {
 		return SummonerRankInfo.builder()
 				.summonerName(summonerName)
-				.tier(UNRANKED)
-				.rank(UNRANKED)
+				.tier(SummonerTier.UNRANKED)
+				.rank(SummonerRank.UNRANKED)
 				.wins(INITIAL_WINS)
 				.losses(INITIAL_LOSSES)
 				.build();

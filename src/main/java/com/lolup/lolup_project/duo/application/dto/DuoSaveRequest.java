@@ -1,5 +1,7 @@
 package com.lolup.lolup_project.duo.application.dto;
 
+import com.lolup.lolup_project.duo.domain.SummonerPosition;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class DuoSaveRequest {
 
 	private String summonerName;
-	private String position;
+	private SummonerPosition position;
 	private String desc;
 
 	@Builder
-	public DuoSaveRequest(final String summonerName, final String position, final String desc) {
+	public DuoSaveRequest(final String summonerName, final SummonerPosition position, final String desc) {
 		this.summonerName = summonerName;
 		this.position = position;
 		this.desc = desc;

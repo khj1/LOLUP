@@ -59,8 +59,8 @@ class DuoRepositoryTest {
 		// when
 		PageRequest page = PageRequest.of(0, 20);
 
-		Page<DuoDto> gold_jug = duoRepository.findAll(SummonerTier.GOLD.name(), SummonerPosition.JUG.name(), page);
-		Page<DuoDto> gold = duoRepository.findAll(SummonerTier.GOLD.name(), null, page);
+		Page<DuoDto> gold_jug = duoRepository.findAll(SummonerPosition.JUG, SummonerTier.GOLD, page);
+		Page<DuoDto> gold = duoRepository.findAll(null, SummonerTier.GOLD, page);
 		Page<DuoDto> all = duoRepository.findAll(null, null, page);
 
 		List<DuoDto> list_gold_jug = gold_jug.getContent();
@@ -70,14 +70,14 @@ class DuoRepositoryTest {
 		long size_gold_jug = gold_jug.getNumberOfElements();
 		long count_gold_jug = list_gold_jug.stream()
 				.filter(dto ->
-						dto.getPosition().equals(SummonerPosition.JUG.name()) &&
-								dto.getTier().equals(SummonerTier.GOLD.name())
+						dto.getPosition().equals(SummonerPosition.JUG) &&
+								dto.getTier().equals(SummonerTier.GOLD)
 				)
 				.count();
 
 		long size_gold = gold.getNumberOfElements();
 		long count_gold = list_gold.stream()
-				.filter(dto -> dto.getTier().equals(SummonerTier.GOLD.name()))
+				.filter(dto -> dto.getTier().equals(SummonerTier.GOLD))
 				.count();
 
 		long size_all = all.getTotalElements();
@@ -96,7 +96,7 @@ class DuoRepositoryTest {
 		em.clear();
 
 		//when
-		duoRepository.findById(beforeId).orElse(null).update(SummonerPosition.BOT.name(), "updated");
+		duoRepository.findById(beforeId).orElse(null).update(SummonerPosition.BOT, "updated");
 
 		em.flush();
 		em.clear();
@@ -105,7 +105,7 @@ class DuoRepositoryTest {
 
 		//then
 		assertThat(findDuo.getDesc()).isEqualTo("updated");
-		assertThat(findDuo.getPosition()).isEqualTo(SummonerPosition.BOT.name());
+		assertThat(findDuo.getPosition()).isEqualTo(SummonerPosition.BOT);
 	}
 
 	@Test
@@ -144,12 +144,14 @@ class DuoRepositoryTest {
 
 		SummonerRankInfo info = SummonerRankInfo.builder()
 				.summonerName("summonerName")
-				.rank(SummonerRank.III.name()).tier(tier.name())
-				.wins(100).losses(100)
+				.rank(SummonerRank.III)
+				.tier(tier)
+				.wins(100)
+				.losses(100)
 				.build();
 
 		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
 
-		return Duo.create(member, summonerDto, position.name(), "hi");
+		return Duo.create(member, summonerDto, position, "hi");
 	}
 }

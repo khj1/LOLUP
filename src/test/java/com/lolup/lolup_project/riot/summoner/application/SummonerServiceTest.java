@@ -33,7 +33,6 @@ class SummonerServiceTest {
 	private static final String ENCRYPTED_SUMMONER_ID = "testEncryptedSummonerId";
 	private static final String WEB_CLIENT_BAD_REQUEST = "HTTP/1.1 404";
 	private static final String WEB_CLIENT_BAD_RESPONSE = "HTTP/1.1 500";
-	private static final String UNRANKED = "UNRANKED";
 
 	private static MockWebServer mockWebServer;
 	private static SummonerService summonerService;
@@ -146,8 +145,8 @@ class SummonerServiceTest {
 	private SummonerRankInfo createSummonerRankInfo() {
 		return SummonerRankInfo.builder()
 				.summonerName(SUMMONER_NAME)
-				.tier(SummonerTier.CHALLENGER.name())
-				.rank(SummonerRank.I.name())
+				.tier(SummonerTier.CHALLENGER)
+				.rank(SummonerRank.I)
 				.wins(100)
 				.losses(100)
 				.build();
@@ -156,8 +155,8 @@ class SummonerServiceTest {
 	private SummonerRankInfo createUnrankedInfo() {
 		return SummonerRankInfo.builder()
 				.summonerName(SUMMONER_NAME)
-				.tier(UNRANKED)
-				.rank(UNRANKED)
+				.tier(SummonerTier.UNRANKED)
+				.rank(SummonerRank.UNRANKED)
 				.wins(0)
 				.losses(0)
 				.build();

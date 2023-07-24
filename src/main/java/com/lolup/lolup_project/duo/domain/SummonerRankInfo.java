@@ -13,13 +13,13 @@ public class SummonerRankInfo {
 
 	private int iconId;
 	private String summonerName;
-	private String tier;
-	private String rank;
+	private SummonerTier tier;
+	private SummonerRank rank;
 	private int wins;
 	private int losses;
 
 	@Builder
-	public SummonerRankInfo(final String summonerName, final String tier, final String rank, final int wins,
+	public SummonerRankInfo(final String summonerName, final SummonerTier tier, final SummonerRank rank, final int wins,
 							final int losses) {
 		this.summonerName = summonerName;
 		this.tier = tier;
