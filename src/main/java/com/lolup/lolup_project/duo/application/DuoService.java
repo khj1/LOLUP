@@ -14,6 +14,7 @@ import com.lolup.lolup_project.duo.domain.DuoRepository;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
+import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
@@ -45,15 +46,16 @@ public class DuoService {
 
 	@Transactional
 	public void save(final Long memberId, final DuoSaveRequest request) {
-		SummonerDto summonerDto = find(request.getSummonerName());
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
+
+		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
 
 		Duo duo = Duo.create(member, summonerDto, request.getPosition(), request.getDesc());
 		duoRepository.save(duo);
 	}
 
-	private SummonerDto find(final String summonerName) {
+	private SummonerDto requestSummonerDto(final String summonerName) {
 		SummonerAccountDto accountDto = summonerService.getAccountInfo(summonerName);
 		SummonerRankInfo info = summonerService.getSummonerTotalSoloRankInfo(accountDto.getId(), accountDto.getName());
 		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(summonerName, accountDto.getPuuid());
@@ -72,6 +74,9 @@ public class DuoService {
 
 	@Transactional
 	public void delete(final Long duoId, final Long memberId) {
-		duoRepository.deleteByIdAndMemberId(duoId, memberId);
+		duoRepository.findByIdAndMemberId(duoId, memberId)
+				.orElseThrow(DuoDeleteFailureException::new);
+
+		duoRepository.deleteById(duoId);
 	}
 }

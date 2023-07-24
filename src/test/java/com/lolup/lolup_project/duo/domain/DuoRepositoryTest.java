@@ -77,18 +77,20 @@ class DuoRepositoryTest {
 		assertThat(findDuo.getLastModifiedDate()).isAfter(findDuo.getCreatedDate());
 	}
 
-	@DisplayName("듀오 ID와 멤버 ID로 듀오를 삭제한다.")
+	@DisplayName("듀오 ID와 멤버 ID로 듀오를 조회할 수 있다.")
 	@Test
 	void delete() {
-		Duo duo = createDuo(SummonerTier.UNRANKED, SummonerPosition.SUP);
-		duoRepository.save(duo);
+		Duo savedDuo = duoRepository.save(createDuo(SummonerTier.UNRANKED, SummonerPosition.SUP));
 
-		Long duoId = duo.getId();
-		Long memberId = duo.getMember().getId();
+		Long duoId = savedDuo.getId();
+		Long memberId = savedDuo.getMember().getId();
 
-		duoRepository.deleteByIdAndMemberId(duoId, memberId);
+		Duo findDuo = duoRepository.findByIdAndMemberId(duoId, memberId)
+				.orElseThrow();
 
-		assertThat(duoRepository.findById(duoId)).isEmpty();
+		assertThat(findDuo)
+				.usingRecursiveComparison()
+				.isEqualTo(savedDuo);
 	}
 
 	private Duo createDuo(final SummonerTier tier, final SummonerPosition position) {
