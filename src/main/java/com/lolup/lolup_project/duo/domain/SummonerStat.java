@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SummonerRankInfo {
+public class SummonerStat {
 
 	private int iconId;
 	private String summonerName;
@@ -19,8 +19,8 @@ public class SummonerRankInfo {
 	private int losses;
 
 	@Builder
-	public SummonerRankInfo(final String summonerName, final SummonerTier tier, final SummonerRank rank, final int wins,
-							final int losses) {
+	public SummonerStat(final String summonerName, final SummonerTier tier, final SummonerRank rank, final int wins,
+						final int losses) {
 		this.summonerName = summonerName;
 		this.tier = tier;
 		this.rank = rank;

@@ -20,7 +20,7 @@ import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import jakarta.persistence.EntityManager;
 
@@ -97,13 +97,13 @@ class DuoRepositoryTest {
 		Member member = createMember(tier, position);
 		memberRepository.save(member);
 
-		List<MostInfo> most3 = new ArrayList<>();
-		most3.add(MostInfo.create("Syndra", 4L));
-		most3.add(MostInfo.create("Lucian", 3L));
-		most3.add(MostInfo.create("Zed", 2L));
+		List<ChampionStat> championStats = new ArrayList<>();
+		championStats.add(ChampionStat.create("Syndra", 4L));
+		championStats.add(ChampionStat.create("Lucian", 3L));
+		championStats.add(ChampionStat.create("Zed", 2L));
 
-		SummonerRankInfo info = createSummonerRankInfo(tier);
-		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
+		SummonerStat summonerStat = createSummonerStat(tier);
+		SummonerDto summonerDto = new SummonerDto(100, 0.2d, summonerStat, championStats);
 
 		return Duo.create(member, summonerDto, position, "hi");
 	}
@@ -114,8 +114,8 @@ class DuoRepositoryTest {
 				.build();
 	}
 
-	private SummonerRankInfo createSummonerRankInfo(final SummonerTier tier) {
-		return SummonerRankInfo.builder()
+	private SummonerStat createSummonerStat(final SummonerTier tier) {
+		return SummonerStat.builder()
 				.summonerName("summonerName")
 				.rank(SummonerRank.III)
 				.tier(tier)

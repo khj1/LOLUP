@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+//TODO 필드가 너무 많은 것 같다. 수정 필요
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DuoDto {
@@ -25,7 +26,7 @@ public class DuoDto {
 	private SummonerPosition position;
 	private SummonerTier tier;
 	private SummonerRank rank;
-	private List<MostInfoDto> most3;
+	private List<ChampionStatDto> championStats;
 	private int wins;
 	private int losses;
 	private double latestWinRate;
@@ -35,9 +36,8 @@ public class DuoDto {
 	@Builder
 	public DuoDto(final Long duoId, final Long memberId, final int iconId, final String summonerName,
 				  final SummonerPosition position, final SummonerTier tier, final SummonerRank rank,
-				  final List<MostInfoDto> most3,
-				  final int wins, final int losses, final double latestWinRate, final String desc,
-				  final LocalDateTime postDate) {
+				  final List<ChampionStatDto> championStats, final int wins, final int losses,
+				  final double latestWinRate, final String desc, final LocalDateTime postDate) {
 		this.duoId = duoId;
 		this.memberId = memberId;
 		this.iconId = iconId;
@@ -45,7 +45,7 @@ public class DuoDto {
 		this.position = position;
 		this.tier = tier;
 		this.rank = rank;
-		this.most3 = most3;
+		this.championStats = championStats;
 		this.wins = wins;
 		this.losses = losses;
 		this.latestWinRate = latestWinRate;
@@ -57,14 +57,15 @@ public class DuoDto {
 		return DuoDto.builder()
 				.duoId(duo.getId())
 				.memberId(duo.getMember().getId())
-				.iconId(duo.getInfo().getIconId())
-				.summonerName(duo.getInfo().getSummonerName())
+				.iconId(duo.getSummonerStat().getIconId())
+				.summonerName(duo.getSummonerStat().getSummonerName())
 				.position(duo.getPosition())
-				.tier(duo.getInfo().getTier())
-				.rank(duo.getInfo().getRank())
-				.most3(duo.getMostInfos().stream().map(MostInfoDto::create).collect(Collectors.toList()))
-				.wins(duo.getInfo().getWins())
-				.losses(duo.getInfo().getLosses())
+				.tier(duo.getSummonerStat().getTier())
+				.rank(duo.getSummonerStat().getRank())
+				.championStats(
+						duo.getChampionStats().stream().map(ChampionStatDto::create).collect(Collectors.toList()))
+				.wins(duo.getSummonerStat().getWins())
+				.losses(duo.getSummonerStat().getLosses())
 				.latestWinRate(duo.getLatestWinRate())
 				.desc(duo.getDesc())
 				.postDate(duo.getCreatedDate())

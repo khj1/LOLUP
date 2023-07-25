@@ -56,7 +56,7 @@ class SummonerControllerTest {
 				.name("summonerName")
 				.build();
 
-		when(service.getAccountInfo("summonerName")).thenReturn(dto);
+		when(service.requestAccountInfo("summonerName")).thenReturn(dto);
 
 		webTestClient.get().uri("/riot/find/{summonerName}", "summonerName")
 				.accept(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ class SummonerControllerTest {
 	@Test
 	public void 잘못된_소환사_이름_조회() throws Exception {
 		//when
-		when(service.getAccountInfo("wrongName")).thenThrow(WebClientResponseException.class);
+		when(service.requestAccountInfo("wrongName")).thenThrow(WebClientResponseException.class);
 
 		//then
 		webTestClient.get().uri("/riot/find/{summonerName}", "wrongName")

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MostInfo extends BaseTimeEntity {
+public class ChampionStat extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +32,13 @@ public class MostInfo extends BaseTimeEntity {
 	@JoinColumn(name = "duo_id")
 	private Duo duo;
 
-	public MostInfo(final String name, final Long play) {
+	public ChampionStat(final String name, final Long play) {
 		this.name = name;
 		this.play = play;
 	}
 
-	public static MostInfo create(final String name, final Long play) {
-		return new MostInfo(name, play);
+	public static ChampionStat create(final String name, final Long play) {
+		return new ChampionStat(name, play);
 	}
 
 	public void changeDuo(Duo duo) {

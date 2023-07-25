@@ -26,7 +26,7 @@ import com.lolup.lolup_project.riot.match.application.dto.MatchInfoDto;
 import com.lolup.lolup_project.riot.match.application.dto.ParticipantDto;
 import com.lolup.lolup_project.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
@@ -135,14 +135,14 @@ class MatchServiceTest {
 	@DisplayName("최근 게임 통계를 불러온다.")
 	@Test
 	void getRecentMatchStats() {
-		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(SUMMONER_NAME, PUUID);
+		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(SUMMONER_NAME, PUUID);
 
 		double latestWinRate = recentMatchStats.getLatestWinRate();
-		List<MostInfo> most3 = recentMatchStats.getMost3();
+		List<ChampionStat> championStats = recentMatchStats.getChampionStats();
 
 		assertAll(
-				() -> assertThat(most3).hasSize(1),
-				() -> assertThat(most3.get(0))
+				() -> assertThat(championStats).hasSize(1),
+				() -> assertThat(championStats.get(0))
 						.extracting("name", "play")
 						.containsExactlyInAnyOrder(CHAMPION_NAME, 30L),
 				() -> assertThat(latestWinRate).isEqualTo(1d)
@@ -152,7 +152,7 @@ class MatchServiceTest {
 	@DisplayName("존재하지 않는 소환사 이름을 입력하면 예외가 발생한다.")
 	@Test
 	void getRecentMatchStatsWithWrongSummonerName() {
-		assertThatThrownBy(() -> matchService.getRecentMatchStats(WRONG_SUMMONER_NAME, PUUID))
+		assertThatThrownBy(() -> matchService.requestRecentMatchStats(WRONG_SUMMONER_NAME, PUUID))
 				.isInstanceOf(NoSuchSummonerException.class);
 	}
 }

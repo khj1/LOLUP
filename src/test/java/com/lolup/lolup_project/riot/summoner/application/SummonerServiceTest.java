@@ -16,7 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerStat;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
@@ -65,7 +65,7 @@ class SummonerServiceTest {
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 				.setBody(objectMapper.writeValueAsString(라이엇_계정_정보_응답)));
 
-		SummonerAccountDto API_호출_결과 = summonerService.getAccountInfo(SUMMONER_NAME);
+		SummonerAccountDto API_호출_결과 = summonerService.requestAccountInfo(SUMMONER_NAME);
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
@@ -80,7 +80,7 @@ class SummonerServiceTest {
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 				.setStatus(WEB_CLIENT_BAD_REQUEST));
 
-		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
+		assertThatThrownBy(() -> summonerService.requestAccountInfo(SUMMONER_NAME))
 				.isInstanceOf(NoSuchSummonerException.class);
 	}
 
@@ -92,21 +92,21 @@ class SummonerServiceTest {
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 				.setStatus(WEB_CLIENT_BAD_RESPONSE));
 
-		assertThatThrownBy(() -> summonerService.getAccountInfo(SUMMONER_NAME))
+		assertThatThrownBy(() -> summonerService.requestAccountInfo(SUMMONER_NAME))
 				.isInstanceOf(RiotApiBadResponseException.class);
 	}
 
 	@DisplayName("소환사의 랭크 정보를 불러온다.")
 	@Test
-	void getSummonerTotalSoloRankInfo() throws JsonProcessingException {
-		SummonerRankInfo 소환사_랭크_정보_응답 = createSummonerRankInfo();
+	void getSummonerStat() throws JsonProcessingException {
+		SummonerStat 소환사_랭크_정보_응답 = createSummonerStat();
 
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 				.setBody(objectMapper.writeValueAsString(소환사_랭크_정보_응답)));
 
-		SummonerRankInfo API_호출_결과 = summonerService.getSummonerTotalSoloRankInfo(ENCRYPTED_SUMMONER_ID, SUMMONER_NAME);
+		SummonerStat API_호출_결과 = summonerService.requestSummonerStat(ENCRYPTED_SUMMONER_ID, SUMMONER_NAME);
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
@@ -115,14 +115,14 @@ class SummonerServiceTest {
 
 	@DisplayName("소환사가 아직 리그에 배치되지 않았다면 언랭크 상태의 초기 객체를 반환한다.")
 	@Test
-	void getUnrankedSummonerTotalSoloRankInfo() {
-		SummonerRankInfo 언랭크_소환사_랭크_정보_응답 = createUnrankedInfo();
+	void getUnrankedSummonerStat() {
+		SummonerStat 언랭크_소환사_랭크_정보_응답 = createUnrankedSummonerStat();
 
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE));
 
-		SummonerRankInfo API_호출_결과 = summonerService.getSummonerTotalSoloRankInfo(ENCRYPTED_SUMMONER_ID, SUMMONER_NAME);
+		SummonerStat API_호출_결과 = summonerService.requestSummonerStat(ENCRYPTED_SUMMONER_ID, SUMMONER_NAME);
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
@@ -142,8 +142,8 @@ class SummonerServiceTest {
 				.build();
 	}
 
-	private SummonerRankInfo createSummonerRankInfo() {
-		return SummonerRankInfo.builder()
+	private SummonerStat createSummonerStat() {
+		return SummonerStat.builder()
 				.summonerName(SUMMONER_NAME)
 				.tier(SummonerTier.CHALLENGER)
 				.rank(SummonerRank.I)
@@ -152,8 +152,8 @@ class SummonerServiceTest {
 				.build();
 	}
 
-	private SummonerRankInfo createUnrankedInfo() {
-		return SummonerRankInfo.builder()
+	private SummonerStat createUnrankedSummonerStat() {
+		return SummonerStat.builder()
 				.summonerName(SUMMONER_NAME)
 				.tier(SummonerTier.UNRANKED)
 				.rank(SummonerRank.UNRANKED)

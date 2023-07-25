@@ -50,10 +50,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.lolup_project.auth.application.JwtTokenProvider;
 import com.lolup.lolup_project.duo.application.DuoService;
+import com.lolup.lolup_project.duo.application.dto.ChampionStatDto;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
-import com.lolup.lolup_project.duo.application.dto.MostInfoDto;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
@@ -61,7 +61,7 @@ import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
 import com.lolup.lolup_project.member.exception.NoSuchMemberException;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(DuoController.class)
@@ -185,7 +185,7 @@ class DuoControllerTest {
 								fieldWithPath("position").description("주 포지션"),
 								fieldWithPath("tier").description("게임 티어"),
 								fieldWithPath("rank").description("티어 등급"),
-								subsectionWithPath("most3").type("List<MostInfo>")
+								subsectionWithPath("championStats").type("List<ChampionStatsDtos>")
 										.description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
 								fieldWithPath("wins").type("int").description("총 승리 횟수"),
 								fieldWithPath("losses").type("int").description("총 패배 횟수"),
@@ -336,7 +336,7 @@ class DuoControllerTest {
 				.duoId(duoId)
 				.latestWinRate(0.2d)
 				.losses(300)
-				.most3(getMost3().stream().map(MostInfoDto::create).collect(Collectors.toList()))
+				.championStats(getChampionStats().stream().map(ChampionStatDto::create).collect(Collectors.toList()))
 				.rank(SummonerRank.IV)
 				.tier(SummonerTier.BRONZE)
 				.desc("hi")
@@ -347,13 +347,13 @@ class DuoControllerTest {
 				.build();
 	}
 
-	private List<MostInfo> getMost3() {
-		List<MostInfo> most3 = new ArrayList<>();
+	private List<ChampionStat> getChampionStats() {
+		List<ChampionStat> championStats = new ArrayList<>();
 
-		most3.add(MostInfo.create("Syndra", 4L));
-		most3.add(MostInfo.create("Lucian", 3L));
-		most3.add(MostInfo.create("Zed", 2L));
+		championStats.add(ChampionStat.create("Syndra", 4L));
+		championStats.add(ChampionStat.create("Lucian", 3L));
+		championStats.add(ChampionStat.create("Zed", 2L));
 
-		return most3;
+		return championStats;
 	}
 }
