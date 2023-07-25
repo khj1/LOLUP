@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.lolup.lolup_project.duo.domain.SummonerRank;
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerStat;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public class SummonerService {
 
 	private static final String ACCOUNT_INFO_REQUEST_URI = "/lol/summoner/v4/summoners/by-name/{summonerName}?api_key={apiKey}";
-	private static final String RANK_INFO_REQUEST_URI = "/lol/league/v4/entries/by-summoner/{encryptedSummonerId}?api_key={apiKey}";
-	private static final String UNRANKED = "UNRANKED";
+	private static final String SUMMONER_STAT_REQUEST_URI = "/lol/league/v4/entries/by-summoner/{encryptedSummonerId}?api_key={apiKey}";
 	private static final int INITIAL_WINS = 0;
 	private static final int INITIAL_LOSSES = 0;
 
@@ -33,7 +32,7 @@ public class SummonerService {
 		this.apiKey = apiKey;
 	}
 
-	public SummonerAccountDto getAccountInfo(final String summonerName) {
+	public SummonerAccountDto requestAccountInfo(final String summonerName) {
 		return webClient
 				.get()
 				.uri(ACCOUNT_INFO_REQUEST_URI, summonerName, apiKey)
@@ -44,18 +43,18 @@ public class SummonerService {
 				.block();
 	}
 
-	public SummonerRankInfo getSummonerTotalSoloRankInfo(final String encryptedSummonerId, final String summonerName) {
+	public SummonerStat requestSummonerStat(final String encryptedSummonerId, final String summonerName) {
 		return webClient
 				.get()
-				.uri(RANK_INFO_REQUEST_URI, encryptedSummonerId, apiKey)
+				.uri(SUMMONER_STAT_REQUEST_URI, encryptedSummonerId, apiKey)
 				.retrieve()
-				.bodyToMono(SummonerRankInfo.class)
+				.bodyToMono(SummonerStat.class)
 				.blockOptional()
-				.orElse(createUnrankedInfo(summonerName));
+				.orElse(createUnrankedSummonerStat(summonerName));
 	}
 
-	private SummonerRankInfo createUnrankedInfo(final String summonerName) {
-		return SummonerRankInfo.builder()
+	private SummonerStat createUnrankedSummonerStat(final String summonerName) {
+		return SummonerStat.builder()
 				.summonerName(summonerName)
 				.tier(SummonerTier.UNRANKED)
 				.rank(SummonerRank.UNRANKED)

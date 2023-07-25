@@ -38,7 +38,7 @@ public class MatchService {
 		this.apiKey = apiKey;
 	}
 
-	public RecentMatchStatsDto getRecentMatchStats(final String summonerName, final String puuId) {
+	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
 		List<ParticipantDto> participantDtos = extractParticipantDtoBy(summonerName, matchInfoDtos);
 		List<ChampionStat> most3 = getMostPlayedChampions(participantDtos);

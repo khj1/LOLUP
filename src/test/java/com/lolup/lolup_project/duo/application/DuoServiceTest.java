@@ -25,7 +25,7 @@ import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerStat;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
@@ -67,7 +67,7 @@ class DuoServiceTest {
 	private RiotStaticService riotStaticService;
 
 	@NotNull
-	private static List<ChampionStat> createMostInfo() {
+	private static List<ChampionStat> createChampionStats() {
 		List<ChampionStat> most3 = new ArrayList<>();
 		most3.add(ChampionStat.create("Syndra", 4L));
 		most3.add(ChampionStat.create("Lucian", 3L));
@@ -109,11 +109,11 @@ class DuoServiceTest {
 	@DisplayName("듀오 모집글을 생성한다.")
 	@Test
 	void save() {
-		given(summonerService.getAccountInfo(anyString()))
+		given(summonerService.requestAccountInfo(anyString()))
 				.willReturn(createSummonerAccountDto());
-		given(summonerService.getSummonerTotalSoloRankInfo(anyString(), anyString()))
-				.willReturn(createSummonerRankInfo(SummonerTier.CHALLENGER));
-		given(matchService.getRecentMatchStats(anyString(), anyString()))
+		given(summonerService.requestSummonerStat(anyString(), anyString()))
+				.willReturn(createSummonerStat(SummonerTier.CHALLENGER));
+		given(matchService.requestRecentMatchStats(anyString(), anyString()))
 				.willReturn(createRecentMatchStatsDto());
 
 		Long memberId = memberRepository.save(createMember())
@@ -195,9 +195,9 @@ class DuoServiceTest {
 	}
 
 	private Duo createDuo(final Member member, final SummonerPosition position, final SummonerTier tier) {
-		List<ChampionStat> most3 = createMostInfo();
-		SummonerRankInfo info = createSummonerRankInfo(tier);
-		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
+		List<ChampionStat> championStats = createChampionStats();
+		SummonerStat summonerStat = createSummonerStat(tier);
+		SummonerDto summonerDto = new SummonerDto(100, 0.2d, summonerStat, championStats);
 
 		return Duo.create(member, summonerDto, position, DESC);
 	}
@@ -206,8 +206,8 @@ class DuoServiceTest {
 		return Member.builder().build();
 	}
 
-	private SummonerRankInfo createSummonerRankInfo(final SummonerTier tier) {
-		return SummonerRankInfo.builder()
+	private SummonerStat createSummonerStat(final SummonerTier tier) {
+		return SummonerStat.builder()
 				.summonerName("summonerName")
 				.rank(SummonerRank.III)
 				.tier(tier)
@@ -227,7 +227,7 @@ class DuoServiceTest {
 	}
 
 	private RecentMatchStatsDto createRecentMatchStatsDto() {
-		return new RecentMatchStatsDto(1d, createMostInfo());
+		return new RecentMatchStatsDto(1d, createChampionStats());
 	}
 
 	private DuoSaveRequest createDuoSaveRequest() {

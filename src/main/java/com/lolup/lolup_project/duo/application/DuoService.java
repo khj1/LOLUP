@@ -12,7 +12,7 @@ import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.DuoRepository;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerStat;
 import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
@@ -56,11 +56,12 @@ public class DuoService {
 	}
 
 	private SummonerDto requestSummonerDto(final String summonerName) {
-		SummonerAccountDto accountDto = summonerService.getAccountInfo(summonerName);
-		SummonerRankInfo info = summonerService.getSummonerTotalSoloRankInfo(accountDto.getId(), accountDto.getName());
-		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(summonerName, accountDto.getPuuid());
+		SummonerAccountDto accountDto = summonerService.requestAccountInfo(summonerName);
+		SummonerStat summonerStat = summonerService.requestSummonerStat(accountDto.getId(), accountDto.getName());
+		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(summonerName,
+				accountDto.getPuuid());
 
-		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), info,
+		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), summonerStat,
 				recentMatchStats.getChampionStats());
 	}
 

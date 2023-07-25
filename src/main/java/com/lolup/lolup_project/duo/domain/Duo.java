@@ -41,7 +41,7 @@ public class Duo extends BaseTimeEntity {
 	private Member member;
 
 	@Embedded
-	private SummonerRankInfo info;
+	private SummonerStat summonerStat;
 
 	@OneToMany(mappedBy = "duo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ChampionStat> championStats = new ArrayList<>();
@@ -55,10 +55,10 @@ public class Duo extends BaseTimeEntity {
 	private String desc;
 
 	@Builder
-	public Duo(final Member member, final SummonerRankInfo info, final List<ChampionStat> championStats,
+	public Duo(final Member member, final SummonerStat summonerStat, final List<ChampionStat> championStats,
 			   final SummonerPosition position, final double latestWinRate, final String desc) {
 		this.member = member;
-		this.info = info;
+		this.summonerStat = summonerStat;
 		addChampionStats(championStats);
 		this.position = position;
 		this.latestWinRate = latestWinRate;
@@ -69,7 +69,7 @@ public class Duo extends BaseTimeEntity {
 							 final String desc) {
 		return Duo.builder()
 				.member(member)
-				.info(summonerDto.getInfo())
+				.summonerStat(summonerDto.getSummonerStat())
 				.championStats(summonerDto.getChampionStats())
 				.position(position)
 				.latestWinRate(summonerDto.getLatestWinRate())

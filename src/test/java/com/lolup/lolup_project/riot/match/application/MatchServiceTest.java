@@ -135,7 +135,7 @@ class MatchServiceTest {
 	@DisplayName("최근 게임 통계를 불러온다.")
 	@Test
 	void getRecentMatchStats() {
-		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(SUMMONER_NAME, PUUID);
+		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(SUMMONER_NAME, PUUID);
 
 		double latestWinRate = recentMatchStats.getLatestWinRate();
 		List<ChampionStat> championStats = recentMatchStats.getChampionStats();
@@ -152,7 +152,7 @@ class MatchServiceTest {
 	@DisplayName("존재하지 않는 소환사 이름을 입력하면 예외가 발생한다.")
 	@Test
 	void getRecentMatchStatsWithWrongSummonerName() {
-		assertThatThrownBy(() -> matchService.getRecentMatchStats(WRONG_SUMMONER_NAME, PUUID))
+		assertThatThrownBy(() -> matchService.requestRecentMatchStats(WRONG_SUMMONER_NAME, PUUID))
 				.isInstanceOf(NoSuchSummonerException.class);
 	}
 }

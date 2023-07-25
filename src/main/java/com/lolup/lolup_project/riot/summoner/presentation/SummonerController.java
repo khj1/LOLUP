@@ -26,7 +26,7 @@ public class SummonerController {
 	public ResponseEntity<Map<String, Object>> find(@PathVariable String summonerName) {
 		Map<String, Object> map = new HashMap<>();
 
-		SummonerAccountDto accountInfo = summonerService.getAccountInfo(summonerName);
+		SummonerAccountDto accountInfo = summonerService.requestAccountInfo(summonerName);
 		if (accountInfo.getName() != null) {
 			map.put("summonerName", accountInfo.getName());
 		}

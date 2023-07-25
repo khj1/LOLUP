@@ -47,7 +47,7 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 	}
 
 	private BooleanExpression tierEq(final SummonerTier tier) {
-		return tier == null ? null : duo.info.tier.eq(tier);
+		return tier == null ? null : duo.summonerStat.tier.eq(tier);
 	}
 
 	private List<DuoDto> toDto(final List<Duo> results) {

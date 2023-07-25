@@ -2,7 +2,7 @@ package com.lolup.lolup_project.duo.application.dto;
 
 import java.util.List;
 
-import com.lolup.lolup_project.duo.domain.SummonerRankInfo;
+import com.lolup.lolup_project.duo.domain.SummonerStat;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import lombok.AccessLevel;
@@ -16,14 +16,14 @@ public class SummonerDto {
 
 	private int profileIconId;
 	private double latestWinRate;
-	private SummonerRankInfo info;
+	private SummonerStat summonerStat;
 	private List<ChampionStat> championStats;
 
-	public SummonerDto(final int profileIconId, final double latestWinRate, final SummonerRankInfo info,
+	public SummonerDto(final int profileIconId, final double latestWinRate, final SummonerStat summonerStat,
 					   final List<ChampionStat> championStats) {
 		this.profileIconId = profileIconId;
 		this.latestWinRate = latestWinRate;
-		this.info = info;
+		this.summonerStat = summonerStat;
 		this.championStats = championStats;
 	}
 }
