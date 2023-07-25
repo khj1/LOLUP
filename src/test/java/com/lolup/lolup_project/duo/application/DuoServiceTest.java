@@ -12,17 +12,13 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.lolup.lolup_project.common.ServiceTest;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.duo.domain.Duo;
-import com.lolup.lolup_project.duo.domain.DuoRepository;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
 import com.lolup.lolup_project.duo.domain.SummonerStat;
@@ -30,41 +26,17 @@ import com.lolup.lolup_project.duo.domain.SummonerTier;
 import com.lolup.lolup_project.duo.exception.DuoDeleteFailureException;
 import com.lolup.lolup_project.duo.exception.NoSuchDuoException;
 import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.member.exception.NoSuchMemberException;
-import com.lolup.lolup_project.riot.match.application.MatchService;
 import com.lolup.lolup_project.riot.match.application.dto.RecentMatchStatsDto;
-import com.lolup.lolup_project.riot.riotstatic.RiotStaticService;
-import com.lolup.lolup_project.riot.summoner.application.SummonerService;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
-@Transactional
-@SpringBootTest
-class DuoServiceTest {
+class DuoServiceTest extends ServiceTest {
 
 	private static final String GAME_VERSION = "test.game.version";
 	private static final String DESC = "testDesc";
 	private static final long INVALID_MEMBER_ID = 99L;
 	private static final long INVALID_DUO_ID = 99L;
-
-	@Autowired
-	private DuoService duoService;
-
-	@Autowired
-	private DuoRepository duoRepository;
-
-	@Autowired
-	private MemberRepository memberRepository;
-
-	@MockBean
-	private MatchService matchService;
-
-	@MockBean
-	private SummonerService summonerService;
-
-	@MockBean
-	private RiotStaticService riotStaticService;
 
 	@NotNull
 	private static List<ChampionStat> createChampionStats() {
