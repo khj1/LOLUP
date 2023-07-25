@@ -39,12 +39,13 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Message> messages;
 
-	public Member(String name, String email, Role role, String picture) {
+	public Member(final String name, final String email, final Role role, final String picture) {
 		this(null, name, email, role, picture, null);
 	}
 
 	@Builder
-	public Member(Long id, String name, String email, Role role, String picture, String summonerName) {
+	public Member(final Long id, final String name, final String email, final Role role, final String picture,
+				  final String summonerName) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -53,7 +54,7 @@ public class Member extends BaseTimeEntity {
 		this.role = role;
 	}
 
-	public void update(String name, String email, String picture) {
+	public void update(final String name, final String email, final String picture) {
 		this.name = name;
 		this.email = email;
 		this.picture = picture;
@@ -63,7 +64,7 @@ public class Member extends BaseTimeEntity {
 		return role.getKey();
 	}
 
-	public void changeSummonerName(String summonerName) {
+	public void changeSummonerName(final String summonerName) {
 		this.summonerName = summonerName;
 	}
 }
