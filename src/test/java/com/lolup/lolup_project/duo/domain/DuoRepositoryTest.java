@@ -8,34 +8,16 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.lolup.lolup_project.config.JpaAuditingConfig;
-import com.lolup.lolup_project.config.QuerydslConfig;
+import com.lolup.lolup_project.common.RepositoryTest;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
-import jakarta.persistence.EntityManager;
-
-@Import({QuerydslConfig.class, JpaAuditingConfig.class})
-@DataJpaTest
-class DuoRepositoryTest {
-
-	@Autowired
-	private EntityManager em;
-
-	@Autowired
-	private DuoRepository duoRepository;
-
-	@Autowired
-	private MemberRepository memberRepository;
+class DuoRepositoryTest extends RepositoryTest {
 
 	@DisplayName("필터를 통해 듀오를 조회한다.")
 	@Test

@@ -8,7 +8,6 @@ import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -30,26 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lolup.lolup_project.auth.application.JwtTokenProvider;
-import com.lolup.lolup_project.duo.application.DuoService;
+import com.lolup.lolup_project.common.ControllerTest;
 import com.lolup.lolup_project.duo.application.dto.ChampionStatDto;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
@@ -63,33 +50,9 @@ import com.lolup.lolup_project.duo.presentation.dto.DuoUpdateRequest;
 import com.lolup.lolup_project.member.exception.NoSuchMemberException;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
-@ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(DuoController.class)
-class DuoControllerTest {
+class DuoControllerTest extends ControllerTest {
 
 	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
-
-	@Autowired
-	MockMvc mockMvc;
-
-	@Autowired
-	ObjectMapper objectMapper;
-
-	@MockBean
-	DuoService duoService;
-
-	@MockBean
-	JwtTokenProvider jwtTokenProvider;
-
-	@BeforeEach
-	void setUp(
-			final WebApplicationContext context,
-			final RestDocumentationContextProvider provider
-	) {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-				.apply(documentationConfiguration(provider))
-				.build();
-	}
 
 	@DisplayName("모집글 추가에 성공하면 상태코드 201을 반환한다.")
 	@Test

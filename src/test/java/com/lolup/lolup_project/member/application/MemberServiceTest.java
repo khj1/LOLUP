@@ -5,25 +5,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import com.lolup.lolup_project.common.ServiceTest;
 import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.member.exception.NoSuchMemberException;
 
-@SpringBootTest
-class MemberServiceTest {
+class MemberServiceTest extends ServiceTest {
 
 	private static final String SUMMONER_NAME = "testSummonerName";
 	private static final String UPDATED_SUMMONER_NAME = "updatedSummonerName";
 	private static final long INVALID_MEMBER_ID = 99L;
-
-	@Autowired
-	private MemberService memberService;
-
-	@Autowired
-	private MemberRepository memberRepository;
 
 	@DisplayName("소환사 이름을 변경한다.")
 	@Test

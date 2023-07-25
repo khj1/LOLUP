@@ -7,33 +7,15 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.domain.RefreshToken;
-import com.lolup.lolup_project.auth.domain.RefreshTokenRepository;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
+import com.lolup.lolup_project.common.ServiceTest;
 import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.member.domain.MemberRepository;
 import com.lolup.lolup_project.member.domain.Role;
 
-@SpringBootTest
-@Transactional
-class AuthServiceTest {
-
-	@Autowired
-	private AuthService authService;
-
-	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
-
-	@Autowired
-	private MemberRepository memberRepository;
-
-	@Autowired
-	private RefreshTokenRepository refreshTokenRepository;
+class AuthServiceTest extends ServiceTest {
 
 	@DisplayName("리프레시 토큰이 유효하면 엑세스 토큰을 재발급 한다.")
 	@Test

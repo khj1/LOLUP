@@ -16,57 +16,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lolup.lolup_project.auth.application.AuthService;
 import com.lolup.lolup_project.auth.application.dto.AccessTokenResponse;
 import com.lolup.lolup_project.auth.exception.InvalidTokenException;
 import com.lolup.lolup_project.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.lolup_project.auth.presentation.dto.RefreshTokenDto;
+import com.lolup.lolup_project.common.ControllerTest;
 
-@ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(AuthController.class)
-class AuthControllerTest {
+class AuthControllerTest extends ControllerTest {
 
 	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
 	private static final String DUMMY_REFRESH_TOKEN = "dummy.refresh.token";
 	private static final String DUMMY_ACCESS_TOKEN = "dummy.access.token";
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@MockBean
-	private AuthService authService;
-
-	@BeforeEach
-	void setUp(
-			final WebApplicationContext context,
-			final RestDocumentationContextProvider provider
-	) {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-				.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
-				.build();
-	}
 
 	@DisplayName("권한 체크가 완료되면 상태코드 204를 반환한다.")
 	@Test
