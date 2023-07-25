@@ -20,7 +20,7 @@ import com.lolup.lolup_project.duo.application.dto.DuoDto;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import jakarta.persistence.EntityManager;
 
@@ -97,10 +97,10 @@ class DuoRepositoryTest {
 		Member member = createMember(tier, position);
 		memberRepository.save(member);
 
-		List<MostInfo> most3 = new ArrayList<>();
-		most3.add(MostInfo.create("Syndra", 4L));
-		most3.add(MostInfo.create("Lucian", 3L));
-		most3.add(MostInfo.create("Zed", 2L));
+		List<ChampionStat> most3 = new ArrayList<>();
+		most3.add(ChampionStat.create("Syndra", 4L));
+		most3.add(ChampionStat.create("Lucian", 3L));
+		most3.add(ChampionStat.create("Zed", 2L));
 
 		SummonerRankInfo info = createSummonerRankInfo(tier);
 		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);

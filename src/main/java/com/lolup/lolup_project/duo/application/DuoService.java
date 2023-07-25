@@ -61,7 +61,7 @@ public class DuoService {
 		RecentMatchStatsDto recentMatchStats = matchService.getRecentMatchStats(summonerName, accountDto.getPuuid());
 
 		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), info,
-				recentMatchStats.getMost3());
+				recentMatchStats.getChampionStats());
 	}
 
 	@Transactional

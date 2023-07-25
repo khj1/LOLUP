@@ -37,7 +37,7 @@ import com.lolup.lolup_project.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.lolup_project.riot.riotstatic.RiotStaticService;
 import com.lolup.lolup_project.riot.summoner.application.SummonerService;
 import com.lolup.lolup_project.riot.summoner.application.dto.SummonerAccountDto;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 @Transactional
 @SpringBootTest
@@ -67,11 +67,11 @@ class DuoServiceTest {
 	private RiotStaticService riotStaticService;
 
 	@NotNull
-	private static List<MostInfo> createMostInfo() {
-		List<MostInfo> most3 = new ArrayList<>();
-		most3.add(MostInfo.create("Syndra", 4L));
-		most3.add(MostInfo.create("Lucian", 3L));
-		most3.add(MostInfo.create("Zed", 2L));
+	private static List<ChampionStat> createMostInfo() {
+		List<ChampionStat> most3 = new ArrayList<>();
+		most3.add(ChampionStat.create("Syndra", 4L));
+		most3.add(ChampionStat.create("Lucian", 3L));
+		most3.add(ChampionStat.create("Zed", 2L));
 
 		return most3;
 	}
@@ -195,7 +195,7 @@ class DuoServiceTest {
 	}
 
 	private Duo createDuo(final Member member, final SummonerPosition position, final SummonerTier tier) {
-		List<MostInfo> most3 = createMostInfo();
+		List<ChampionStat> most3 = createMostInfo();
 		SummonerRankInfo info = createSummonerRankInfo(tier);
 		SummonerDto summonerDto = new SummonerDto(100, 0.2d, info, most3);
 

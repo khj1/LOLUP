@@ -6,7 +6,7 @@ import java.util.List;
 import com.lolup.lolup_project.common.BaseTimeEntity;
 import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,7 +44,7 @@ public class Duo extends BaseTimeEntity {
 	private SummonerRankInfo info;
 
 	@OneToMany(mappedBy = "duo", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MostInfo> mostInfos = new ArrayList<>();
+	private List<ChampionStat> championStats = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
 	private SummonerPosition position;
@@ -55,11 +55,11 @@ public class Duo extends BaseTimeEntity {
 	private String desc;
 
 	@Builder
-	public Duo(final Member member, final SummonerRankInfo info, final List<MostInfo> mostInfos,
+	public Duo(final Member member, final SummonerRankInfo info, final List<ChampionStat> championStats,
 			   final SummonerPosition position, final double latestWinRate, final String desc) {
 		this.member = member;
 		this.info = info;
-		addMostInfos(mostInfos);
+		addChampionStats(championStats);
 		this.position = position;
 		this.latestWinRate = latestWinRate;
 		this.desc = desc;
@@ -70,16 +70,16 @@ public class Duo extends BaseTimeEntity {
 		return Duo.builder()
 				.member(member)
 				.info(summonerDto.getInfo())
-				.mostInfos(summonerDto.getMost3())
+				.championStats(summonerDto.getChampionStats())
 				.position(position)
 				.latestWinRate(summonerDto.getLatestWinRate())
 				.desc(desc)
 				.build();
 	}
 
-	private void addMostInfos(final List<MostInfo> mostInfos) {
-		this.mostInfos = mostInfos;
-		mostInfos.forEach(mostInfo -> mostInfo.changeDuo(this));
+	private void addChampionStats(final List<ChampionStat> championStats) {
+		this.championStats = championStats;
+		championStats.forEach(mostInfo -> mostInfo.changeDuo(this));
 	}
 
 	public void update(final SummonerPosition position, final String desc) {

@@ -2,7 +2,7 @@ package com.lolup.lolup_project.riot.match.application.dto;
 
 import java.util.List;
 
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class RecentMatchStatsDto {
 
 	private double latestWinRate;
-	private List<MostInfo> most3;
+	private List<ChampionStat> championStats;
 
-	public RecentMatchStatsDto(final double latestWinRate, final List<MostInfo> most3) {
+	public RecentMatchStatsDto(final double latestWinRate, final List<ChampionStat> championStats) {
 		this.latestWinRate = latestWinRate;
-		this.most3 = most3;
+		this.championStats = championStats;
 	}
 }

@@ -18,7 +18,7 @@ import com.lolup.lolup_project.riot.match.application.dto.MatchInfoDto;
 import com.lolup.lolup_project.riot.match.application.dto.ParticipantDto;
 import com.lolup.lolup_project.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.lolup_project.riot.match.exception.NoSuchSummonerException;
-import com.lolup.lolup_project.riot.summoner.domain.MostInfo;
+import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 @Service
 public class MatchService {
@@ -41,7 +41,7 @@ public class MatchService {
 	public RecentMatchStatsDto getRecentMatchStats(final String summonerName, final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
 		List<ParticipantDto> participantDtos = extractParticipantDtoBy(summonerName, matchInfoDtos);
-		List<MostInfo> most3 = getMostPlayedChampions(participantDtos);
+		List<ChampionStat> most3 = getMostPlayedChampions(participantDtos);
 		double latestWinRate = getLatestWinRate(participantDtos);
 
 		return new RecentMatchStatsDto(latestWinRate, most3);
@@ -108,12 +108,12 @@ public class MatchService {
 		return (double)winCount / TOTAL_MATCH_COUNT;
 	}
 
-	private List<MostInfo> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
+	private List<ChampionStat> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
 		Map<String, Long> mostPlayedChampions = countPlayedChampion(participantDtos);
 		Map<String, Long> sortedMost = sortByPlayedCount(mostPlayedChampions);
 
 		return sortedMost.entrySet().stream()
-				.map(entry -> MostInfo.create(entry.getKey(), entry.getValue()))
+				.map(entry -> ChampionStat.create(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
 	}
 
