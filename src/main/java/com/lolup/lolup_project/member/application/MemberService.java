@@ -16,7 +16,7 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public void updateSummonerName(Long memberId, String summonerName) {
+	public void updateSummonerName(final Long memberId, final String summonerName) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(IllegalArgumentException::new);
 
