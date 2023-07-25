@@ -53,16 +53,14 @@ public class Member extends BaseTimeEntity {
 		this.role = role;
 	}
 
-	public Member update(String name, String email, String picture) {
+	public void update(String name, String email, String picture) {
 		this.name = name;
 		this.email = email;
 		this.picture = picture;
-
-		return this;
 	}
 
 	public String getRoleKey() {
-		return this.role.getKey();
+		return role.getKey();
 	}
 
 	public void changeSummonerName(String summonerName) {
