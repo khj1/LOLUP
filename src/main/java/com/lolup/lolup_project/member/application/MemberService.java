@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.member.domain.MemberRepository;
+import com.lolup.lolup_project.member.exception.NoSuchMemberException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +19,7 @@ public class MemberService {
 	@Transactional
 	public void updateSummonerName(final Long memberId, final String summonerName) {
 		Member member = memberRepository.findById(memberId)
-				.orElseThrow(IllegalArgumentException::new);
+				.orElseThrow(NoSuchMemberException::new);
 
 		member.changeSummonerName(summonerName);
 	}
