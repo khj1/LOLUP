@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-//TODO ChampionStat 엔티티를 DTO로 변경 필요
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SummonerDto {
