@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import com.lolup.lolup_project.common.ServiceTest;
 import com.lolup.lolup_project.duo.application.dto.DuoResponse;
 import com.lolup.lolup_project.duo.application.dto.DuoSaveRequest;
-import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.duo.domain.Duo;
 import com.lolup.lolup_project.duo.domain.SummonerPosition;
 import com.lolup.lolup_project.duo.domain.SummonerRank;
@@ -37,16 +35,7 @@ class DuoServiceTest extends ServiceTest {
 	private static final String DESC = "testDesc";
 	private static final long INVALID_MEMBER_ID = 99L;
 	private static final long INVALID_DUO_ID = 99L;
-
-	@NotNull
-	private static List<ChampionStat> createChampionStats() {
-		List<ChampionStat> most3 = new ArrayList<>();
-		most3.add(ChampionStat.create("Syndra", 4L));
-		most3.add(ChampionStat.create("Lucian", 3L));
-		most3.add(ChampionStat.create("Zed", 2L));
-
-		return most3;
-	}
+	private static final double LATEST_WIN_RATE = 0.2d;
 
 	@DisplayName("조건에 맞는 듀오 모집글을 조회한다.")
 	@Test
@@ -167,11 +156,10 @@ class DuoServiceTest extends ServiceTest {
 	}
 
 	private Duo createDuo(final Member member, final SummonerPosition position, final SummonerTier tier) {
-		List<ChampionStat> championStats = createChampionStats();
 		SummonerStat summonerStat = createSummonerStat(tier);
-		SummonerDto summonerDto = new SummonerDto(100, 0.2d, summonerStat, championStats);
+		List<ChampionStat> championStats = createChampionStats();
 
-		return Duo.create(member, summonerDto, position, DESC);
+		return Duo.create(member, summonerStat, championStats, LATEST_WIN_RATE, position, DESC);
 	}
 
 	private Member createMember() {
@@ -186,6 +174,15 @@ class DuoServiceTest extends ServiceTest {
 				.wins(100)
 				.losses(100)
 				.build();
+	}
+
+	private List<ChampionStat> createChampionStats() {
+		List<ChampionStat> championStats = new ArrayList<>();
+		championStats.add(ChampionStat.create("Syndra", 4L));
+		championStats.add(ChampionStat.create("Lucian", 3L));
+		championStats.add(ChampionStat.create("Zed", 2L));
+
+		return championStats;
 	}
 
 	private SummonerAccountDto createSummonerAccountDto() {

@@ -23,7 +23,7 @@ public class ControllerAdvice {
 			NoSuchRefreshTokenException.class,
 			NoAuthenticationException.class
 	})
-	public ErrorResponse handleAuthorizationException(Exception e) {
+	public ErrorResponse handleAuthorizationException(final Exception e) {
 		return new ErrorResponse("401", e.getMessage());
 	}
 
@@ -33,7 +33,7 @@ public class ControllerAdvice {
 			NoSuchMemberException.class,
 			DuoDeleteFailureException.class
 	})
-	public ErrorResponse handleNotFoundException(Exception e) {
+	public ErrorResponse handleNotFoundException(final Exception e) {
 		return new ErrorResponse("404", e.getMessage());
 	}
 }

@@ -31,12 +31,12 @@ public class RefreshToken extends BaseTimeEntity {
 
 	private String refreshToken;
 
-	public RefreshToken(Member member, String refreshToken) {
+	public RefreshToken(final Member member, final String refreshToken) {
 		this.member = member;
 		this.refreshToken = refreshToken;
 	}
 
-	public static RefreshToken create(Member member, String refreshToken) {
+	public static RefreshToken create(final Member member, final String refreshToken) {
 		return new RefreshToken(member, refreshToken);
 	}
 }

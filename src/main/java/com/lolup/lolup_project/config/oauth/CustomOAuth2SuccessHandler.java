@@ -37,8 +37,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	private String redirect_url;
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-										Authentication authentication) throws IOException {
+	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
+										final Authentication authentication) throws IOException {
 		UserProfile userProfile = extractUserProfile(authentication);
 
 		Member member = memberRepository.findByEmail(userProfile.getEmail())
@@ -69,7 +69,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		return authToken.getAuthorizedClientRegistrationId();
 	}
 
-	private void writeTokenResponse(HttpServletResponse response, String accessToken, String refreshToken) throws
+	private void writeTokenResponse(final HttpServletResponse response, final String accessToken,
+									final String refreshToken) throws
 			IOException {
 		Cookie cookie = makeCookie(refreshToken);
 		response.addCookie(cookie);

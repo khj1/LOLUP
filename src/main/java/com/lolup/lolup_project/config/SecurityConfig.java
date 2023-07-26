@@ -36,7 +36,7 @@ public class SecurityConfig {
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 	@Bean
-	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.formLogin(AbstractHttpConfigurer::disable);
 		http.httpBasic(AbstractHttpConfigurer::disable);

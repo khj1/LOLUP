@@ -40,7 +40,7 @@ public enum OAuthAttributes {
 		this.of = of;
 	}
 
-	public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
+	public static UserProfile extract(final String registrationId, final Map<String, Object> attributes) {
 		return Arrays.stream(values())
 				.filter(provider -> registrationId.equals(provider.registrationId))
 				.findFirst()

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lolup.lolup_project.common.BaseTimeEntity;
-import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
@@ -65,14 +64,15 @@ public class Duo extends BaseTimeEntity {
 		this.desc = desc;
 	}
 
-	public static Duo create(final Member member, final SummonerDto summonerDto, final SummonerPosition position,
-							 final String desc) {
+	public static Duo create(final Member member, final SummonerStat summonerStat,
+							 final List<ChampionStat> championStats, final double latestWinRate,
+							 final SummonerPosition position, final String desc) {
 		return Duo.builder()
 				.member(member)
-				.summonerStat(summonerDto.getSummonerStat())
-				.championStats(summonerDto.getChampionStats())
+				.summonerStat(summonerStat)
+				.championStats(championStats)
 				.position(position)
-				.latestWinRate(summonerDto.getLatestWinRate())
+				.latestWinRate(latestWinRate)
 				.desc(desc)
 				.build();
 	}
