@@ -1,5 +1,6 @@
 package com.lolup.duo.application;
 
+import static com.lolup.common.fixture.MemberFixture.테스트_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -42,7 +43,7 @@ class DuoServiceTest extends ServiceTest {
 	void findAll() {
 		given(riotStaticService.getLatestGameVersion()).willReturn(GAME_VERSION);
 
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		duoRepository.save(createDuo(member, SummonerPosition.JUG, SummonerTier.GOLD));
 		duoRepository.save(createDuo(member, SummonerPosition.TOP, SummonerTier.GOLD));
 		duoRepository.save(createDuo(member, SummonerPosition.JUG, SummonerTier.SILVER));
@@ -77,7 +78,7 @@ class DuoServiceTest extends ServiceTest {
 		given(matchService.requestRecentMatchStats(anyString(), anyString()))
 				.willReturn(createRecentMatchStatsDto());
 
-		Long memberId = memberRepository.save(createMember())
+		Long memberId = memberRepository.save(테스트_회원())
 				.getId();
 
 		duoService.save(memberId, createDuoSaveRequest());
@@ -95,7 +96,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글을 수정한다.")
 	@Test
 	void update() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		Duo duo = duoRepository.save(createDuo(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 		Long duoId = duo.getId();
 
@@ -110,7 +111,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글 수정 시 듀오 ID가 유효하지 않으면 예외가 발생한다.")
 	@Test
 	void updateWithInvalidDuoId() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		Duo duo = duoRepository.save(createDuo(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 
 		assertThatThrownBy(() -> duoService.update(INVALID_DUO_ID, SummonerPosition.SUP, duo.getDesc()))
@@ -120,7 +121,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글을 제거한다.")
 	@Test
 	void delete() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		Duo duo = duoRepository.save(createDuo(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long memberId = member.getId();
@@ -134,7 +135,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("유효하지 않은 회원 ID로 듀오 모집글을 제거하려고 하면 예외가 발생한다..")
 	@Test
 	void deleteWithInvalidMemberId() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		Duo duo = duoRepository.save(createDuo(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long duoId = duo.getId();
@@ -146,7 +147,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("유효하지 않은 듀오 ID로 듀오 모집글을 제거하려고 하면 예외가 발생한다..")
 	@Test
 	void deleteWithInvalidDuoId() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		duoRepository.save(createDuo(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long memberId = member.getId();
@@ -160,10 +161,6 @@ class DuoServiceTest extends ServiceTest {
 		List<ChampionStat> championStats = createChampionStats();
 
 		return Duo.create(member, summonerStat, championStats, LATEST_WIN_RATE, position, DESC);
-	}
-
-	private Member createMember() {
-		return Member.builder().build();
 	}
 
 	private SummonerStat createSummonerStat(final SummonerTier tier) {

@@ -1,5 +1,6 @@
 package com.lolup.duo.domain;
 
+import static com.lolup.common.fixture.MemberFixture.테스트_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -78,19 +79,12 @@ class DuoRepositoryTest extends RepositoryTest {
 	}
 
 	private Duo createDuo(final SummonerTier tier, final SummonerPosition position) {
-		Member member = createMember(tier, position);
-		memberRepository.save(member);
+		Member member = memberRepository.save(테스트_회원());
 
 		List<ChampionStat> championStats = createChampionStats();
 		SummonerStat summonerStat = createSummonerStat(tier);
 
 		return Duo.create(member, summonerStat, championStats, LATEST_WIN_RATE, position, DESC);
-	}
-
-	private Member createMember(final SummonerTier tier, final SummonerPosition position) {
-		return Member.builder()
-				.name(position.name() + " " + tier.name())
-				.build();
 	}
 
 	private List<ChampionStat> createChampionStats() {

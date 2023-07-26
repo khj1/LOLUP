@@ -1,5 +1,6 @@
 package com.lolup.auth.domain;
 
+import static com.lolup.common.fixture.MemberFixture.테스트_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.lolup.common.RepositoryTest;
 import com.lolup.member.domain.Member;
-import com.lolup.member.domain.Role;
 
 class RefreshTokenRepositoryTest extends RepositoryTest {
 
@@ -18,7 +18,7 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
 	@DisplayName("리프레시 토큰 값으로 리프레시 토큰을 조회할 수 있다.")
 	@Test
 	void findByRefreshToken() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		RefreshToken savedRefreshToken = refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
 
 		RefreshToken findRefreshToken = refreshTokenRepository.findByRefreshToken(REFRESH_TOKEN).orElseThrow();
@@ -29,22 +29,12 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
 	@DisplayName("리프레스 토큰 값으로 리프레시 토큰을 제거할 수 있다.")
 	@Test
 	void deleteByMember() {
-		Member member = memberRepository.save(createMember());
+		Member member = memberRepository.save(테스트_회원());
 		refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
 
 		refreshTokenRepository.deleteByRefreshToken(REFRESH_TOKEN);
 
 		assertThat(refreshTokenRepository.findByRefreshToken(REFRESH_TOKEN))
 				.isEqualTo(Optional.empty());
-	}
-
-	private Member createMember() {
-		return Member.builder()
-				.name("member")
-				.email("aaa@bbb.ccc")
-				.role(Role.USER)
-				.picture("picture")
-				.summonerName("summonerName")
-				.build();
 	}
 }

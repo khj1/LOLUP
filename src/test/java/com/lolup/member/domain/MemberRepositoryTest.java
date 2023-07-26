@@ -1,5 +1,6 @@
 package com.lolup.member.domain;
 
+import static com.lolup.common.fixture.MemberFixture.테스트_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,23 +10,14 @@ import com.lolup.common.RepositoryTest;
 
 class MemberRepositoryTest extends RepositoryTest {
 
-	private static final String EMAIL = "aaa@bbb.ccc";
-
 	@DisplayName("이메일로 멤버를 조회할 수 있다.")
 	@Test
 	void findByEmail() {
-		Long memberId = memberRepository.save(createMember())
-				.getId();
+		Member member = memberRepository.save(테스트_회원());
 
-		Member findMember = memberRepository.findByEmail(EMAIL)
+		Member findMember = memberRepository.findByEmail(member.getEmail())
 				.orElseThrow();
 
-		assertThat(findMember.getId()).isEqualTo(memberId);
-	}
-
-	private Member createMember() {
-		return Member.builder()
-				.email(EMAIL)
-				.build();
+		assertThat(findMember.getId()).isEqualTo(member.getId());
 	}
 }
