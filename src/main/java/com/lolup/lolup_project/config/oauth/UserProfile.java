@@ -13,7 +13,7 @@ public class UserProfile {
 	private final String picture;
 
 	@Builder
-	public UserProfile(String name, String email, String picture) {
+	public UserProfile(final String name, final String email, final String picture) {
 		this.name = name;
 		this.email = email;
 		this.picture = picture;

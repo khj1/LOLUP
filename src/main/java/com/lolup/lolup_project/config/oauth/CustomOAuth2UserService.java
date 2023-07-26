@@ -24,7 +24,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	private final MemberRepository memberRepository;
 
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
@@ -50,7 +50,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				.getUserNameAttributeName();
 	}
 
-	private Member saveOrUpdate(UserProfile userProfile) {
+	private Member saveOrUpdate(final UserProfile userProfile) {
 		Member member = memberRepository.findByEmail(userProfile.getEmail()).orElse(null);
 
 		if (member == null) {
