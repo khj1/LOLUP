@@ -13,11 +13,13 @@ import org.springframework.data.domain.PageRequest;
 
 import com.lolup.lolup_project.common.RepositoryTest;
 import com.lolup.lolup_project.duo.application.dto.DuoDto;
-import com.lolup.lolup_project.duo.application.dto.SummonerDto;
 import com.lolup.lolup_project.member.domain.Member;
 import com.lolup.lolup_project.riot.summoner.domain.ChampionStat;
 
 class DuoRepositoryTest extends RepositoryTest {
+
+	private static final String DESC = "testDesc";
+	private static final double LATEST_WIN_RATE = 0.2d;
 
 	@DisplayName("필터를 통해 듀오를 조회한다.")
 	@Test
@@ -79,21 +81,25 @@ class DuoRepositoryTest extends RepositoryTest {
 		Member member = createMember(tier, position);
 		memberRepository.save(member);
 
-		List<ChampionStat> championStats = new ArrayList<>();
-		championStats.add(ChampionStat.create("Syndra", 4L));
-		championStats.add(ChampionStat.create("Lucian", 3L));
-		championStats.add(ChampionStat.create("Zed", 2L));
-
+		List<ChampionStat> championStats = createChampionStats();
 		SummonerStat summonerStat = createSummonerStat(tier);
-		SummonerDto summonerDto = new SummonerDto(100, 0.2d, summonerStat, championStats);
 
-		return Duo.create(member, summonerDto, position, "hi");
+		return Duo.create(member, summonerStat, championStats, LATEST_WIN_RATE, position, DESC);
 	}
 
 	private Member createMember(final SummonerTier tier, final SummonerPosition position) {
 		return Member.builder()
 				.name(position.name() + " " + tier.name())
 				.build();
+	}
+
+	private List<ChampionStat> createChampionStats() {
+		List<ChampionStat> championStats = new ArrayList<>();
+		championStats.add(ChampionStat.create("Syndra", 4L));
+		championStats.add(ChampionStat.create("Lucian", 3L));
+		championStats.add(ChampionStat.create("Zed", 2L));
+
+		return championStats;
 	}
 
 	private SummonerStat createSummonerStat(final SummonerTier tier) {
