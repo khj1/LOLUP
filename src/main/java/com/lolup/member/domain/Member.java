@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.lolup.common.BaseTimeEntity;
 import com.lolup.member.exception.InvalidEmailException;
 import com.lolup.member.exception.InvalidMemberNameException;
+import com.lolup.member.exception.InvalidSummonerNameException;
 import com.lolup.message.domain.Message;
 
 import jakarta.persistence.Column;
@@ -62,18 +63,14 @@ public class Member extends BaseTimeEntity {
 	@Builder
 	public Member(final String name, final String email, final Role role, final String picture,
 				  final String summonerName) {
-		validateMember(name, email);
+		validateName(name);
+		validateEmail(email);
 
 		this.name = name;
 		this.email = email;
 		this.picture = picture;
 		this.summonerName = summonerName;
 		this.role = role;
-	}
-
-	private void validateMember(final String name, final String email) {
-		validateName(name);
-		validateEmail(email);
 	}
 
 	private void validateName(final String name) {
@@ -90,6 +87,9 @@ public class Member extends BaseTimeEntity {
 	}
 
 	public void update(final String name, final String email, final String picture) {
+		validateName(name);
+		validateEmail(email);
+
 		this.name = name;
 		this.email = email;
 		this.picture = picture;
@@ -100,6 +100,14 @@ public class Member extends BaseTimeEntity {
 	}
 
 	public void changeSummonerName(final String summonerName) {
+		validateSummonerName(summonerName);
+
 		this.summonerName = summonerName;
+	}
+
+	private void validateSummonerName(final String summonerName) {
+		if (summonerName.isBlank() || MAX_NAME_LENGTH < summonerName.length()) {
+			throw new InvalidSummonerNameException();
+		}
 	}
 }
