@@ -40,13 +40,12 @@ public class Member extends BaseTimeEntity {
 	private List<Message> messages;
 
 	public Member(final String name, final String email, final Role role, final String picture) {
-		this(null, name, email, role, picture, null);
+		this(name, email, role, picture, null);
 	}
 
 	@Builder
-	public Member(final Long id, final String name, final String email, final Role role, final String picture,
+	public Member(final String name, final String email, final Role role, final String picture,
 				  final String summonerName) {
-		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.picture = picture;

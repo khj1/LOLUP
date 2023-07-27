@@ -21,6 +21,7 @@ import okhttp3.mockwebserver.MockWebServer;
 class RiotStaticServiceTest {
 
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
+	private static final String LATEST_GAME_VERSION = "1.4";
 
 	private static MockWebServer mockWebServer;
 	private static RiotStaticService riotStaticService;
@@ -46,7 +47,7 @@ class RiotStaticServiceTest {
 	@DisplayName("현재 최신 게임 버전을 불러온다.")
 	@Test
 	void getLatestGameVersion() throws JsonProcessingException {
-		String[] 게임_버전_응답 = {"1.4", "1.3", "1.2", "1.1"};
+		String[] 게임_버전_응답 = {LATEST_GAME_VERSION, "1.3", "1.2", "1.1"};
 
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -55,6 +56,6 @@ class RiotStaticServiceTest {
 
 		String 최신_게임_버전 = riotStaticService.getLatestGameVersion();
 
-		assertThat(최신_게임_버전).isEqualTo("1.4");
+		assertThat(최신_게임_버전).isEqualTo(LATEST_GAME_VERSION);
 	}
 }

@@ -1,5 +1,8 @@
 package com.lolup.duo.presentation;
 
+import static com.lolup.common.fixture.DuoFixture.듀오_생성_요청;
+import static com.lolup.common.fixture.DuoFixture.듀오_수정_요청;
+import static com.lolup.common.fixture.DuoFixture.듀오_조회_응답;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -25,30 +28,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import com.lolup.common.ControllerTest;
-import com.lolup.duo.application.dto.ChampionStatDto;
-import com.lolup.duo.application.dto.DuoDto;
-import com.lolup.duo.application.dto.DuoResponse;
 import com.lolup.duo.application.dto.DuoSaveRequest;
 import com.lolup.duo.domain.SummonerPosition;
-import com.lolup.duo.domain.SummonerRank;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.duo.exception.DuoDeleteFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
-import com.lolup.duo.presentation.dto.DuoUpdateRequest;
 import com.lolup.member.exception.NoSuchMemberException;
-import com.lolup.riot.summoner.domain.ChampionStat;
 
 class DuoControllerTest extends ControllerTest {
 
@@ -57,8 +48,6 @@ class DuoControllerTest extends ControllerTest {
 	@DisplayName("모집글 추가에 성공하면 상태코드 201을 반환한다.")
 	@Test
 	void save() throws Exception {
-		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
-
 		willDoNothing()
 				.given(duoService)
 				.save(anyLong(), any(DuoSaveRequest.class));
@@ -67,7 +56,7 @@ class DuoControllerTest extends ControllerTest {
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(듀오_생성_요청))
+						.content(objectMapper.writeValueAsString(듀오_생성_요청()))
 				)
 				.andDo(document("duo/create",
 						preprocessResponse(prettyPrint()),
@@ -85,8 +74,6 @@ class DuoControllerTest extends ControllerTest {
 	@DisplayName("유효하지 않은 멤버 ID로 듀오 모집글을 생성하면 상태코드 404를 반환한다.")
 	@Test
 	void saveWithInvalidMemberId() throws Exception {
-		DuoSaveRequest 듀오_생성_요청 = createDuoSaveRequest();
-
 		willThrow(new NoSuchMemberException())
 				.given(duoService)
 				.save(anyLong(), any(DuoSaveRequest.class));
@@ -95,7 +82,7 @@ class DuoControllerTest extends ControllerTest {
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(듀오_생성_요청))
+						.content(objectMapper.writeValueAsString(듀오_생성_요청()))
 				)
 				.andDo(document("duo/create",
 						preprocessResponse(prettyPrint()),
@@ -114,10 +101,8 @@ class DuoControllerTest extends ControllerTest {
 	@DisplayName("모집글 조회에 성공하면 상태코드 200을 반환한다.")
 	@Test
 	void findAll() throws Exception {
-		DuoResponse 모집글_조회_응답 = createDuoResponse();
-
 		given(duoService.findAll(any(), any(), any()))
-				.willReturn(모집글_조회_응답);
+				.willReturn(듀오_조회_응답());
 
 		mockMvc.perform(get("/duo")
 						.queryParam("position", SummonerPosition.MID.name())
@@ -165,13 +150,11 @@ class DuoControllerTest extends ControllerTest {
 				.given(duoService)
 				.update(anyLong(), any(), any());
 
-		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
-
 		mockMvc.perform(patch("/duo/{duoId}", 1L)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(듀오_수정_요청))
+						.content(objectMapper.writeValueAsString(듀오_수정_요청()))
 				)
 				.andDo(document("duo/update",
 						preprocessRequest(prettyPrint()),
@@ -196,13 +179,11 @@ class DuoControllerTest extends ControllerTest {
 				.given(duoService)
 				.update(anyLong(), any(), any());
 
-		DuoUpdateRequest 듀오_수정_요청 = new DuoUpdateRequest(SummonerPosition.MID, "description");
-
 		mockMvc.perform(patch("/duo/{duoId}", 1L)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(듀오_수정_요청))
+						.content(objectMapper.writeValueAsString(듀오_수정_요청()))
 				)
 				.andDo(document("duo/update/failByNoDuo",
 						preprocessRequest(prettyPrint()),
@@ -268,55 +249,5 @@ class DuoControllerTest extends ControllerTest {
 								parameterWithName("duoId").description("모집글 식별자")
 						)))
 				.andExpect(status().isNotFound());
-	}
-
-	private DuoSaveRequest createDuoSaveRequest() {
-		return DuoSaveRequest.builder()
-				.position(SummonerPosition.MID)
-				.summonerName("hideonbush")
-				.desc("hi")
-				.build();
-	}
-
-	private DuoResponse createDuoResponse() {
-		DuoDto duoDtoA = getDuoDto(1L);
-		DuoDto duoDtoB = getDuoDto(2L);
-
-		List<DuoDto> content = new ArrayList<>();
-		content.add(duoDtoA);
-		content.add(duoDtoB);
-
-		String version = "11.16.0";
-		long totalCount = 100L;
-		Pageable pageable = PageRequest.of(0, 20);
-
-		return new DuoResponse(version, totalCount, content, pageable);
-	}
-
-	private DuoDto getDuoDto(final Long duoId) {
-		return DuoDto.builder()
-				.iconId(100)
-				.duoId(duoId)
-				.latestWinRate(0.2d)
-				.losses(300)
-				.championStats(getChampionStats().stream().map(ChampionStatDto::create).collect(Collectors.toList()))
-				.rank(SummonerRank.IV)
-				.tier(SummonerTier.BRONZE)
-				.desc("hi")
-				.wins(400)
-				.memberId(1L)
-				.summonerName("hideonbush")
-				.position(SummonerPosition.MID)
-				.build();
-	}
-
-	private List<ChampionStat> getChampionStats() {
-		List<ChampionStat> championStats = new ArrayList<>();
-
-		championStats.add(ChampionStat.create("Syndra", 4L));
-		championStats.add(ChampionStat.create("Lucian", 3L));
-		championStats.add(ChampionStat.create("Zed", 2L));
-
-		return championStats;
 	}
 }
