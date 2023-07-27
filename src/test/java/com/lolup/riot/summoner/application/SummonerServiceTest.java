@@ -27,12 +27,19 @@ import okhttp3.mockwebserver.MockWebServer;
 
 class SummonerServiceTest {
 
-	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
-	private static final String TEST_API_KEY = "testApiKey";
+	private static final String ID = "testId";
+	private static final String NAME = "testName";
+	private static final String PUUID = "testPuuid";
+	private static final String ACCOUNT_ID = "testAccountId";
 	private static final String SUMMONER_NAME = "testSummonerName";
-	private static final String ENCRYPTED_SUMMONER_ID = "testEncryptedSummonerId";
+	private static final String TEST_API_KEY = "testApiKey";
 	private static final String WEB_CLIENT_BAD_REQUEST = "HTTP/1.1 404";
 	private static final String WEB_CLIENT_BAD_RESPONSE = "HTTP/1.1 500";
+	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
+	private static final String ENCRYPTED_SUMMONER_ID = "testEncryptedSummonerId";
+	private static final int PROFILE_ICON_ID = 1;
+	private static final long REVISION_DATE = 1L;
+	private static final long SUMMONER_LEVEL = 1L;
 
 	private static MockWebServer mockWebServer;
 	private static SummonerService summonerService;
@@ -58,18 +65,17 @@ class SummonerServiceTest {
 	@DisplayName("라이엇 계정 정보를 불러온다.")
 	@Test
 	void getAccountInfo() throws JsonProcessingException {
-		SummonerAccountDto 라이엇_계정_정보_응답 = createSummonerAccountDto();
 
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(라이엇_계정_정보_응답)));
+				.setBody(objectMapper.writeValueAsString(라이엇_계정_정보())));
 
 		SummonerAccountDto API_호출_결과 = summonerService.requestAccountInfo(SUMMONER_NAME);
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
-				.isEqualTo(라이엇_계정_정보_응답);
+				.isEqualTo(라이엇_계정_정보());
 	}
 
 	@DisplayName("계정 정보 호출 시 잘못된 소환사 이름을 입력하면 예외를 반환한다.")
@@ -99,25 +105,21 @@ class SummonerServiceTest {
 	@DisplayName("소환사의 랭크 정보를 불러온다.")
 	@Test
 	void getSummonerStat() throws JsonProcessingException {
-		SummonerStat 소환사_랭크_정보_응답 = createSummonerStat();
-
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(소환사_랭크_정보_응답)));
+				.setBody(objectMapper.writeValueAsString(소환사_통계())));
 
 		SummonerStat API_호출_결과 = summonerService.requestSummonerStat(ENCRYPTED_SUMMONER_ID, SUMMONER_NAME);
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
-				.isEqualTo(소환사_랭크_정보_응답);
+				.isEqualTo(소환사_통계());
 	}
 
 	@DisplayName("소환사가 아직 리그에 배치되지 않았다면 언랭크 상태의 초기 객체를 반환한다.")
 	@Test
 	void getUnrankedSummonerStat() {
-		SummonerStat 언랭크_소환사_랭크_정보_응답 = createUnrankedSummonerStat();
-
 		mockWebServer.enqueue(new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE));
@@ -126,39 +128,19 @@ class SummonerServiceTest {
 
 		assertThat(API_호출_결과)
 				.usingRecursiveComparison()
-				.isEqualTo(언랭크_소환사_랭크_정보_응답);
+				.isEqualTo(언랭크_소환사_통계());
 
 	}
 
-	private SummonerAccountDto createSummonerAccountDto() {
-		return SummonerAccountDto.builder()
-				.id("id")
-				.name("testName")
-				.puuid("puuid")
-				.accountId("accountId")
-				.revisionDate(1L)
-				.summonerLevel(1L)
-				.profileIconId(1)
-				.build();
+	private SummonerAccountDto 라이엇_계정_정보() {
+		return new SummonerAccountDto(ACCOUNT_ID, PROFILE_ICON_ID, REVISION_DATE, NAME, ID, PUUID, SUMMONER_LEVEL);
 	}
 
-	private SummonerStat createSummonerStat() {
-		return SummonerStat.builder()
-				.summonerName(SUMMONER_NAME)
-				.tier(SummonerTier.CHALLENGER)
-				.rank(SummonerRank.I)
-				.wins(100)
-				.losses(100)
-				.build();
+	private SummonerStat 소환사_통계() {
+		return new SummonerStat(SUMMONER_NAME, SummonerTier.CHALLENGER, SummonerRank.I, 100, 100);
 	}
 
-	private SummonerStat createUnrankedSummonerStat() {
-		return SummonerStat.builder()
-				.summonerName(SUMMONER_NAME)
-				.tier(SummonerTier.UNRANKED)
-				.rank(SummonerRank.UNRANKED)
-				.wins(0)
-				.losses(0)
-				.build();
+	private SummonerStat 언랭크_소환사_통계() {
+		return new SummonerStat(SUMMONER_NAME, SummonerTier.UNRANKED, SummonerRank.UNRANKED, 0, 0);
 	}
 }

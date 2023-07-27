@@ -36,17 +36,20 @@ import okhttp3.mockwebserver.RecordedRequest;
 //TODO
 class MatchServiceTest {
 
+	private static final String PUUID = "testPuuid";
+	private static final String TEST_API_KEY = "testApiKey";
+	private static final String SUMMONER_NAME = "testSummonerName";
+	private static final String CHAMPION_NAME = "testChampionName";
+	private static final String WRONG_SUMMONER_NAME = "wrongSummonerName";
+	private static final String OTHER_SUMMONER_NAME = "otherSummonerName";
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
 	private static final String SOLO_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=420&start=0&count=30&api_key=testApiKey";
 	private static final String TEAM_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=440&start=0&count=30&api_key=testApiKey";
 
-	private static final String PUUID = "testPuuid";
-	private static final String TEST_API_KEY = "testApiKey";
-	private static final String CHAMPION_NAME = "testChampionName";
-	private static final String SUMMONER_NAME = "testSummonerName";
-	private static final String OTHER_SUMMONER_NAME = "otherSummonerName";
-	private static final String WRONG_SUMMONER_NAME = "wrongSummonerName";
 	private static final int TOTAL_GAME_COUNT = 30;
+	private static final int CHAMPION_ID = 1;
+	private static final int TEAM_ID = 1;
+	private static final boolean WIN = true;
 
 	private static MockWebServer mockWebServer;
 	private static MatchService matchService;
@@ -63,20 +66,20 @@ class MatchServiceTest {
 
 		objectMapper = new ObjectMapper();
 
-		MockResponse 솔로_게임_ID_응답 = new MockResponse()
+		MockResponse 솔로_매치_ID_응답 = new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(createMatchIds()));
+				.setBody(objectMapper.writeValueAsString(테스트_매치_ID_목록()));
 
-		MockResponse 팀_게임_ID_응답 = new MockResponse()
+		MockResponse 팀_매치_ID_응답 = new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(createMatchIds()));
+				.setBody(objectMapper.writeValueAsString(테스트_매치_ID_목록()));
 
-		MockResponse 게임_세부_정보_응답 = new MockResponse()
+		MockResponse 매치_정보_응답 = new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(createMatchDto()));
+				.setBody(objectMapper.writeValueAsString(매치_정보()));
 
 		Dispatcher dispatcher = new Dispatcher() {
 			@NotNull
@@ -85,26 +88,31 @@ class MatchServiceTest {
 				String path = Objects.requireNonNull(request.getPath());
 
 				if (path.equals(SOLO_RANK_MATCH_ID_REQUEST_URI)) {
-					return 솔로_게임_ID_응답;
+					return 솔로_매치_ID_응답;
 				}
 				if (path.equals(TEAM_RANK_MATCH_ID_REQUEST_URI)) {
-					return 팀_게임_ID_응답;
+					return 팀_매치_ID_응답;
 				}
-				return 게임_세부_정보_응답;
+				return 매치_정보_응답;
 			}
 		};
 
 		mockWebServer.setDispatcher(dispatcher);
 	}
 
+	@AfterAll
+	static void tearDown() throws IOException {
+		mockWebServer.shutdown();
+	}
+
 	//TODO 통제하기 힘든 랜덤 값을 테스트에 활용하는 것은 좋아보이지 않는다.
-	private static List<String> createMatchIds() {
+	private static List<String> 테스트_매치_ID_목록() {
 		return Stream.generate(() -> UUID.randomUUID().toString())
 				.limit(TOTAL_GAME_COUNT)
 				.collect(Collectors.toList());
 	}
 
-	private static MatchDto createMatchDto() {
+	private static MatchDto 매치_정보() {
 		return new MatchDto(createMatchInfoDto());
 	}
 
@@ -113,22 +121,14 @@ class MatchServiceTest {
 	}
 
 	private static List<ParticipantDto> createParticipantDtos() {
-		return List.of(createParticipantDto(SUMMONER_NAME), createParticipantDto(OTHER_SUMMONER_NAME));
+		return List.of(
+				createParticipantDto(SUMMONER_NAME),
+				createParticipantDto(OTHER_SUMMONER_NAME)
+		);
 	}
 
 	private static ParticipantDto createParticipantDto(final String summonerName) {
-		return ParticipantDto.builder()
-				.summonerName(summonerName)
-				.championName(CHAMPION_NAME)
-				.championId(1)
-				.teamId(1)
-				.win(true)
-				.build();
-	}
-
-	@AfterAll
-	static void tearDown() throws IOException {
-		mockWebServer.shutdown();
+		return new ParticipantDto(summonerName, CHAMPION_NAME, CHAMPION_ID, TEAM_ID, WIN);
 	}
 
 	//TODO 현재 테스트는 너무 지엽적인 테스트, 보완할 필요가 있다.
