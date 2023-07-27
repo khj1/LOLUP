@@ -1,5 +1,10 @@
 package com.lolup.member.domain;
 
+import static com.lolup.common.fixture.MemberFixture.EMAIL;
+import static com.lolup.common.fixture.MemberFixture.NAME;
+import static com.lolup.common.fixture.MemberFixture.PICTURE;
+import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
+import static com.lolup.common.fixture.MemberFixture.신규_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -15,17 +20,21 @@ import com.lolup.member.exception.InvalidSummonerNameException;
 
 class MemberTest {
 
+	public static final String UPDATED_NAME = "updatedName";
+	public static final String UPDATED_EMAIL = "ddd@eee.fff";
+	public static final String UPDATED_PICTURE = "updatedPicture";
+
 	@DisplayName("회원을 생성한다.")
 	@Test
 	void create() {
-		assertDoesNotThrow(() -> new Member("name", "aaa@bbb.ccc", Role.USER, "picture"));
+		assertDoesNotThrow(() -> new Member(NAME, EMAIL, Role.USER, PICTURE));
 	}
 
 	@DisplayName("회원 이름이 1~16자가 아니라면 예외가 발생한다.")
 	@ValueSource(strings = {"", " ", "aaaaaaaaaaaaaaaaa"})
 	@ParameterizedTest
 	void createWithInvalidName(final String invalidName) {
-		assertThatThrownBy(() -> new Member(invalidName, "aaa@bbb.ccc", Role.USER, "picture"))
+		assertThatThrownBy(() -> new Member(invalidName, EMAIL, Role.USER, PICTURE))
 				.isInstanceOf(InvalidMemberNameException.class);
 	}
 
@@ -33,29 +42,29 @@ class MemberTest {
 	@ValueSource(strings = {"", " ", "aaa@bbb.", "aaa@bbb", "aaabbb.ccc", "aaa@", "@bbb.ccc", "aaa"})
 	@ParameterizedTest
 	void createWithInvalidEmail(final String invalidEmail) {
-		assertThatThrownBy(() -> new Member("name", invalidEmail, Role.USER, "picture"))
+		assertThatThrownBy(() -> new Member(NAME, invalidEmail, Role.USER, PICTURE))
 				.isInstanceOf(InvalidEmailException.class);
 	}
 
 	@DisplayName("회원 정보를 수정한다.")
 	@Test
 	void update() {
-		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture");
+		Member member = 신규_회원();
 
-		member.update("updatedName", "ddd@eee.fff", "updatedPicture");
+		member.update(UPDATED_NAME, UPDATED_EMAIL, UPDATED_PICTURE);
 
 		assertThat(member)
 				.extracting("name", "email", "picture")
-				.containsExactly("updatedName", "ddd@eee.fff", "updatedPicture");
+				.containsExactly(UPDATED_NAME, UPDATED_EMAIL, UPDATED_PICTURE);
 	}
 
 	@DisplayName("회원 정보 수정 시 입력한 이름이 1~16자가 아니라면 예외가 발생한다.")
 	@ValueSource(strings = {"", " ", "aaaaaaaaaaaaaaaaa"})
 	@ParameterizedTest
 	void updateWithInvalidName(final String invalidName) {
-		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture");
+		Member member = 신규_회원();
 
-		assertThatThrownBy(() -> member.update(invalidName, "ddd@eee.fff", "updatedPicture"))
+		assertThatThrownBy(() -> member.update(invalidName, UPDATED_EMAIL, UPDATED_PICTURE))
 				.isInstanceOf(InvalidMemberNameException.class);
 	}
 
@@ -63,27 +72,27 @@ class MemberTest {
 	@ValueSource(strings = {"", " ", "aaa@bbb.", "aaa@bbb", "aaabbb.ccc", "aaa@", "@bbb.ccc", "aaa"})
 	@ParameterizedTest
 	void updateWithInvalidEmail(final String invalidEmail) {
-		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture");
+		Member member = 신규_회원();
 
-		assertThatThrownBy(() -> member.update("updatedName", invalidEmail, "updatedPicture"))
+		assertThatThrownBy(() -> member.update(UPDATED_NAME, invalidEmail, UPDATED_PICTURE))
 				.isInstanceOf(InvalidEmailException.class);
 	}
 
 	@DisplayName("소환사 이름을 변경할 수 있다.")
 	@Test
 	void changeSummonerName() {
-		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture", "summonerName");
+		Member member = 소환사_등록_회원();
 
-		member.changeSummonerName("updatedName");
+		member.changeSummonerName(UPDATED_NAME);
 
-		assertThat(member.getSummonerName()).isEqualTo("updatedName");
+		assertThat(member.getSummonerName()).isEqualTo(UPDATED_NAME);
 	}
 
 	@DisplayName("변경 할 소환사 이름이 1~16자가 아니라면 예외가 발생한다.")
 	@ValueSource(strings = {"", " ", "aaaaaaaaaaaaaaaaa"})
 	@ParameterizedTest
 	void changeInvalidSummonerName(final String invalidSummonerName) {
-		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture", "summonerName");
+		Member member = 소환사_등록_회원();
 
 		assertThatThrownBy(() -> member.changeSummonerName(invalidSummonerName))
 				.isInstanceOf(InvalidSummonerNameException.class);

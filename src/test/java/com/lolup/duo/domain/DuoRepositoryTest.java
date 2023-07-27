@@ -1,7 +1,7 @@
 package com.lolup.duo.domain;
 
 import static com.lolup.common.fixture.DuoFixture.테스트_듀오;
-import static com.lolup.common.fixture.MemberFixture.테스트_회원;
+import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -19,7 +19,7 @@ class DuoRepositoryTest extends RepositoryTest {
 	@DisplayName("필터를 통해 듀오를 조회한다.")
 	@Test
 	void findAll() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.GOLD));
 		duoRepository.save(테스트_듀오(member, SummonerPosition.TOP, SummonerTier.GOLD));
 		duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.SILVER));
@@ -45,7 +45,7 @@ class DuoRepositoryTest extends RepositoryTest {
 	@DisplayName("듀오 수정 시 수정일자가 올바르게 나온다.")
 	@Test
 	void update() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = 테스트_듀오(member, SummonerPosition.MID, SummonerTier.UNRANKED);
 		Long memberId = duoRepository.save(duo).getId();
 
@@ -61,7 +61,7 @@ class DuoRepositoryTest extends RepositoryTest {
 	@DisplayName("듀오 ID와 멤버 ID로 듀오를 조회할 수 있다.")
 	@Test
 	void delete() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo savedDuo = duoRepository.save(테스트_듀오(member, SummonerPosition.SUP, SummonerTier.UNRANKED));
 
 		Long duoId = savedDuo.getId();

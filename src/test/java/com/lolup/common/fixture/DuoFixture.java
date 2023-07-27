@@ -1,6 +1,6 @@
 package com.lolup.common.fixture;
 
-import static com.lolup.common.fixture.MemberFixture.테스트_회원;
+import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +74,10 @@ public class DuoFixture {
 
 	public static DuoResponse 듀오_조회_응답() {
 		List<DuoDto> content = List.of(
-				DuoDto.create(테스트_듀오(테스트_회원(), SummonerPosition.JUG, SummonerTier.GOLD)),
-				DuoDto.create(테스트_듀오(테스트_회원(), SummonerPosition.MID, SummonerTier.PLATINUM)),
-				DuoDto.create(테스트_듀오(테스트_회원(), SummonerPosition.BOT, SummonerTier.GRANDMASTER)),
-				DuoDto.create(테스트_듀오(테스트_회원(), SummonerPosition.TOP, SummonerTier.IRON))
+				DuoDto.create(테스트_듀오(소환사_등록_회원(), SummonerPosition.JUG, SummonerTier.GOLD)),
+				DuoDto.create(테스트_듀오(소환사_등록_회원(), SummonerPosition.MID, SummonerTier.PLATINUM)),
+				DuoDto.create(테스트_듀오(소환사_등록_회원(), SummonerPosition.BOT, SummonerTier.GRANDMASTER)),
+				DuoDto.create(테스트_듀오(소환사_등록_회원(), SummonerPosition.TOP, SummonerTier.IRON))
 		);
 
 		Pageable pageable = PageRequest.of(0, 20);
