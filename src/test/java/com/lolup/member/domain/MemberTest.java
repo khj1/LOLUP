@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.lolup.member.exception.InvalidEmailException;
 import com.lolup.member.exception.InvalidMemberNameException;
+import com.lolup.member.exception.InvalidSummonerNameException;
 
 class MemberTest {
 
@@ -66,5 +67,25 @@ class MemberTest {
 
 		assertThatThrownBy(() -> member.update("updatedName", invalidEmail, "updatedPicture"))
 				.isInstanceOf(InvalidEmailException.class);
+	}
+
+	@DisplayName("소환사 이름을 변경할 수 있다.")
+	@Test
+	void changeSummonerName() {
+		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture", "summonerName");
+
+		member.changeSummonerName("updatedName");
+
+		assertThat(member.getSummonerName()).isEqualTo("updatedName");
+	}
+
+	@DisplayName("변경 할 소환사 이름이 1~16자가 아니라면 예외가 발생한다.")
+	@ValueSource(strings = {"", " ", "aaaaaaaaaaaaaaaaa"})
+	@ParameterizedTest
+	void changeInvalidSummonerName(final String invalidSummonerName) {
+		Member member = new Member("name", "aaa@bbb.ccc", Role.USER, "picture", "summonerName");
+
+		assertThatThrownBy(() -> member.changeSummonerName(invalidSummonerName))
+				.isInstanceOf(InvalidSummonerNameException.class);
 	}
 }

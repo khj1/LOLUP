@@ -13,7 +13,7 @@ import com.lolup.member.exception.NoSuchMemberException;
 
 class MemberServiceTest extends ServiceTest {
 
-	private static final String UPDATED_SUMMONER_NAME = "updatedSummonerName";
+	private static final String UPDATED_SUMMONER_NAME = "updatedName";
 	private static final long INVALID_MEMBER_ID = 99L;
 
 	@DisplayName("소환사 이름을 변경한다.")
