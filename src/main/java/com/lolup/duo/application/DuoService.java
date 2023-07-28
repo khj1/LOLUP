@@ -51,8 +51,14 @@ public class DuoService {
 				.orElseThrow(NoSuchMemberException::new);
 
 		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
-		Duo duo = Duo.create(member, summonerDto.getSummonerStat(), summonerDto.getChampionStats(),
-				summonerDto.getLatestWinRate(), request.getPosition(), request.getDesc());
+
+		Duo duo = Duo.create(
+				member,
+				summonerDto.getSummonerStat(),
+				summonerDto.getChampionStats(),
+				summonerDto.getLatestWinRate(),
+				request.getPosition(),
+				request.getDesc());
 
 		duoRepository.save(duo);
 	}
@@ -63,7 +69,10 @@ public class DuoService {
 		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(summonerName,
 				accountDto.getPuuid());
 
-		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), summonerStat,
+		return new SummonerDto(
+				accountDto.getProfileIconId(),
+				recentMatchStats.getLatestWinRate(),
+				summonerStat,
 				recentMatchStats.getChampionStats());
 	}
 
