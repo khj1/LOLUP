@@ -41,10 +41,10 @@ public class MatchService {
 	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
 		List<ParticipantDto> participantDtos = extractParticipantDtoBy(summonerName, matchInfoDtos);
-		List<ChampionStat> most3 = getMostPlayedChampions(participantDtos);
+		List<ChampionStat> championStats = getMostPlayedChampions(participantDtos);
 		double latestWinRate = getLatestWinRate(participantDtos);
 
-		return new RecentMatchStatsDto(latestWinRate, most3);
+		return new RecentMatchStatsDto(latestWinRate, championStats);
 	}
 
 	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName,
@@ -80,8 +80,7 @@ public class MatchService {
 				.toList();
 	}
 
-	private List<String>
-	getMatchIds(final String puuId, final int queueId) {
+	private List<String> getMatchIds(final String puuId, final int queueId) {
 		return webClient
 				.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)

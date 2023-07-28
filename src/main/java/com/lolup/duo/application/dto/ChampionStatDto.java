@@ -18,7 +18,7 @@ public class ChampionStatDto {
 		this.play = play;
 	}
 
-	public static ChampionStatDto create(final ChampionStat mostInfo) {
-		return new ChampionStatDto(mostInfo.getName(), mostInfo.getPlay());
+	public static ChampionStatDto create(final ChampionStat championStat) {
+		return new ChampionStatDto(championStat.getName(), championStat.getCount());
 	}
 }
