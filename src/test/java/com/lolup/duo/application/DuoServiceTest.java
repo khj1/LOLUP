@@ -22,6 +22,7 @@ import com.lolup.duo.domain.Duo;
 import com.lolup.duo.domain.SummonerPosition;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.duo.exception.DuoDeleteFailureException;
+import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
 import com.lolup.member.domain.Member;
 import com.lolup.member.exception.NoSuchMemberException;
@@ -96,7 +97,7 @@ class DuoServiceTest extends ServiceTest {
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 		Long duoId = duo.getId();
 
-		duoService.update(duoId, SummonerPosition.SUP, duo.getDesc());
+		duoService.update(member.getId(), duoId, SummonerPosition.SUP, duo.getDesc());
 
 		Duo findDuo = duoRepository.findById(duoId)
 				.orElseThrow();
@@ -110,8 +111,18 @@ class DuoServiceTest extends ServiceTest {
 		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 
-		assertThatThrownBy(() -> duoService.update(INVALID_DUO_ID, SummonerPosition.SUP, duo.getDesc()))
+		assertThatThrownBy(() -> duoService.update(member.getId(), INVALID_DUO_ID, SummonerPosition.SUP, duo.getDesc()))
 				.isInstanceOf(NoSuchDuoException.class);
+	}
+
+	@DisplayName("듀오 모집글 수정 시 멤버 ID가 유효하지 않으면 예외가 발생한다.")
+	@Test
+	void updateWithInvalidMember() {
+		Member member = memberRepository.save(소환사_등록_회원());
+		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
+
+		assertThatThrownBy(() -> duoService.update(INVALID_MEMBER_ID, duo.getId(), SummonerPosition.SUP, duo.getDesc()))
+				.isInstanceOf(DuoUpdateFailureException.class);
 	}
 
 	@DisplayName("듀오 모집글을 제거한다.")

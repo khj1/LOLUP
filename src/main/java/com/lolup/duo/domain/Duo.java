@@ -46,6 +46,7 @@ public class Duo extends BaseTimeEntity {
 	private List<ChampionStat> championStats = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private SummonerPosition position;
 
 	private double latestWinRate;
@@ -79,11 +80,15 @@ public class Duo extends BaseTimeEntity {
 
 	private void addChampionStats(final List<ChampionStat> championStats) {
 		this.championStats = championStats;
-		championStats.forEach(mostInfo -> mostInfo.changeDuo(this));
+		championStats.forEach(championStat -> championStat.changeDuo(this));
 	}
 
 	public void update(final SummonerPosition position, final String desc) {
 		this.position = position;
 		this.desc = desc;
+	}
+
+	public boolean isAuthor(final Long memberId) {
+		return member.isSameMember(memberId);
 	}
 }

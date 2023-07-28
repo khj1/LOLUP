@@ -110,4 +110,8 @@ public class Member extends BaseTimeEntity {
 			throw new InvalidSummonerNameException();
 		}
 	}
+
+	public boolean isSameMember(final Long memberId) {
+		return this.id.equals(memberId);
+	}
 }

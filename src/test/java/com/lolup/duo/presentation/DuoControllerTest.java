@@ -146,11 +146,12 @@ class DuoControllerTest extends ControllerTest {
 	@DisplayName("모집글을 수정에 성공하면 상태코드 204를 반환한다.")
 	@Test
 	void update() throws Exception {
+		long duoId = 1L;
 		willDoNothing()
 				.given(duoService)
-				.update(anyLong(), any(), any());
+				.update(anyLong(), anyLong(), any(), any());
 
-		mockMvc.perform(patch("/duo/{duoId}", 1L)
+		mockMvc.perform(patch("/duo/{duoId}", duoId)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -172,14 +173,16 @@ class DuoControllerTest extends ControllerTest {
 				.andExpect(status().isNoContent());
 	}
 
-	@DisplayName("잘못된 멤버 ID로 모집글을 수정하면 시도하면 상태코드 404를 반환한다.")
+	//TODO anyLong()은 테스트가 실패한다. (204 반환)
+	@DisplayName("잘못된 듀오 ID로 모집글을 수정하면 시도하면 상태코드 404를 반환한다.")
 	@Test
 	void updateWithInvalidDuoId() throws Exception {
+		long invalidDuoId = 1L;
 		willThrow(new NoSuchDuoException())
 				.given(duoService)
-				.update(anyLong(), any(), any());
+				.update(any(), any(), any(), any());
 
-		mockMvc.perform(patch("/duo/{duoId}", 1L)
+		mockMvc.perform(patch("/duo/{duoId}", invalidDuoId)
 						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -226,6 +229,7 @@ class DuoControllerTest extends ControllerTest {
 				.andExpect(status().isNoContent());
 	}
 
+	//TODO anyLong()은 테스트가 실패한다. (204 반환)
 	@DisplayName("모집글 제거 시 잘못된 멤버 ID 또는 듀오 ID를 입력하면 상태코드 404를 반환한다.")
 	@Test
 	void deleteDuoWithInvalidID() throws Exception {

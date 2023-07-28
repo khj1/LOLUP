@@ -44,9 +44,10 @@ public class DuoController {
 	}
 
 	@PatchMapping("/{duoId}")
-	public ResponseEntity<Void> update(@PathVariable final Long duoId,
+	public ResponseEntity<Void> update(@AuthenticationPrincipal final Long memberId,
+									   @PathVariable final Long duoId,
 									   @Valid @RequestBody final DuoUpdateRequest request) {
-		duoService.update(duoId, request.getPosition(), request.getDesc());
+		duoService.update(memberId, duoId, request.getPosition(), request.getDesc());
 		return ResponseEntity.noContent().build();
 	}
 

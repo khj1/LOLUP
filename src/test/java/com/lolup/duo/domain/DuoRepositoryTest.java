@@ -47,12 +47,12 @@ class DuoRepositoryTest extends RepositoryTest {
 	void update() {
 		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = 테스트_듀오(member, SummonerPosition.MID, SummonerTier.UNRANKED);
-		Long memberId = duoRepository.save(duo).getId();
+		Long duoId = duoRepository.save(duo).getId();
 
 		duo.update(SummonerPosition.BOT, "updated");
 		em.flush();
 
-		Duo findDuo = duoRepository.findById(memberId)
+		Duo findDuo = duoRepository.findById(duoId)
 				.orElseThrow();
 
 		assertThat(findDuo.getLastModifiedDate()).isAfter(findDuo.getCreatedDate());
