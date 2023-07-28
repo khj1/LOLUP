@@ -15,6 +15,7 @@ import com.lolup.duo.domain.SummonerPosition;
 import com.lolup.duo.domain.SummonerStat;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.duo.exception.DuoDeleteFailureException;
+import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
 import com.lolup.member.domain.Member;
 import com.lolup.member.domain.MemberRepository;
@@ -50,8 +51,14 @@ public class DuoService {
 				.orElseThrow(NoSuchMemberException::new);
 
 		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
-		Duo duo = Duo.create(member, summonerDto.getSummonerStat(), summonerDto.getChampionStats(),
-				summonerDto.getLatestWinRate(), request.getPosition(), request.getDesc());
+
+		Duo duo = Duo.create(
+				member,
+				summonerDto.getSummonerStat(),
+				summonerDto.getChampionStats(),
+				summonerDto.getLatestWinRate(),
+				request.getPosition(),
+				request.getDesc());
 
 		duoRepository.save(duo);
 	}
@@ -62,16 +69,25 @@ public class DuoService {
 		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(summonerName,
 				accountDto.getPuuid());
 
-		return new SummonerDto(accountDto.getProfileIconId(), recentMatchStats.getLatestWinRate(), summonerStat,
+		return new SummonerDto(
+				accountDto.getProfileIconId(),
+				recentMatchStats.getLatestWinRate(),
+				summonerStat,
 				recentMatchStats.getChampionStats());
 	}
 
 	@Transactional
-	public void update(final Long duoId, final SummonerPosition position, final String desc) {
+	public void update(final Long memberId, final Long duoId, final SummonerPosition position, final String desc) {
 		Duo duo = duoRepository.findById(duoId)
 				.orElseThrow(NoSuchDuoException::new);
-
+		validateAuthor(memberId, duo);
 		duo.update(position, desc);
+	}
+
+	private void validateAuthor(final Long memberId, final Duo duo) {
+		if (!duo.isAuthor(memberId)) {
+			throw new DuoUpdateFailureException();
+		}
 	}
 
 	@Transactional

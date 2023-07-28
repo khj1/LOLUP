@@ -10,6 +10,7 @@ import com.lolup.auth.exception.InvalidTokenException;
 import com.lolup.auth.exception.NoAuthenticationException;
 import com.lolup.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.duo.exception.DuoDeleteFailureException;
+import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
 import com.lolup.member.exception.NoSuchMemberException;
 
@@ -23,7 +24,7 @@ public class ControllerAdvice {
 			NoSuchRefreshTokenException.class,
 			NoAuthenticationException.class
 	})
-	public ErrorResponse handleAuthorizationException(final Exception e) {
+	public ErrorResponse handleAuthorizationException(final RuntimeException e) {
 		return new ErrorResponse("401", e.getMessage());
 	}
 
@@ -31,9 +32,10 @@ public class ControllerAdvice {
 	@ExceptionHandler({
 			NoSuchDuoException.class,
 			NoSuchMemberException.class,
-			DuoDeleteFailureException.class
+			DuoDeleteFailureException.class,
+			DuoUpdateFailureException.class
 	})
-	public ErrorResponse handleNotFoundException(final Exception e) {
+	public ErrorResponse handleNotFoundException(final RuntimeException e) {
 		return new ErrorResponse("404", e.getMessage());
 	}
 }

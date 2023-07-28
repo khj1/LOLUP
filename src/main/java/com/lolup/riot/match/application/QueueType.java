@@ -1,6 +1,7 @@
 package com.lolup.riot.match.application;
 
 public enum QueueType {
+
 	RANKED_SOLO(420),
 	RANKED_TEAM(440);
 

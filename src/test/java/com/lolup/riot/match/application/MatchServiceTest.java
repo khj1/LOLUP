@@ -143,7 +143,7 @@ class MatchServiceTest {
 		assertAll(
 				() -> assertThat(championStats).hasSize(1),
 				() -> assertThat(championStats.get(0))
-						.extracting("name", "play")
+						.extracting("name", "count")
 						.containsExactlyInAnyOrder(CHAMPION_NAME, 30L),
 				() -> assertThat(latestWinRate).isEqualTo(1d)
 		);

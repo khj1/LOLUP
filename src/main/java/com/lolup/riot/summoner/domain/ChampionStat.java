@@ -26,22 +26,22 @@ public class ChampionStat extends BaseTimeEntity {
 	private Long id;
 
 	private String name;
-	private Long play;
+	private Long count;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "duo_id")
 	private Duo duo;
 
-	public ChampionStat(final String name, final Long play) {
+	public ChampionStat(final String name, final Long count) {
 		this.name = name;
-		this.play = play;
+		this.count = count;
 	}
 
-	public static ChampionStat create(final String name, final Long play) {
-		return new ChampionStat(name, play);
+	public static ChampionStat create(final String name, final Long count) {
+		return new ChampionStat(name, count);
 	}
 
-	public void changeDuo(Duo duo) {
+	public void changeDuo(final Duo duo) {
 		this.duo = duo;
 	}
 }

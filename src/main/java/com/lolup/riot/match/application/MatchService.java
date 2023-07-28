@@ -41,10 +41,10 @@ public class MatchService {
 	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
 		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
 		List<ParticipantDto> participantDtos = extractParticipantDtoBy(summonerName, matchInfoDtos);
-		List<ChampionStat> most3 = getMostPlayedChampions(participantDtos);
+		List<ChampionStat> championStats = getMostPlayedChampions(participantDtos);
 		double latestWinRate = getLatestWinRate(participantDtos);
 
-		return new RecentMatchStatsDto(latestWinRate, most3);
+		return new RecentMatchStatsDto(latestWinRate, championStats);
 	}
 
 	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName,
@@ -63,13 +63,13 @@ public class MatchService {
 	}
 
 	private List<MatchInfoDto> getMatchInfos(final String puuId) {
-		List<String> soloMatchIds = getMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
-		List<String> teamMatchIds = getMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
+		List<String> soloMatchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
+		List<String> teamMatchIds = requestMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
 		List<String> matchIds = mergeMatchIds(soloMatchIds, teamMatchIds);
 		List<String> recentMatchIds = matchIds.subList(FROM_INDEX_INCLUSIVE, TO_INDEX_EXCLUSIVE);
 
 		return recentMatchIds.stream()
-				.map(this::getMatchDto)
+				.map(this::requestMatchDto)
 				.map(MatchDto::getInfo)
 				.toList();
 	}
@@ -80,8 +80,7 @@ public class MatchService {
 				.toList();
 	}
 
-	private List<String>
-	getMatchIds(final String puuId, final int queueId) {
+	private List<String> requestMatchIds(final String puuId, final int queueId) {
 		return webClient
 				.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)
@@ -91,7 +90,7 @@ public class MatchService {
 				.block();
 	}
 
-	private MatchDto getMatchDto(final String matchId) {
+	private MatchDto requestMatchDto(final String matchId) {
 		return webClient
 				.get()
 				.uri(MATCH_REQUEST_URI, matchId, apiKey)

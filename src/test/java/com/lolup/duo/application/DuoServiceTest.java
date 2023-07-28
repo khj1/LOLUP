@@ -5,7 +5,7 @@ import static com.lolup.common.fixture.DuoFixture.테스트_듀오;
 import static com.lolup.common.fixture.DuoFixture.테스트_소환사_계정;
 import static com.lolup.common.fixture.DuoFixture.테스트_소환사_전적;
 import static com.lolup.common.fixture.DuoFixture.테스트_최근_전적;
-import static com.lolup.common.fixture.MemberFixture.테스트_회원;
+import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -22,6 +22,7 @@ import com.lolup.duo.domain.Duo;
 import com.lolup.duo.domain.SummonerPosition;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.duo.exception.DuoDeleteFailureException;
+import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
 import com.lolup.member.domain.Member;
 import com.lolup.member.exception.NoSuchMemberException;
@@ -39,7 +40,7 @@ class DuoServiceTest extends ServiceTest {
 	void findAll() {
 		given(riotStaticService.getLatestGameVersion()).willReturn(GAME_VERSION);
 
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.GOLD));
 		duoRepository.save(테스트_듀오(member, SummonerPosition.TOP, SummonerTier.GOLD));
 		duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.SILVER));
@@ -74,7 +75,7 @@ class DuoServiceTest extends ServiceTest {
 		given(matchService.requestRecentMatchStats(anyString(), anyString()))
 				.willReturn(테스트_최근_전적());
 
-		Long memberId = memberRepository.save(테스트_회원())
+		Long memberId = memberRepository.save(소환사_등록_회원())
 				.getId();
 
 		duoService.save(memberId, 듀오_생성_요청());
@@ -92,11 +93,11 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글을 수정한다.")
 	@Test
 	void update() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 		Long duoId = duo.getId();
 
-		duoService.update(duoId, SummonerPosition.SUP, duo.getDesc());
+		duoService.update(member.getId(), duoId, SummonerPosition.SUP, duo.getDesc());
 
 		Duo findDuo = duoRepository.findById(duoId)
 				.orElseThrow();
@@ -107,17 +108,27 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글 수정 시 듀오 ID가 유효하지 않으면 예외가 발생한다.")
 	@Test
 	void updateWithInvalidDuoId() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
 
-		assertThatThrownBy(() -> duoService.update(INVALID_DUO_ID, SummonerPosition.SUP, duo.getDesc()))
+		assertThatThrownBy(() -> duoService.update(member.getId(), INVALID_DUO_ID, SummonerPosition.SUP, duo.getDesc()))
 				.isInstanceOf(NoSuchDuoException.class);
+	}
+
+	@DisplayName("듀오 모집글 수정 시 멤버 ID가 유효하지 않으면 예외가 발생한다.")
+	@Test
+	void updateWithInvalidMember() {
+		Member member = memberRepository.save(소환사_등록_회원());
+		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
+
+		assertThatThrownBy(() -> duoService.update(INVALID_MEMBER_ID, duo.getId(), SummonerPosition.SUP, duo.getDesc()))
+				.isInstanceOf(DuoUpdateFailureException.class);
 	}
 
 	@DisplayName("듀오 모집글을 제거한다.")
 	@Test
 	void delete() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long memberId = member.getId();
@@ -131,7 +142,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("유효하지 않은 회원 ID로 듀오 모집글을 제거하려고 하면 예외가 발생한다..")
 	@Test
 	void deleteWithInvalidMemberId() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Duo duo = duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long duoId = duo.getId();
@@ -143,7 +154,7 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("유효하지 않은 듀오 ID로 듀오 모집글을 제거하려고 하면 예외가 발생한다..")
 	@Test
 	void deleteWithInvalidDuoId() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		duoRepository.save(테스트_듀오(member, SummonerPosition.JUG, SummonerTier.GOLD));
 
 		Long memberId = member.getId();

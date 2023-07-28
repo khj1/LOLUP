@@ -1,6 +1,6 @@
 package com.lolup.auth.application;
 
-import static com.lolup.common.fixture.MemberFixture.테스트_회원;
+import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -20,7 +20,7 @@ class AuthServiceTest extends ServiceTest {
 	@DisplayName("리프레시 토큰이 유효하면 엑세스 토큰을 재발급 한다.")
 	@Test
 	void refreshValidToken() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Long memberId = member.getId();
 
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
@@ -34,7 +34,7 @@ class AuthServiceTest extends ServiceTest {
 	@DisplayName("일치하는 리프레시 토큰이 없으면 예외를 반환한다.")
 	@Test
 	void refreshInvalidToken() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Long memberId = member.getId();
 
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
@@ -47,7 +47,7 @@ class AuthServiceTest extends ServiceTest {
 	@DisplayName("리프레시 토큰을 제거한다.")
 	@Test
 	void logout() {
-		Member member = memberRepository.save(테스트_회원());
+		Member member = memberRepository.save(소환사_등록_회원());
 		Long memberId = member.getId();
 
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
