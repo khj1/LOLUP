@@ -4,22 +4,24 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.lolup.member.domain.SocialType;
+
 public enum OAuthAttributes {
 
 	GOOGLE("google", (attributes) -> {
 		return new UserProfile(
 				(String)attributes.get("name"),
 				(String)attributes.get("email"),
-				(String)attributes.get("picture")
-		);
+				(String)attributes.get("picture"),
+				SocialType.GOOGLE);
 	}),
 	NAVER("naver", (attributes) -> {
 		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
 		return new UserProfile(
 				(String)response.get("name"),
 				(String)response.get("email"),
-				(String)response.get("picture")
-		);
+				(String)response.get("picture"),
+				SocialType.NAVER);
 	}),
 	KAKAO("kakao", (attributes) -> {
 		Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
@@ -28,8 +30,8 @@ public enum OAuthAttributes {
 		return new UserProfile(
 				(String)kakaoProfile.get("nickname"),
 				(String)kakaoAccount.get("email"),
-				(String)kakaoProfile.get("profile_image_url")
-		);
+				(String)kakaoProfile.get("profile_image_url"),
+				SocialType.KAKAO);
 	});
 
 	private final String registrationId;

@@ -2,6 +2,7 @@ package com.lolup.common.fixture;
 
 import com.lolup.member.domain.Member;
 import com.lolup.member.domain.Role;
+import com.lolup.member.domain.SocialType;
 
 public class MemberFixture {
 
@@ -11,10 +12,10 @@ public class MemberFixture {
 	public static final String SUMMONER_NAME = "summonerName";
 
 	public static Member 신규_회원() {
-		return new Member(NAME, EMAIL, Role.USER, PICTURE);
+		return new Member(NAME, EMAIL, Role.USER, PICTURE, SocialType.GOOGLE);
 	}
 
 	public static Member 소환사_등록_회원() {
-		return new Member(NAME, EMAIL, Role.USER, PICTURE, SUMMONER_NAME);
+		return new Member(NAME, EMAIL, Role.USER, PICTURE, SUMMONER_NAME, SocialType.GOOGLE);
 	}
 }

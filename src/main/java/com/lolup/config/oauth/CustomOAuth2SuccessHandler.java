@@ -15,6 +15,7 @@ import com.lolup.auth.domain.RefreshToken;
 import com.lolup.auth.domain.RefreshTokenRepository;
 import com.lolup.member.domain.Member;
 import com.lolup.member.domain.MemberRepository;
+import com.lolup.member.exception.NoSuchMemberException;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,8 +42,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 										final Authentication authentication) throws IOException {
 		UserProfile userProfile = extractUserProfile(authentication);
 
-		Member member = memberRepository.findByEmail(userProfile.getEmail())
-				.orElseThrow(IllegalArgumentException::new);
+		Member member = memberRepository.findByEmailAndSocialType(userProfile.getEmail(), userProfile.getSocialType())
+				.orElseThrow(NoSuchMemberException::new);
 
 		Long memberId = member.getId();
 		String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(memberId));
@@ -70,8 +71,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	}
 
 	private void writeTokenResponse(final HttpServletResponse response, final String accessToken,
-									final String refreshToken) throws
-			IOException {
+									final String refreshToken) throws IOException {
 		Cookie cookie = makeCookie(refreshToken);
 		response.addCookie(cookie);
 		response.sendRedirect(redirect_url + accessToken);

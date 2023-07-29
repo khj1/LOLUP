@@ -10,12 +10,12 @@ import com.lolup.common.RepositoryTest;
 
 class MemberRepositoryTest extends RepositoryTest {
 
-	@DisplayName("이메일로 멤버를 조회할 수 있다.")
+	@DisplayName("이메일과 소셜 타입으로 멤버를 조회할 수 있다.")
 	@Test
-	void findByEmail() {
+	void findByEmailAndSocialType() {
 		Member member = memberRepository.save(소환사_등록_회원());
 
-		Member findMember = memberRepository.findByEmail(member.getEmail())
+		Member findMember = memberRepository.findByEmailAndSocialType(member.getEmail(), member.getSocialType())
 				.orElseThrow();
 
 		assertThat(findMember.getId()).isEqualTo(member.getId());
