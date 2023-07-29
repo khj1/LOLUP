@@ -27,7 +27,7 @@ public class AuthService {
 	}
 
 	private void verifyRefreshToken(final String refreshToken) {
-		refreshTokenRepository.findByRefreshToken(refreshToken)
+		refreshTokenRepository.findByTokenValue(refreshToken)
 				.orElseThrow(NoSuchRefreshTokenException::new);
 
 		jwtTokenProvider.verifyToken(refreshToken);
@@ -35,6 +35,6 @@ public class AuthService {
 
 	@Transactional
 	public void logout(final String refreshToken) {
-		refreshTokenRepository.deleteByRefreshToken(refreshToken);
+		refreshTokenRepository.deleteByTokenValue(refreshToken);
 	}
 }

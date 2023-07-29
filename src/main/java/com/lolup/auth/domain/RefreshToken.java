@@ -29,14 +29,15 @@ public class RefreshToken extends BaseTimeEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	private String refreshToken;
+	@Column(unique = true, nullable = false)
+	private String tokenValue;
 
-	public RefreshToken(final Member member, final String refreshToken) {
+	public RefreshToken(final Member member, final String tokenValue) {
 		this.member = member;
-		this.refreshToken = refreshToken;
+		this.tokenValue = tokenValue;
 	}
 
-	public static RefreshToken create(final Member member, final String refreshToken) {
-		return new RefreshToken(member, refreshToken);
+	public static RefreshToken create(final Member member, final String tokenValue) {
+		return new RefreshToken(member, tokenValue);
 	}
 }

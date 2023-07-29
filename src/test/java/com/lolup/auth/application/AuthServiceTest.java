@@ -53,8 +53,8 @@ class AuthServiceTest extends ServiceTest {
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
 		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 
-		refreshTokenRepository.deleteByRefreshToken(refreshToken);
+		refreshTokenRepository.deleteByTokenValue(refreshToken);
 
-		assertThat(refreshTokenRepository.findByRefreshToken(refreshToken)).isEqualTo(Optional.empty());
+		assertThat(refreshTokenRepository.findByTokenValue(refreshToken)).isEqualTo(Optional.empty());
 	}
 }
