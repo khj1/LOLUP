@@ -15,26 +15,39 @@ class RefreshTokenRepositoryTest extends RepositoryTest {
 
 	private static final String REFRESH_TOKEN = "valid.refresh.token";
 
+	@DisplayName("회원 ID로 리프레시 토큰을 조회할 수 있다.")
+	@Test
+	void findByMemberId() {
+		Member member = memberRepository.save(소환사_등록_회원());
+		RefreshToken savedRefreshToken = refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
+
+		RefreshToken findRefreshToken = refreshTokenRepository.findByMemberId(member.getId())
+				.orElseThrow();
+
+		assertThat(savedRefreshToken).isSameAs(findRefreshToken);
+	}
+
 	@DisplayName("리프레시 토큰 값으로 리프레시 토큰을 조회할 수 있다.")
 	@Test
 	void findByRefreshToken() {
 		Member member = memberRepository.save(소환사_등록_회원());
 		RefreshToken savedRefreshToken = refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
 
-		RefreshToken findRefreshToken = refreshTokenRepository.findByRefreshToken(REFRESH_TOKEN).orElseThrow();
+		RefreshToken findRefreshToken = refreshTokenRepository.findByTokenValue(REFRESH_TOKEN)
+				.orElseThrow();
 
 		assertThat(savedRefreshToken).isSameAs(findRefreshToken);
 	}
 
 	@DisplayName("리프레스 토큰 값으로 리프레시 토큰을 제거할 수 있다.")
 	@Test
-	void deleteByMember() {
+	void deleteByRefreshToken() {
 		Member member = memberRepository.save(소환사_등록_회원());
 		refreshTokenRepository.save(RefreshToken.create(member, REFRESH_TOKEN));
 
-		refreshTokenRepository.deleteByRefreshToken(REFRESH_TOKEN);
+		refreshTokenRepository.deleteByTokenValue(REFRESH_TOKEN);
 
-		assertThat(refreshTokenRepository.findByRefreshToken(REFRESH_TOKEN))
+		assertThat(refreshTokenRepository.findByTokenValue(REFRESH_TOKEN))
 				.isEqualTo(Optional.empty());
 	}
 }

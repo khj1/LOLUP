@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lolup.auth.application.JwtTokenProvider;
 import com.lolup.auth.domain.RefreshToken;
@@ -38,20 +39,29 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	private String redirect_url;
 
 	@Override
+	@Transactional
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
 										final Authentication authentication) throws IOException {
 		UserProfile userProfile = extractUserProfile(authentication);
 
-		Member member = memberRepository.findByEmailAndSocialType(userProfile.getEmail(), userProfile.getSocialType())
-				.orElseThrow(NoSuchMemberException::new);
+		Member member = memberRepository.findByEmailAndSocialType(
+				userProfile.getEmail(),
+				userProfile.getSocialType()
+		).orElseThrow(NoSuchMemberException::new);
 
 		Long memberId = member.getId();
 		String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(memberId));
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
 
-		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
-
+		saveRefreshToken(member, refreshToken);
 		writeTokenResponse(response, accessToken, refreshToken);
+	}
+
+	private void saveRefreshToken(final Member member, final String refreshToken) {
+		refreshTokenRepository.findByMemberId(member.getId())
+				.ifPresent(savedToken -> refreshTokenRepository.deleteByTokenValue(savedToken.getTokenValue()));
+
+		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 	}
 
 	private UserProfile extractUserProfile(final Authentication authentication) {
