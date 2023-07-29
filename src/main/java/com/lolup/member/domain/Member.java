@@ -53,21 +53,16 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false)
 	private SocialType socialType;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Role role;
-
 	@OneToMany(mappedBy = "member")
 	private List<Message> messages;
 
-	public Member(final String name, final String email, final Role role, final String picture,
-				  final SocialType socialType) {
-		this(name, email, role, picture, null, socialType);
+	public Member(final String name, final String email, final String picture, final SocialType socialType) {
+		this(name, email, picture, null, socialType);
 	}
 
 	@Builder
-	public Member(final String name, final String email, final Role role, final String picture,
-				  final String summonerName, final SocialType socialType) {
+	public Member(final String name, final String email, final String picture, final String summonerName,
+				  final SocialType socialType) {
 		validateName(name);
 		validateEmail(email);
 
@@ -76,7 +71,6 @@ public class Member extends BaseTimeEntity {
 		this.picture = picture;
 		this.summonerName = summonerName;
 		this.socialType = socialType;
-		this.role = role;
 	}
 
 	private void validateName(final String name) {
@@ -99,10 +93,6 @@ public class Member extends BaseTimeEntity {
 		this.name = name;
 		this.email = email;
 		this.picture = picture;
-	}
-
-	public String getRoleKey() {
-		return role.getKey();
 	}
 
 	public void changeSummonerName(final String summonerName) {

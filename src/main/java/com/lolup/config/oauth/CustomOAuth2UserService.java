@@ -1,9 +1,8 @@
 package com.lolup.config.oauth;
 
-import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.lolup.member.domain.Member;
 import com.lolup.member.domain.MemberRepository;
-import com.lolup.member.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,13 +32,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		String userNameAttributeName = getUserNameAttributeName(userRequest);
 
 		UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
-		Member member = findMember(userProfile);
+		saveMember(userProfile);
 
-		return new DefaultOAuth2User(
-				Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
-				attributes,
-				userNameAttributeName
-		);
+		return new DefaultOAuth2User(null, attributes, userNameAttributeName);
 	}
 
 	private String getUserNameAttributeName(final OAuth2UserRequest userRequest) {
@@ -51,21 +45,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				.getUserNameAttributeName();
 	}
 
-	private Member findMember(final UserProfile userProfile) {
-		return memberRepository.findByEmailAndSocialType(
+	private void saveMember(final UserProfile userProfile) {
+		Optional<Member> findMember = memberRepository.findByEmailAndSocialType(
 				userProfile.getEmail(),
-				userProfile.getSocialType()
-		).orElseGet(() -> saveMember(userProfile));
-	}
-
-	private Member saveMember(final UserProfile userProfile) {
-		return new Member(
-				userProfile.getName(),
-				userProfile.getEmail(),
-				Role.USER,
-				userProfile.getPicture(),
 				userProfile.getSocialType()
 		);
+		if (findMember.isEmpty()) {
+			memberRepository.save(userProfile.toEntity());
+		}
 	}
-
 }

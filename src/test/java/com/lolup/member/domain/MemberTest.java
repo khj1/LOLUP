@@ -27,14 +27,14 @@ class MemberTest {
 	@DisplayName("회원을 생성한다.")
 	@Test
 	void create() {
-		assertDoesNotThrow(() -> new Member(NAME, EMAIL, Role.USER, PICTURE, SocialType.GOOGLE));
+		assertDoesNotThrow(() -> new Member(NAME, EMAIL, PICTURE, SocialType.GOOGLE));
 	}
 
 	@DisplayName("회원 이름이 1~16자가 아니라면 예외가 발생한다.")
 	@ValueSource(strings = {"", " ", "aaaaaaaaaaaaaaaaa"})
 	@ParameterizedTest
 	void createWithInvalidName(final String invalidName) {
-		assertThatThrownBy(() -> new Member(invalidName, EMAIL, Role.USER, PICTURE, SocialType.GOOGLE))
+		assertThatThrownBy(() -> new Member(invalidName, EMAIL, PICTURE, SocialType.GOOGLE))
 				.isInstanceOf(InvalidMemberNameException.class);
 	}
 
@@ -42,7 +42,7 @@ class MemberTest {
 	@ValueSource(strings = {"", " ", "aaa@bbb.", "aaa@bbb", "aaabbb.ccc", "aaa@", "@bbb.ccc", "aaa"})
 	@ParameterizedTest
 	void createWithInvalidEmail(final String invalidEmail) {
-		assertThatThrownBy(() -> new Member(NAME, invalidEmail, Role.USER, PICTURE, SocialType.GOOGLE))
+		assertThatThrownBy(() -> new Member(NAME, invalidEmail, PICTURE, SocialType.GOOGLE))
 				.isInstanceOf(InvalidEmailException.class);
 	}
 

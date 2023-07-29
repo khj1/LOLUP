@@ -1,10 +1,8 @@
 package com.lolup.config.oauth;
 
 import com.lolup.member.domain.Member;
-import com.lolup.member.domain.Role;
 import com.lolup.member.domain.SocialType;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +13,6 @@ public class UserProfile {
 	private final String picture;
 	private final SocialType socialType;
 
-	@Builder
 	public UserProfile(final String name, final String email, final String picture, final SocialType socialType) {
 		this.name = name;
 		this.email = email;
@@ -24,15 +21,15 @@ public class UserProfile {
 	}
 
 	public static UserProfile create(final Member member) {
-		return UserProfile.builder()
-				.name(member.getName())
-				.email(member.getEmail())
-				.picture(member.getPicture())
-				.socialType(member.getSocialType())
-				.build();
+		return new UserProfile(
+				member.getName(),
+				member.getEmail(),
+				member.getPicture(),
+				member.getSocialType()
+		);
 	}
 
-	public Member toMember() {
-		return new Member(name, email, Role.USER, picture, socialType);
+	public Member toEntity() {
+		return new Member(name, email, picture, socialType);
 	}
 }
