@@ -1,9 +1,8 @@
 package com.lolup.config.oauth;
 
-import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -33,13 +32,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		String userNameAttributeName = getUserNameAttributeName(userRequest);
 
 		UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
-		Member member = saveOrUpdate(userProfile);
+		saveMember(userProfile);
 
-		return new DefaultOAuth2User(
-				Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
-				attributes,
-				userNameAttributeName
-		);
+		return new DefaultOAuth2User(null, attributes, userNameAttributeName);
 	}
 
 	private String getUserNameAttributeName(final OAuth2UserRequest userRequest) {
@@ -50,15 +45,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				.getUserNameAttributeName();
 	}
 
-	private Member saveOrUpdate(final UserProfile userProfile) {
-		Member member = memberRepository.findByEmail(userProfile.getEmail()).orElse(null);
-
-		if (member == null) {
-			member = userProfile.toMember();
-			member = memberRepository.save(member);
-		} else {
-			member.update(userProfile.getName(), userProfile.getEmail(), userProfile.getPicture());
+	private void saveMember(final UserProfile userProfile) {
+		Optional<Member> findMember = memberRepository.findByEmailAndSocialType(
+				userProfile.getEmail(),
+				userProfile.getSocialType()
+		);
+		if (findMember.isEmpty()) {
+			memberRepository.save(userProfile.toEntity());
 		}
-		return member;
 	}
 }
