@@ -4,17 +4,19 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.lolup.config.oauth.exception.NoSuchSocialPlatformException;
 import com.lolup.member.domain.SocialType;
 
+//TODO Map -> VO로 깔끔하게 전환하는 방법 고민해보기
 public enum OAuthAttributes {
 
-	GOOGLE("google", (attributes) -> {
-		return new UserProfile(
-				(String)attributes.get("name"),
-				(String)attributes.get("email"),
-				(String)attributes.get("picture"),
-				SocialType.GOOGLE);
-	}),
+	GOOGLE("google", (attributes) ->
+			new UserProfile(
+					(String)attributes.get("name"),
+					(String)attributes.get("email"),
+					(String)attributes.get("picture"),
+					SocialType.GOOGLE)
+	),
 
 	@SuppressWarnings("unchecked") //DefaultOAuth2User의 attributes 자료형이 Map<String, Object>이므로 형 안정성을 유지한다.
 	NAVER("naver", (attributes) -> {
@@ -23,7 +25,7 @@ public enum OAuthAttributes {
 		return new UserProfile(
 				(String)response.get("name"),
 				(String)response.get("email"),
-				(String)response.get("picture"),
+				(String)response.get("profile_image"),
 				SocialType.NAVER);
 	}),
 
@@ -51,7 +53,7 @@ public enum OAuthAttributes {
 		return Arrays.stream(values())
 				.filter(provider -> registrationId.equals(provider.registrationId))
 				.findFirst()
-				.orElseThrow(IllegalArgumentException::new)
+				.orElseThrow(NoSuchSocialPlatformException::new)
 				.of.apply(attributes);
 	}
 }
