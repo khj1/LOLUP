@@ -22,11 +22,14 @@ import com.lolup.member.domain.Member;
 
 class AuthServiceTest extends ServiceTest {
 
-	public static final String TEST_REDIRECT_URI = "https://...";
-	public static final String TEST_AUTHORIZATION_CODE = "test authorization code";
+	public static final String REDIRECT_URI = "https://...";
+	public static final String AUTHORIZATION_CODE = "test authorization code";
 
 	@MockBean
 	private KakaoPlatformUserProvider kakaoPlatformUserProvider;
+
+	@MockBean
+	private GooglePlatformUserProvider googlePlatformUserProvider;
 
 	@DisplayName("카카오 유저 정보로 토큰을 생성할 수 있다.")
 	@Test
@@ -34,7 +37,20 @@ class AuthServiceTest extends ServiceTest {
 		given(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
 				.willReturn(createPlatformUserDto());
 
-		TokenResponse tokenResponse = authService.createTokenWithKakaoOAuth(TEST_AUTHORIZATION_CODE, TEST_REDIRECT_URI);
+		TokenResponse tokenResponse = authService.createTokenWithKakaoOAuth(AUTHORIZATION_CODE, REDIRECT_URI);
+
+		assertThat(tokenResponse)
+				.extracting("memberId", "accessToken", "refreshToken")
+				.isNotEmpty();
+	}
+
+	@DisplayName("구글 유저 정보로 토큰을 생성할 수 있다.")
+	@Test
+	void createTokenWithGoogleOAuth() {
+		given(googlePlatformUserProvider.getPlatformUser(anyString(), anyString()))
+				.willReturn(createPlatformUserDto());
+
+		TokenResponse tokenResponse = authService.createTokenWithGoogleOAuth(AUTHORIZATION_CODE, REDIRECT_URI);
 
 		assertThat(tokenResponse)
 				.extracting("memberId", "accessToken", "refreshToken")
@@ -42,7 +58,7 @@ class AuthServiceTest extends ServiceTest {
 	}
 
 	private PlatformUserDto createPlatformUserDto() {
-		return new PlatformUserDto("kakaoName", "aaa@bbb.ccc", "kakaoPicture");
+		return new PlatformUserDto("name", "aaa@bbb.ccc", "picture");
 	}
 
 	@DisplayName("리프레시 토큰이 유효하면 엑세스 토큰을 재발급 한다.")

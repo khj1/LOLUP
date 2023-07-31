@@ -23,10 +23,22 @@ public class AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
+	private final GooglePlatformUserProvider googlePlatformUserProvider;
 
 	public TokenResponse createTokenWithKakaoOAuth(final String code, final String redirectUri) {
 		PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(code, redirectUri);
-		Long memberId = findOrCreateMemberId(platformUser, SocialType.KAKAO);
+
+		return createTokenResponse(platformUser, SocialType.KAKAO);
+	}
+
+	public TokenResponse createTokenWithGoogleOAuth(final String code, final String redirectUri) {
+		PlatformUserDto platformUser = googlePlatformUserProvider.getPlatformUser(code, redirectUri);
+
+		return createTokenResponse(platformUser, SocialType.GOOGLE);
+	}
+
+	private TokenResponse createTokenResponse(final PlatformUserDto platformUser, final SocialType kakao) {
+		Long memberId = findOrCreateMemberId(platformUser, kakao);
 
 		String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(memberId));
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
