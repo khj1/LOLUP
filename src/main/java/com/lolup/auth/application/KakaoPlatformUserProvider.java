@@ -14,8 +14,8 @@ import com.lolup.auth.application.dto.PlatformUserDto;
 @Component
 public class KakaoPlatformUserProvider {
 
-	protected static final String ACCESS_TOKEN_URI = "/oauth/token";
-	protected static final String USER_INFO_URI = "/v2/user/me";
+	private static final String ACCESS_TOKEN_URI = "/oauth/token";
+	private static final String USER_INFO_URI = "/v2/user/me";
 
 	private final WebClient authorizationWebClient;
 	private final WebClient resourceWebClient;

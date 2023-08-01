@@ -41,4 +41,18 @@ public class WebClientConfig {
 				.baseUrl("https://kapi.kakao.com")
 				.build();
 	}
+
+	@Bean
+	public WebClient googleAuthorizationWebClient() {
+		return WebClient.builder()
+				.baseUrl("https://oauth2.googleapis.com")
+				.build();
+	}
+
+	@Bean
+	public WebClient googleResourceWebClient() {
+		return WebClient.builder()
+				.baseUrl("https://www.googleapis.com")
+				.build();
+	}
 }
