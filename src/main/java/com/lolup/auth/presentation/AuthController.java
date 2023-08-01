@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lolup.auth.application.AuthService;
 import com.lolup.auth.application.dto.AccessTokenResponse;
+import com.lolup.auth.application.dto.TokenResponse;
 import com.lolup.auth.presentation.dto.RefreshTokenDto;
+import com.lolup.auth.presentation.dto.TokenRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,24 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
 	private final AuthService authService;
+
+	@PostMapping("/login/kakao")
+	public ResponseEntity<TokenResponse> loginWithKakao(final TokenRequest tokenRequest) {
+		TokenResponse tokenResponse = authService.createTokenWithKakaoOAuth(
+				tokenRequest.getCode(),
+				tokenRequest.getRedirectUri()
+		);
+		return ResponseEntity.ok().body(tokenResponse);
+	}
+
+	@PostMapping("/login/google")
+	public ResponseEntity<TokenResponse> loginWithGoogle(final TokenRequest tokenRequest) {
+		TokenResponse tokenResponse = authService.createTokenWithGoogleOAuth(
+				tokenRequest.getCode(),
+				tokenRequest.getRedirectUri()
+		);
+		return ResponseEntity.ok().body(tokenResponse);
+	}
 
 	@GetMapping("/check")
 	public ResponseEntity<Void> checkAuthorization(@AuthenticationPrincipal final Long memberId) {
