@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lolup.auth.application.dto.AccessTokenResponse;
 import com.lolup.auth.application.dto.PlatformUserDto;
 import com.lolup.auth.application.dto.TokenResponse;
+import com.lolup.auth.domain.RefreshToken;
 import com.lolup.auth.domain.RefreshTokenRepository;
 import com.lolup.auth.exception.NoSuchRefreshTokenException;
 import com.lolup.member.domain.Member;
@@ -38,18 +39,25 @@ public class AuthService {
 	}
 
 	private TokenResponse createTokenResponse(final PlatformUserDto platformUser, final SocialType kakao) {
-		Long memberId = findOrCreateMemberId(platformUser, kakao);
+		Member member = findOrCreateMember(platformUser, kakao);
+		Long memberId = member.getId();
 
 		String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(memberId));
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
+		saveRefreshToken(member, memberId, refreshToken);
 
 		return new TokenResponse(memberId, accessToken, refreshToken);
 	}
 
-	private Long findOrCreateMemberId(final PlatformUserDto platformUser, final SocialType socialType) {
+	private Member findOrCreateMember(final PlatformUserDto platformUser, final SocialType socialType) {
 		return memberRepository.findByEmailAndSocialType(platformUser.getEmail(), socialType)
-				.orElseGet(() -> saveMember(platformUser, socialType))
-				.getId();
+				.orElseGet(() -> saveMember(platformUser, socialType));
+	}
+
+	private void saveRefreshToken(final Member member, final Long memberId, final String refreshToken) {
+		refreshTokenRepository.findByMemberId(memberId)
+				.ifPresent(savedToken -> refreshTokenRepository.deleteByTokenValue(savedToken.getTokenValue()));
+		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 	}
 
 	private Member saveMember(final PlatformUserDto platformUser, final SocialType socialType) {
