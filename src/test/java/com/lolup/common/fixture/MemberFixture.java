@@ -5,6 +5,7 @@ import com.lolup.member.domain.SocialType;
 
 public class MemberFixture {
 
+	public static final String MEMBER_ID = "1";
 	public static final String NAME = "name";
 	public static final String EMAIL = "aaa@bbb.ccc";
 	public static final String PICTURE = "picture";

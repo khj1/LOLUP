@@ -1,5 +1,9 @@
 package com.lolup.common;
 
+import static com.lolup.common.fixture.AuthFixture.ACCESS_TOKEN;
+import static com.lolup.common.fixture.MemberFixture.MEMBER_ID;
+import static org.mockito.BDDMockito.given;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +61,7 @@ public class ControllerTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
 				.build();
+
+		given(jwtTokenProvider.getPayload(ACCESS_TOKEN)).willReturn(MEMBER_ID);
 	}
 }
