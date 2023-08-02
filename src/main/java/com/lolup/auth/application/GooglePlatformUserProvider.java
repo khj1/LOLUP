@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.lolup.auth.application.dto.GooglePlatformUser;
 import com.lolup.auth.application.dto.OAuthAccessTokenResponse;
 import com.lolup.auth.application.dto.PlatformUserDto;
+import com.lolup.auth.exception.GoogleAuthorizationException;
+import com.lolup.auth.exception.GoogleResourceException;
 
 @Component
 public class GooglePlatformUserProvider {
@@ -43,27 +45,35 @@ public class GooglePlatformUserProvider {
 	}
 
 	private OAuthAccessTokenResponse requestAccessToken(final String code, final String redirectUri) {
-		return authorizationWebClient.post()
-				.uri(uriBuilder -> uriBuilder.path(ACCESS_TOKEN_URI)
-						.queryParam("grant_type", "authorization_code")
-						.queryParam("client_id", googleClientId)
-						.queryParam("client_secret", googleClientSecret)
-						.queryParam("redirect_uri", redirectUri)
-						.queryParam("code", code)
-						.build())
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.retrieve()
-				.bodyToMono(OAuthAccessTokenResponse.class)
-				.block();
+		try {
+			return authorizationWebClient.post()
+					.uri(uriBuilder -> uriBuilder.path(ACCESS_TOKEN_URI)
+							.queryParam("grant_type", "authorization_code")
+							.queryParam("client_id", googleClientId)
+							.queryParam("client_secret", googleClientSecret)
+							.queryParam("redirect_uri", redirectUri)
+							.queryParam("code", code)
+							.build())
+					.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+					.retrieve()
+					.bodyToMono(OAuthAccessTokenResponse.class)
+					.block();
+		} catch (RuntimeException e) {
+			throw new GoogleAuthorizationException();
+		}
 	}
 
 	private GooglePlatformUser requestPlatformUser(final String accessToken) {
-		return resourceWebClient.get()
-				.uri(uriBuilder -> uriBuilder.path(USER_INFO_URI)
-						.queryParam("access_token", accessToken)
-						.build())
-				.retrieve()
-				.bodyToMono(GooglePlatformUser.class)
-				.block();
+		try {
+			return resourceWebClient.get()
+					.uri(uriBuilder -> uriBuilder.path(USER_INFO_URI)
+							.queryParam("access_token", accessToken)
+							.build())
+					.retrieve()
+					.bodyToMono(GooglePlatformUser.class)
+					.block();
+		} catch (RuntimeException e) {
+			throw new GoogleResourceException();
+		}
 	}
 }

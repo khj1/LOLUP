@@ -24,7 +24,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login/kakao")
-	public ResponseEntity<TokenResponse> loginWithKakao(final TokenRequest tokenRequest) {
+	public ResponseEntity<TokenResponse> loginWithKakao(@Valid @RequestBody final TokenRequest tokenRequest) {
 		TokenResponse tokenResponse = authService.createTokenWithKakaoOAuth(
 				tokenRequest.getCode(),
 				tokenRequest.getRedirectUri()
@@ -33,7 +33,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login/google")
-	public ResponseEntity<TokenResponse> loginWithGoogle(final TokenRequest tokenRequest) {
+	public ResponseEntity<TokenResponse> loginWithGoogle(@Valid @RequestBody final TokenRequest tokenRequest) {
 		TokenResponse tokenResponse = authService.createTokenWithGoogleOAuth(
 				tokenRequest.getCode(),
 				tokenRequest.getRedirectUri()
