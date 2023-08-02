@@ -26,8 +26,8 @@ public class GooglePlatformUserProvider {
 	public GooglePlatformUserProvider(
 			@Qualifier("googleAuthorizationWebClient") final WebClient authorizationWebClient,
 			@Qualifier("googleResourceWebClient") final WebClient resourceWebClient,
-			@Value("${spring.security.oauth2.client.registration.google.client-id}") final String googleClientId,
-			@Value("${spring.security.oauth2.client.registration.google.client-secret}") final String googleClientSecret) {
+			@Value("${google.client-id}") final String googleClientId,
+			@Value("${google.client-secret}") final String googleClientSecret) {
 		this.authorizationWebClient = authorizationWebClient;
 		this.resourceWebClient = resourceWebClient;
 		this.googleClientId = googleClientId;
