@@ -70,7 +70,7 @@ public class AuthService {
 		return memberRepository.save(member);
 	}
 
-	public AccessTokenResponse refreshToken(final String refreshToken) {
+	public AccessTokenResponse refresh(final String refreshToken) {
 		verifyRefreshToken(refreshToken);
 		String memberId = jwtTokenProvider.getPayload(refreshToken);
 		String accessToken = jwtTokenProvider.createAccessToken(memberId);

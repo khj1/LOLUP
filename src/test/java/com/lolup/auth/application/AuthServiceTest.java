@@ -70,7 +70,7 @@ class AuthServiceTest extends ServiceTest {
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
 		refreshTokenRepository.save(RefreshToken.create(member, refreshToken));
 
-		AccessTokenResponse accessTokenResponse = authService.refreshToken(refreshToken);
+		AccessTokenResponse accessTokenResponse = authService.refresh(refreshToken);
 
 		assertThat(accessTokenResponse.getAccessToken()).isNotEmpty();
 	}
@@ -83,7 +83,7 @@ class AuthServiceTest extends ServiceTest {
 
 		String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(memberId));
 
-		assertThatThrownBy(() -> authService.refreshToken(refreshToken))
+		assertThatThrownBy(() -> authService.refresh(refreshToken))
 				.isInstanceOf(NoSuchRefreshTokenException.class)
 				.hasMessage("존재하지 않는 리프레시 토큰입니다.");
 	}

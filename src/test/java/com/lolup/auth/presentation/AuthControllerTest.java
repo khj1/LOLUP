@@ -56,7 +56,7 @@ class AuthControllerTest extends ControllerTest {
 		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
-		given(authService.refreshToken(anyString())).willReturn(토큰_재발급_응답);
+		given(authService.refresh(anyString())).willReturn(토큰_재발급_응답);
 
 		mockMvc.perform(post("/auth/refresh")
 						.accept(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ class AuthControllerTest extends ControllerTest {
 		RefreshTokenDto 토큰_재발급_요청 = new RefreshTokenDto(DUMMY_REFRESH_TOKEN);
 		AccessTokenResponse 토큰_재발급_응답 = new AccessTokenResponse(DUMMY_ACCESS_TOKEN);
 
-		given(authService.refreshToken(anyString())).willThrow(expectedException);
+		given(authService.refresh(anyString())).willThrow(expectedException);
 
 		mockMvc.perform(post("/auth/refresh")
 						.accept(MediaType.APPLICATION_JSON)
