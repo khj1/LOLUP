@@ -1,5 +1,6 @@
 package com.lolup.duo.presentation;
 
+import static com.lolup.common.fixture.AuthFixture.AUTHORIZATION_VALUE;
 import static com.lolup.common.fixture.DuoFixture.듀오_생성_요청;
 import static com.lolup.common.fixture.DuoFixture.듀오_수정_요청;
 import static com.lolup.common.fixture.DuoFixture.듀오_조회_응답;
@@ -43,8 +44,6 @@ import com.lolup.member.exception.NoSuchMemberException;
 
 class DuoControllerTest extends ControllerTest {
 
-	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
-
 	@DisplayName("모집글 추가에 성공하면 상태코드 201을 반환한다.")
 	@Test
 	void save() throws Exception {
@@ -53,7 +52,7 @@ class DuoControllerTest extends ControllerTest {
 				.save(anyLong(), any(DuoSaveRequest.class));
 
 		mockMvc.perform(post("/duo/new")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(듀오_생성_요청()))
@@ -79,7 +78,7 @@ class DuoControllerTest extends ControllerTest {
 				.save(anyLong(), any(DuoSaveRequest.class));
 
 		mockMvc.perform(post("/duo/new/failByNoMember")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(듀오_생성_요청()))
@@ -152,7 +151,7 @@ class DuoControllerTest extends ControllerTest {
 				.update(anyLong(), anyLong(), any(), any());
 
 		mockMvc.perform(patch("/duo/{duoId}", duoId)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(듀오_수정_요청()))
@@ -183,7 +182,7 @@ class DuoControllerTest extends ControllerTest {
 				.update(any(), any(), any(), any());
 
 		mockMvc.perform(patch("/duo/{duoId}", invalidDuoId)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(듀오_수정_요청()))
@@ -215,7 +214,7 @@ class DuoControllerTest extends ControllerTest {
 		mockMvc.perform(delete("/duo/{duoId}", duoId)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 				)
 				.andDo(document("duo/delete",
 						preprocessRequest(prettyPrint()),
@@ -241,7 +240,7 @@ class DuoControllerTest extends ControllerTest {
 		mockMvc.perform(delete("/duo/{duoId}", duoId)
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 				)
 				.andDo(document("duo/delete/failByInvalidId",
 						preprocessRequest(prettyPrint()),

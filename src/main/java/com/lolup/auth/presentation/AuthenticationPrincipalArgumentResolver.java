@@ -1,22 +1,24 @@
 package com.lolup.auth.presentation;
 
+import java.util.Objects;
+
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.lolup.auth.exception.NoAuthenticationException;
+import com.lolup.auth.application.JwtTokenProvider;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
-			.getContextHolderStrategy();
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Override
 	public boolean supportsParameter(final MethodParameter parameter) {
@@ -26,10 +28,11 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 	@Override
 	public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
 								  final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
-		Authentication authentication = securityContextHolderStrategy.getContext().getAuthentication();
-		if (authentication == null) {
-			throw new NoAuthenticationException();
-		}
-		return authentication.getPrincipal();
+		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+		String accessToken = AuthorizationExtractor.extract(Objects.requireNonNull(request));
+		jwtTokenProvider.verifyToken(accessToken);
+		String memberId = jwtTokenProvider.getPayload(accessToken);
+
+		return Long.valueOf(memberId);
 	}
 }

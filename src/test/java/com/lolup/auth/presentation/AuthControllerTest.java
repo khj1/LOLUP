@@ -1,5 +1,6 @@
 package com.lolup.auth.presentation;
 
+import static com.lolup.common.fixture.AuthFixture.AUTHORIZATION_VALUE;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -31,15 +32,14 @@ import com.lolup.common.ControllerTest;
 
 class AuthControllerTest extends ControllerTest {
 
-	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
-	private static final String DUMMY_REFRESH_TOKEN = "dummy.refresh.token";
 	private static final String DUMMY_ACCESS_TOKEN = "dummy.access.token";
+	private static final String DUMMY_REFRESH_TOKEN = "dummy.refresh.token";
 
 	@DisplayName("권한 체크가 완료되면 상태코드 204를 반환한다.")
 	@Test
 	void checkAuthorization() throws Exception {
 		mockMvc.perform(get("/auth/check")
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 				)
 				.andDo(document("auth/logout",
 						preprocessRequest(prettyPrint()),

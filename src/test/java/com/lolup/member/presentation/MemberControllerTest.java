@@ -1,5 +1,6 @@
 package com.lolup.member.presentation;
 
+import static com.lolup.common.fixture.AuthFixture.AUTHORIZATION_VALUE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
@@ -26,8 +27,6 @@ import com.lolup.member.presentation.dto.MemberUpdateRequest;
 
 class MemberControllerTest extends ControllerTest {
 
-	private final static String BEARER_JWT_TOKEN = "Bearer provided.jwt.token";
-
 	@DisplayName("소환사 이름을 수정하면 상태코드 204를 반환한다.")
 	@Test
 	void updateSummonerName() throws Exception {
@@ -40,7 +39,7 @@ class MemberControllerTest extends ControllerTest {
 		mockMvc.perform(patch("/member")
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.content(objectMapper.writeValueAsString(회원_수정_요청))
 				)
 				.andDo(print())
@@ -68,7 +67,7 @@ class MemberControllerTest extends ControllerTest {
 		mockMvc.perform(patch("/member")
 						.accept(MediaType.APPLICATION_JSON)
 						.contentType(MediaType.APPLICATION_JSON)
-						.header(HttpHeaders.AUTHORIZATION, BEARER_JWT_TOKEN)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
 						.content(objectMapper.writeValueAsString(회원_수정_요청))
 				)
 				.andDo(print())
