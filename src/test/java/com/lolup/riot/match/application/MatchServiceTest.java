@@ -39,7 +39,7 @@ class MatchServiceTest {
 	private static final String TEST_API_KEY = "testApiKey";
 	private static final String SUMMONER_NAME = "testSummonerName";
 	private static final String CHAMPION_NAME = "testChampionName";
-	private static final String WRONG_SUMMONER_NAME = "wrongSummonerName";
+	private static final String INVALID_SUMMONER_NAME = "invalidSummonerName";
 	private static final String OTHER_SUMMONER_NAME = "otherSummonerName";
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
 	private static final String SOLO_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=420&start=0&count=30&api_key=testApiKey";
@@ -151,7 +151,7 @@ class MatchServiceTest {
 	@DisplayName("존재하지 않는 소환사 이름을 입력하면 예외가 발생한다.")
 	@Test
 	void getRecentMatchStatsWithWrongSummonerName() {
-		assertThatThrownBy(() -> matchService.requestRecentMatchStats(WRONG_SUMMONER_NAME, PUUID))
+		assertThatThrownBy(() -> matchService.requestRecentMatchStats(INVALID_SUMMONER_NAME, PUUID))
 				.isInstanceOf(NoSuchSummonerException.class);
 	}
 }

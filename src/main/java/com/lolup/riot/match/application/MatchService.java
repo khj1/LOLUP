@@ -16,6 +16,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.lolup.riot.match.application.dto.MatchDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
+import com.lolup.riot.match.exception.InvalidMatchIdException;
+import com.lolup.riot.match.exception.InvalidPuuIdException;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
 import com.lolup.riot.summoner.domain.ChampionStat;
 
@@ -45,13 +47,6 @@ public class MatchService {
 		return new RecentMatchStatsDto(latestWinRate, championStats);
 	}
 
-	private ParticipantDto findBySummonerName(final List<ParticipantDto> participantDtos, final String summonerName) {
-		return participantDtos.stream()
-				.filter(participantDto -> participantDto.hasSameSummonerName(summonerName))
-				.findFirst()
-				.orElseThrow(NoSuchSummonerException::new);
-	}
-
 	private List<ParticipantDto> getParticipants(final String puuId, final String summonerName) {
 		List<String> soloMatchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
 		List<String> teamMatchIds = requestMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
@@ -59,6 +54,25 @@ public class MatchService {
 		List<String> recentMatchIds = matchIds.subList(FROM_INDEX_INCLUSIVE, TO_INDEX_EXCLUSIVE);
 
 		return extractParticipantDtoBy(summonerName, recentMatchIds);
+	}
+
+	private List<String> requestMatchIds(final String puuId, final int queueId) {
+		try {
+			return webClient.get()
+					.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)
+					.retrieve()
+					.bodyToMono(new ParameterizedTypeReference<List<String>>() {
+					})
+					.block();
+		} catch (RuntimeException e) {
+			throw new InvalidPuuIdException();
+		}
+	}
+
+	private List<String> mergeMatchIds(final List<String> soloMatchIds, final List<String> teamMatchIds) {
+		return Stream.of(soloMatchIds, teamMatchIds)
+				.flatMap(Collection::stream)
+				.toList();
 	}
 
 	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName, final List<String> recentMatchIds) {
@@ -69,35 +83,23 @@ public class MatchService {
 				.collect(Collectors.toList());
 	}
 
-	private List<String> mergeMatchIds(final List<String> soloMatchIds, final List<String> teamMatchIds) {
-		return Stream.of(soloMatchIds, teamMatchIds)
-				.flatMap(Collection::stream)
-				.toList();
-	}
-
-	private List<String> requestMatchIds(final String puuId, final int queueId) {
-		return webClient.get()
-				.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)
-				.retrieve()
-				.bodyToMono(new ParameterizedTypeReference<List<String>>() {
-				})
-				.block();
-	}
-
 	private MatchDto requestMatchDto(final String matchId) {
-		return webClient.get()
-				.uri(MATCH_REQUEST_URI, matchId, apiKey)
-				.retrieve()
-				.bodyToMono(MatchDto.class)
-				.block();
+		try {
+			return webClient.get()
+					.uri(MATCH_REQUEST_URI, matchId, apiKey)
+					.retrieve()
+					.bodyToMono(MatchDto.class)
+					.block();
+		} catch (RuntimeException e) {
+			throw new InvalidMatchIdException();
+		}
 	}
 
-	private double getLatestWinRate(List<ParticipantDto> participantDtos) {
-		long winCount = participantDtos.stream()
-				.filter(ParticipantDto::isWin)
-				.count();
-
-		return (double)winCount / TOTAL_MATCH_COUNT;
+	private ParticipantDto findBySummonerName(final List<ParticipantDto> participantDtos, final String summonerName) {
+		return participantDtos.stream()
+				.filter(participantDto -> participantDto.hasSameSummonerName(summonerName))
+				.findFirst()
+				.orElseThrow(NoSuchSummonerException::new);
 	}
 
 	private List<ChampionStat> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
@@ -121,5 +123,13 @@ public class MatchService {
 						Map.Entry::getKey,
 						Map.Entry::getValue,
 						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+	}
+
+	private double getLatestWinRate(List<ParticipantDto> participantDtos) {
+		long winCount = participantDtos.stream()
+				.filter(ParticipantDto::isWin)
+				.count();
+
+		return (double)winCount / TOTAL_MATCH_COUNT;
 	}
 }
