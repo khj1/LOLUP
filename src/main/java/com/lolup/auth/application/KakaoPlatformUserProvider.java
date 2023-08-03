@@ -27,8 +27,8 @@ public class KakaoPlatformUserProvider {
 	public KakaoPlatformUserProvider(
 			@Qualifier("kakaoAuthorizationWebClient") final WebClient authorizationWebClient,
 			@Qualifier("kakaoResourceWebClient") final WebClient resourceWebClient,
-			@Value("${spring.security.oauth2.client.registration.kakao.clientId}") final String kakaoClientId,
-			@Value("${spring.security.oauth2.client.registration.kakao.clientSecret}") final String kakaoClientSecret) {
+			@Value("${kakao.clientId}") final String kakaoClientId,
+			@Value("${kakao.clientSecret}") final String kakaoClientSecret) {
 		this.authorizationWebClient = authorizationWebClient;
 		this.resourceWebClient = resourceWebClient;
 		this.kakaoClientId = kakaoClientId;

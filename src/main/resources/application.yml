@@ -1,8 +1,3 @@
-server:
-  servlet:
-    session:
-      tracking-modes: cookie
-
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/lolup
@@ -18,54 +13,13 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
 
-  security:
-    oauth2:
-      client:
-        registration:
-          naver:
-            client-id: ENC(xgr1Vshedp/+SaEaO1ytFHtD2MnEsRAYw44/WQsmNNI=)
-            client-secret: ENC(oQ8kqphaiR1i0Jcl8Gogf91CQchdjOzy)
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            scope:
-              - name
-              - email
-              - profile
-              - profile_image
-            client-name: Naver
+google:
+  client-id: ENC(xkPiPi3rI37x0QR0Xp3/wpGfa5N5wK0IkkcK1+D2FUgRkeT3meZTisytQQ37Yq03wYBvI5HnJAs3RCxOrhZE6DrL7rjI5YfKdPoop1l2BI4DL5+YlEI0mg==)
+  client-secret: ENC(dMmQIPkVnjU3Y24doVDVIyJquIrjt5QYKfz8WrOUMfjeYohs1hJYuw==)
 
-          google:
-            client-id: ENC(xkPiPi3rI37x0QR0Xp3/wpGfa5N5wK0IkkcK1+D2FUgRkeT3meZTisytQQ37Yq03wYBvI5HnJAs3RCxOrhZE6DrL7rjI5YfKdPoop1l2BI4DL5+YlEI0mg==)
-            client-secret: ENC(dMmQIPkVnjU3Y24doVDVIyJquIrjt5QYKfz8WrOUMfjeYohs1hJYuw==)
-            authorization-grant-type: authorization_code
-            scope:
-              - profile
-              - email
-
-          kakao:
-            clientId: ENC(jOmRBZz9NjpeenL+DaCYk4S6xDC+wo07h0NkNINMfRw3scqG0DNBJUlvyDqj9KCE)
-            clientSecret: ENC(mylpxosRyT//agdBD7W8svsSHAPOimOnbGdN+gLWD2tMdapBCgAcNuZWMi1An4Fu)
-            redirectUri: "{baseUrl}/login/oauth2/code/kakao"
-            authorizationGrantType: authorization_code
-            client-authentication-method: client_secret_post
-            clientName: Kakao
-            scope:
-              - profile_nickname
-              - profile_image
-              - account_email
-
-        provider:
-          naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
-
-          kakao:
-            authorizationUri: https://kauth.kakao.com/oauth/authorize
-            tokenUri: https://kauth.kakao.com/oauth/token
-            userInfoUri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+kakao:
+  clientId: ENC(jOmRBZz9NjpeenL+DaCYk4S6xDC+wo07h0NkNINMfRw3scqG0DNBJUlvyDqj9KCE)
+  clientSecret: ENC(mylpxosRyT//agdBD7W8svsSHAPOimOnbGdN+gLWD2tMdapBCgAcNuZWMi1An4Fu)
 
 logging:
   level:
@@ -82,7 +36,7 @@ security:
       refresh:
         expire-length: 1210000000 #14일
   riot:
-    api-key: ENC(UjtUGvJFfPY1c8twycp9iYHGCIx+4N2Un5wJLsStZvvgMIED72wbT/q5cXJsX3qSINEzfCc1XR8=)
+    api-key: ENC(i1mdH6yxdMM9/QwVBY0zhMvys1j8PZKBcLY+6wc0s9LykYYZB5B2ZE4HUlgXXMfVDgrZBfCfe4A=)
 
 jasypt:
   encryptor:
@@ -90,4 +44,3 @@ jasypt:
 
 front:
   domain: http://localhost:3000
-  redirect_url: http://localhost:3000/oauth2/login?token=
