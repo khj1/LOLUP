@@ -22,7 +22,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.riot.match.application.dto.MatchDto;
-import com.lolup.riot.match.application.dto.MatchInfoDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
@@ -116,8 +115,8 @@ class MatchServiceTest {
 		return new MatchDto(createMatchInfoDto());
 	}
 
-	private static MatchInfoDto createMatchInfoDto() {
-		return new MatchInfoDto(createParticipantDtos());
+	private static MatchDto.MatchInfoDto createMatchInfoDto() {
+		return new MatchDto.MatchInfoDto(createParticipantDtos());
 	}
 
 	private static List<ParticipantDto> createParticipantDtos() {
@@ -141,11 +140,11 @@ class MatchServiceTest {
 		List<ChampionStat> championStats = recentMatchStats.getChampionStats();
 
 		assertAll(
+				() -> assertThat(latestWinRate).isEqualTo(1d),
 				() -> assertThat(championStats).hasSize(1),
 				() -> assertThat(championStats.get(0))
 						.extracting("name", "count")
-						.containsExactlyInAnyOrder(CHAMPION_NAME, 30L),
-				() -> assertThat(latestWinRate).isEqualTo(1d)
+						.containsExactlyInAnyOrder(CHAMPION_NAME, 30L)
 		);
 	}
 

@@ -5,18 +5,15 @@ import java.util.List;
 import com.lolup.riot.summoner.domain.ChampionStat;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecentMatchStatsDto {
 
 	private double latestWinRate;
 	private List<ChampionStat> championStats;
-
-	public RecentMatchStatsDto(final double latestWinRate, final List<ChampionStat> championStats) {
-		this.latestWinRate = latestWinRate;
-		this.championStats = championStats;
-	}
 }

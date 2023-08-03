@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.lolup.riot.match.application.dto.MatchDto;
-import com.lolup.riot.match.application.dto.MatchInfoDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
@@ -39,20 +38,11 @@ public class MatchService {
 	}
 
 	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
-		List<MatchInfoDto> matchInfoDtos = getMatchInfos(puuId);
-		List<ParticipantDto> participantDtos = extractParticipantDtoBy(summonerName, matchInfoDtos);
+		List<ParticipantDto> participantDtos = getParticipants(puuId, summonerName);
 		List<ChampionStat> championStats = getMostPlayedChampions(participantDtos);
 		double latestWinRate = getLatestWinRate(participantDtos);
 
 		return new RecentMatchStatsDto(latestWinRate, championStats);
-	}
-
-	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName,
-														 final List<MatchInfoDto> matchInfoDtos) {
-		return matchInfoDtos.stream()
-				.map(MatchInfoDto::getParticipants)
-				.map(participantDtos -> findBySummonerName(participantDtos, summonerName))
-				.collect(Collectors.toList());
 	}
 
 	private ParticipantDto findBySummonerName(final List<ParticipantDto> participantDtos, final String summonerName) {
@@ -62,16 +52,21 @@ public class MatchService {
 				.orElseThrow(NoSuchSummonerException::new);
 	}
 
-	private List<MatchInfoDto> getMatchInfos(final String puuId) {
+	private List<ParticipantDto> getParticipants(final String puuId, final String summonerName) {
 		List<String> soloMatchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
 		List<String> teamMatchIds = requestMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
 		List<String> matchIds = mergeMatchIds(soloMatchIds, teamMatchIds);
 		List<String> recentMatchIds = matchIds.subList(FROM_INDEX_INCLUSIVE, TO_INDEX_EXCLUSIVE);
 
+		return extractParticipantDtoBy(summonerName, recentMatchIds);
+	}
+
+	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName, final List<String> recentMatchIds) {
 		return recentMatchIds.stream()
 				.map(this::requestMatchDto)
-				.map(MatchDto::getInfo)
-				.toList();
+				.map(MatchDto::getParticipants)
+				.map(participantDtos -> findBySummonerName(participantDtos, summonerName))
+				.collect(Collectors.toList());
 	}
 
 	private List<String> mergeMatchIds(final List<String> soloMatchIds, final List<String> teamMatchIds) {
