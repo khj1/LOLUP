@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SummonerStat {
 
-	private int iconId;
 	private String summonerName;
 	private SummonerTier tier;
 	private SummonerRank rank;

@@ -11,7 +11,7 @@ import com.lolup.duo.domain.SummonerStat;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
 import com.lolup.riot.summoner.application.dto.SummonerAccountDto;
-import com.lolup.riot.summoner.exception.RiotApiBadResponseException;
+import com.lolup.riot.summoner.exception.RiotInternalServerError;
 
 import reactor.core.publisher.Mono;
 
@@ -33,19 +33,21 @@ public class SummonerService {
 	}
 
 	public SummonerAccountDto requestAccountInfo(final String summonerName) {
-		return webClient
-				.get()
+		return webClient.get()
 				.uri(ACCOUNT_INFO_REQUEST_URI, summonerName, apiKey)
 				.retrieve()
-				.onStatus(HttpStatusCode::is4xxClientError, response -> Mono.error(new NoSuchSummonerException()))
-				.onStatus(HttpStatusCode::is5xxServerError, response -> Mono.error(new RiotApiBadResponseException()))
+				.onStatus(HttpStatusCode::is4xxClientError, response ->
+						Mono.error(new NoSuchSummonerException())
+				)
+				.onStatus(HttpStatusCode::is5xxServerError, response ->
+						Mono.error(new RiotInternalServerError())
+				)
 				.bodyToMono(SummonerAccountDto.class)
 				.block();
 	}
 
 	public SummonerStat requestSummonerStat(final String encryptedSummonerId, final String summonerName) {
-		return webClient
-				.get()
+		return webClient.get()
 				.uri(SUMMONER_STAT_REQUEST_URI, encryptedSummonerId, apiKey)
 				.retrieve()
 				.bodyToMono(SummonerStat.class)

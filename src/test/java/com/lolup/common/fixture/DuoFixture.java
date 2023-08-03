@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.lolup.duo.application.dto.ChampionStatDto;
 import com.lolup.duo.application.dto.DuoDto;
 import com.lolup.duo.application.dto.DuoResponse;
 import com.lolup.duo.application.dto.DuoSaveRequest;
@@ -24,11 +25,12 @@ import com.lolup.riot.summoner.domain.ChampionStat;
 
 public class DuoFixture {
 
+	public static final int PROFILE_ICON_ID = 1;
 	private static final double LATEST_WIN_RATE = 0.5d;
 	private static final String DESC = "description";
 
 	public static Duo 테스트_듀오(final Member member, final SummonerPosition position, final SummonerTier tier) {
-		return new Duo(member, 테스트_소환사_전적(tier), 테스트_챔피언_사용횟수(), position, LATEST_WIN_RATE, DESC);
+		return new Duo(member, 테스트_소환사_전적(tier), 테스트_챔피언_사용횟수(), position, PROFILE_ICON_ID, LATEST_WIN_RATE, DESC);
 	}
 
 	public static SummonerAccountDto 테스트_소환사_계정() {
@@ -46,6 +48,12 @@ public class DuoFixture {
 		championStats.add(제드());
 
 		return championStats;
+	}
+
+	public static List<ChampionStatDto> 테스트_챔피언_사용횟수_DTO() {
+		return 테스트_챔피언_사용횟수().stream()
+				.map(ChampionStatDto::create)
+				.toList();
 	}
 
 	private static ChampionStat 탈리야() {
@@ -69,7 +77,7 @@ public class DuoFixture {
 	}
 
 	public static RecentMatchStatsDto 테스트_최근_전적() {
-		return new RecentMatchStatsDto(LATEST_WIN_RATE, 테스트_챔피언_사용횟수());
+		return new RecentMatchStatsDto(LATEST_WIN_RATE, 테스트_챔피언_사용횟수_DTO());
 	}
 
 	public static DuoResponse 듀오_조회_응답() {

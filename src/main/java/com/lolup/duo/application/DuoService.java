@@ -49,7 +49,6 @@ public class DuoService {
 	public void save(final Long memberId, final DuoSaveRequest request) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
-
 		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
 
 		Duo duo = Duo.create(
@@ -57,9 +56,10 @@ public class DuoService {
 				summonerDto.getSummonerStat(),
 				summonerDto.getChampionStats(),
 				summonerDto.getLatestWinRate(),
+				summonerDto.getProfileIconId(),
 				request.getPosition(),
-				request.getDesc());
-
+				request.getDesc()
+		);
 		duoRepository.save(duo);
 	}
 

@@ -127,18 +127,23 @@ class DuoControllerTest extends ControllerTest {
 						responseFields(beneathPath("content"),
 								fieldWithPath("duoId").type("Long").description("작성한 모집글의 고유 번호"),
 								fieldWithPath("memberId").type("Long").description("작성자의 회원 고유 번호"),
-								fieldWithPath("iconId").type("int").description("프로필 아이콘 번호"),
-								fieldWithPath("summonerName").description("인 게임에서 사용되는 소환사 이름"),
+								fieldWithPath("profileIconId").type("int").description("프로필 아이콘 번호"),
 								fieldWithPath("position").description("주 포지션"),
-								fieldWithPath("tier").description("게임 티어"),
-								fieldWithPath("rank").description("티어 등급"),
+								subsectionWithPath("summonerStat").type("SummonerStat")
+										.description("소환사의 전적 통계"),
+								fieldWithPath("summonerStat.summonerName").description("인 게임에서 사용되는 소환사 이름"),
+								fieldWithPath("summonerStat.tier").description("게임 티어"),
+								fieldWithPath("summonerStat.rank").description("티어 등급"),
+								fieldWithPath("summonerStat.wins").type("int").description("총 승리 횟수"),
+								fieldWithPath("summonerStat.losses").type("int").description("총 패배 횟수"),
 								subsectionWithPath("championStats").type("List<ChampionStatsDtos>")
-										.description("최근 10 게임에서 가장 많이 플레이한 챔피언들"),
-								fieldWithPath("wins").type("int").description("총 승리 횟수"),
-								fieldWithPath("losses").type("int").description("총 패배 횟수"),
+										.description("최근 30 게임에서 가장 많이 플레이한 챔피언들"),
+								fieldWithPath("championStats.[].name").description("챔피언 이름"),
+								fieldWithPath("championStats.[].count").description("챔피언 사용 횟수"),
 								fieldWithPath("latestWinRate").description("최근 10 게임의 승률"),
-								fieldWithPath("desc").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
-								fieldWithPath("postDate").type("LocalDateTime").description("모집글 작성 시간"))))
+								fieldWithPath("description").description("신청자 모집을 위해 간단한 문구를 작성할 수 있습니다."),
+								fieldWithPath("createdDate").type("LocalDateTime").description("모집글 작성 시간")
+						)))
 				.andExpect(status().isOk());
 	}
 
