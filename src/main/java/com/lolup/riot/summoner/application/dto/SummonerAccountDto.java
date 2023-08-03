@@ -1,11 +1,12 @@
 package com.lolup.riot.summoner.application.dto;
 
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SummonerAccountDto {
 
@@ -16,16 +17,4 @@ public class SummonerAccountDto {
 	private String id;
 	private String puuid;
 	private Long summonerLevel;
-
-	@Builder
-	public SummonerAccountDto(final String accountId, final int profileIconId, final Long revisionDate,
-							  final String name, final String id, final String puuid, final Long summonerLevel) {
-		this.accountId = accountId;
-		this.profileIconId = profileIconId;
-		this.revisionDate = revisionDate;
-		this.name = name;
-		this.id = id;
-		this.puuid = puuid;
-		this.summonerLevel = summonerLevel;
-	}
 }

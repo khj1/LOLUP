@@ -2,7 +2,7 @@ package com.lolup.riot.match.application.dto;
 
 import java.util.List;
 
-import com.lolup.riot.summoner.domain.ChampionStat;
+import com.lolup.duo.application.dto.ChampionStatDto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class RecentMatchStatsDto {
 
 	private double latestWinRate;
-	private List<ChampionStat> championStats;
+	private List<ChampionStatDto> championStats;
 }

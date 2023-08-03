@@ -49,6 +49,7 @@ public class Duo extends BaseTimeEntity {
 	@Column(nullable = false)
 	private SummonerPosition position;
 
+	private int profileIconId;
 	private double latestWinRate;
 
 	@Column(name = "description")
@@ -56,23 +57,26 @@ public class Duo extends BaseTimeEntity {
 
 	@Builder
 	public Duo(final Member member, final SummonerStat summonerStat, final List<ChampionStat> championStats,
-			   final SummonerPosition position, final double latestWinRate, final String desc) {
+			   final SummonerPosition position, final int profileIconId, final double latestWinRate,
+			   final String desc) {
 		this.member = member;
 		this.summonerStat = summonerStat;
 		addChampionStats(championStats);
 		this.position = position;
+		this.profileIconId = profileIconId;
 		this.latestWinRate = latestWinRate;
 		this.desc = desc;
 	}
 
 	public static Duo create(final Member member, final SummonerStat summonerStat,
 							 final List<ChampionStat> championStats, final double latestWinRate,
-							 final SummonerPosition position, final String desc) {
+							 final int profileIconId, final SummonerPosition position, final String desc) {
 		return Duo.builder()
 				.member(member)
 				.summonerStat(summonerStat)
 				.championStats(championStats)
 				.position(position)
+				.profileIconId(profileIconId)
 				.latestWinRate(latestWinRate)
 				.desc(desc)
 				.build();

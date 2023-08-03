@@ -13,13 +13,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.lolup.duo.application.dto.ChampionStatDto;
 import com.lolup.riot.match.application.dto.MatchDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.riot.match.exception.InvalidMatchIdException;
 import com.lolup.riot.match.exception.InvalidPuuIdException;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
-import com.lolup.riot.summoner.domain.ChampionStat;
 
 @Service
 public class MatchService {
@@ -40,9 +40,9 @@ public class MatchService {
 	}
 
 	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
-		List<ParticipantDto> participantDtos = getParticipants(puuId, summonerName);
-		List<ChampionStat> championStats = getMostPlayedChampions(participantDtos);
-		double latestWinRate = getLatestWinRate(participantDtos);
+		List<ParticipantDto> participants = getParticipants(puuId, summonerName);
+		List<ChampionStatDto> championStats = getMostPlayedChampions(participants);
+		double latestWinRate = getLatestWinRate(participants);
 
 		return new RecentMatchStatsDto(latestWinRate, championStats);
 	}
@@ -79,7 +79,7 @@ public class MatchService {
 		return recentMatchIds.stream()
 				.map(this::requestMatchDto)
 				.map(MatchDto::getParticipants)
-				.map(participantDtos -> findBySummonerName(participantDtos, summonerName))
+				.map(participants -> findBySummonerName(participants, summonerName))
 				.collect(Collectors.toList());
 	}
 
@@ -102,12 +102,12 @@ public class MatchService {
 				.orElseThrow(NoSuchSummonerException::new);
 	}
 
-	private List<ChampionStat> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
+	private List<ChampionStatDto> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
 		Map<String, Long> mostPlayedChampions = countPlayedChampion(participantDtos);
 		Map<String, Long> sortedMost = sortByPlayedCount(mostPlayedChampions);
 
 		return sortedMost.entrySet().stream()
-				.map(entry -> ChampionStat.create(entry.getKey(), entry.getValue()))
+				.map(entry -> ChampionStatDto.create(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
 	}
 

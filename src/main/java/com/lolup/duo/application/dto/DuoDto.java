@@ -6,8 +6,7 @@ import java.util.stream.Collectors;
 
 import com.lolup.duo.domain.Duo;
 import com.lolup.duo.domain.SummonerPosition;
-import com.lolup.duo.domain.SummonerRank;
-import com.lolup.duo.domain.SummonerTier;
+import com.lolup.duo.domain.SummonerStat;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,54 +20,42 @@ public class DuoDto {
 
 	private Long duoId;
 	private Long memberId;
-	private int iconId;
-	private String summonerName;
-	private SummonerPosition position;
-	private SummonerTier tier;
-	private SummonerRank rank;
+	private SummonerStat summonerStat;
 	private List<ChampionStatDto> championStats;
-	private int wins;
-	private int losses;
+	private SummonerPosition position;
+	private int profileIconId;
 	private double latestWinRate;
-	private String desc;
-	private LocalDateTime postDate;
+	private String description;
+	private LocalDateTime createdDate;
 
 	@Builder
-	public DuoDto(final Long duoId, final Long memberId, final int iconId, final String summonerName,
-				  final SummonerPosition position, final SummonerTier tier, final SummonerRank rank,
-				  final List<ChampionStatDto> championStats, final int wins, final int losses,
-				  final double latestWinRate, final String desc, final LocalDateTime postDate) {
+	public DuoDto(final Long duoId, final Long memberId, final SummonerStat summonerStat,
+				  final List<ChampionStatDto> championStats, final SummonerPosition position, final int profileIconId,
+				  final double latestWinRate, final String description, final LocalDateTime createdDate) {
 		this.duoId = duoId;
 		this.memberId = memberId;
-		this.iconId = iconId;
-		this.summonerName = summonerName;
-		this.position = position;
-		this.tier = tier;
-		this.rank = rank;
+		this.summonerStat = summonerStat;
 		this.championStats = championStats;
-		this.wins = wins;
-		this.losses = losses;
+		this.position = position;
+		this.profileIconId = profileIconId;
 		this.latestWinRate = latestWinRate;
-		this.desc = desc;
-		this.postDate = postDate;
+		this.description = description;
+		this.createdDate = createdDate;
 	}
 
 	public static DuoDto create(final Duo duo) {
 		return DuoDto.builder()
 				.duoId(duo.getId())
 				.memberId(duo.getMember().getId())
-				.iconId(duo.getSummonerStat().getIconId())
-				.summonerName(duo.getSummonerStat().getSummonerName())
-				.position(duo.getPosition())
-				.tier(duo.getSummonerStat().getTier())
-				.rank(duo.getSummonerStat().getRank())
+				.profileIconId(duo.getProfileIconId())
 				.championStats(
-						duo.getChampionStats().stream().map(ChampionStatDto::create).collect(Collectors.toList()))
-				.wins(duo.getSummonerStat().getWins())
-				.losses(duo.getSummonerStat().getLosses())
-				.latestWinRate(duo.getLatestWinRate())
-				.desc(duo.getDesc())
-				.postDate(duo.getCreatedDate())
+						duo.getChampionStats().stream()
+								.map(ChampionStatDto::create)
+								.collect(Collectors.toList())
+				)
+				.summonerStat(duo.getSummonerStat())
+				.description(duo.getDesc())
+				.createdDate(duo.getCreatedDate())
 				.build();
 	}
 }

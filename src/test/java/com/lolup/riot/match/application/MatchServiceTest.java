@@ -21,11 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolup.duo.application.dto.ChampionStatDto;
 import com.lolup.riot.match.application.dto.MatchDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
-import com.lolup.riot.summoner.domain.ChampionStat;
 
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
@@ -137,7 +137,7 @@ class MatchServiceTest {
 		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(SUMMONER_NAME, PUUID);
 
 		double latestWinRate = recentMatchStats.getLatestWinRate();
-		List<ChampionStat> championStats = recentMatchStats.getChampionStats();
+		List<ChampionStatDto> championStats = recentMatchStats.getChampionStats();
 
 		assertAll(
 				() -> assertThat(latestWinRate).isEqualTo(1d),
