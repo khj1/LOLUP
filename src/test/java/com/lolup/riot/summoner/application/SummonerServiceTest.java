@@ -20,7 +20,7 @@ import com.lolup.duo.domain.SummonerStat;
 import com.lolup.duo.domain.SummonerTier;
 import com.lolup.riot.match.exception.NoSuchSummonerException;
 import com.lolup.riot.summoner.application.dto.SummonerAccountDto;
-import com.lolup.riot.summoner.exception.RiotApiBadResponseException;
+import com.lolup.riot.summoner.exception.RiotInternalServerError;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -99,7 +99,7 @@ class SummonerServiceTest {
 				.setStatus(WEB_CLIENT_BAD_RESPONSE));
 
 		assertThatThrownBy(() -> summonerService.requestAccountInfo(SUMMONER_NAME))
-				.isInstanceOf(RiotApiBadResponseException.class);
+				.isInstanceOf(RiotInternalServerError.class);
 	}
 
 	@DisplayName("소환사의 랭크 정보를 불러온다.")

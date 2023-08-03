@@ -19,8 +19,7 @@ public class RiotStaticService {
 	}
 
 	public String getLatestGameVersion() {
-		String[] versions = webClient
-				.get()
+		String[] versions = webClient.get()
 				.uri(GAME_VERSION_REQUEST_URI)
 				.retrieve()
 				.bodyToMono(String[].class)

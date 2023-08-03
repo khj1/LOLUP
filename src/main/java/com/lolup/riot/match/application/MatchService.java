@@ -76,8 +76,7 @@ public class MatchService {
 	}
 
 	private List<String> requestMatchIds(final String puuId, final int queueId) {
-		return webClient
-				.get()
+		return webClient.get()
 				.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)
 				.retrieve()
 				.bodyToMono(new ParameterizedTypeReference<List<String>>() {
@@ -86,8 +85,7 @@ public class MatchService {
 	}
 
 	private MatchDto requestMatchDto(final String matchId) {
-		return webClient
-				.get()
+		return webClient.get()
 				.uri(MATCH_REQUEST_URI, matchId, apiKey)
 				.retrieve()
 				.bodyToMono(MatchDto.class)
