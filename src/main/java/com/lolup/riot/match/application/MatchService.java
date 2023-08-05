@@ -1,6 +1,7 @@
 package com.lolup.riot.match.application;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +119,7 @@ public class MatchService {
 
 	private LinkedHashMap<String, Long> sortByPlayedCount(final Map<String, Long> mostPlayedChampions) {
 		return mostPlayedChampions.entrySet().stream()
-				.sorted(Map.Entry.comparingByValue())
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
 						Map.Entry::getValue,
