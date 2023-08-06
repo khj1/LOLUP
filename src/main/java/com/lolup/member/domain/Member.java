@@ -1,6 +1,5 @@
 package com.lolup.member.domain;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +7,6 @@ import com.lolup.common.BaseTimeEntity;
 import com.lolup.member.exception.InvalidEmailException;
 import com.lolup.member.exception.InvalidMemberNameException;
 import com.lolup.member.exception.InvalidSummonerNameException;
-import com.lolup.message.domain.Message;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +15,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,9 +49,6 @@ public class Member extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private SocialType socialType;
-
-	@OneToMany(mappedBy = "member")
-	private List<Message> messages;
 
 	public Member(final String name, final String email, final String picture, final SocialType socialType) {
 		this(name, email, picture, null, socialType);
