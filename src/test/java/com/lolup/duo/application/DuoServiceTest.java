@@ -72,7 +72,7 @@ class DuoServiceTest extends ServiceTest {
 				.willReturn(테스트_소환사_계정());
 		given(summonerService.requestSummonerStat(anyString(), anyString()))
 				.willReturn(테스트_소환사_전적(SummonerTier.CHALLENGER));
-		given(matchService.requestRecentMatchStats(anyString(), anyString()))
+		given(matchService.requestRecentMatchStats(anyString()))
 				.willReturn(테스트_최근_전적());
 
 		Long memberId = memberRepository.save(소환사_등록_회원())

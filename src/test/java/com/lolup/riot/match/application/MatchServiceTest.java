@@ -25,7 +25,7 @@ import com.lolup.duo.application.dto.ChampionStatDto;
 import com.lolup.riot.match.application.dto.MatchDto;
 import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
-import com.lolup.riot.match.exception.NoSuchSummonerException;
+import com.lolup.riot.match.exception.InvalidPuuIdException;
 
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
@@ -36,14 +36,13 @@ import okhttp3.mockwebserver.RecordedRequest;
 class MatchServiceTest {
 
 	private static final String PUUID = "testPuuid";
+	private static final String OTHER_PUUID = "otherPuuid";
+	private static final String INVALID_PUUID = "invalidPuuid";
 	private static final String TEST_API_KEY = "testApiKey";
-	private static final String SUMMONER_NAME = "testSummonerName";
 	private static final String CHAMPION_NAME = "testChampionName";
-	private static final String INVALID_SUMMONER_NAME = "invalidSummonerName";
-	private static final String OTHER_SUMMONER_NAME = "otherSummonerName";
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
-	private static final String SOLO_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=420&start=0&count=30&api_key=testApiKey";
-	private static final String TEAM_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=440&start=0&count=30&api_key=testApiKey";
+	private static final String SOLO_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=420&start=0&count=10&api_key=testApiKey";
+	private static final String TEAM_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=440&start=0&count=10&api_key=testApiKey";
 
 	private static final int TOTAL_GAME_COUNT = 30;
 	private static final int CHAMPION_ID = 1;
@@ -121,20 +120,20 @@ class MatchServiceTest {
 
 	private static List<ParticipantDto> createParticipantDtos() {
 		return List.of(
-				createParticipantDto(SUMMONER_NAME),
-				createParticipantDto(OTHER_SUMMONER_NAME)
+				createParticipantDto(PUUID),
+				createParticipantDto(OTHER_PUUID)
 		);
 	}
 
-	private static ParticipantDto createParticipantDto(final String summonerName) {
-		return new ParticipantDto(summonerName, CHAMPION_NAME, CHAMPION_ID, TEAM_ID, WIN);
+	private static ParticipantDto createParticipantDto(final String puuid) {
+		return new ParticipantDto(puuid, CHAMPION_NAME, CHAMPION_ID, TEAM_ID, WIN);
 	}
 
 	//TODO 현재 테스트는 너무 지엽적인 테스트, 보완할 필요가 있다.
 	@DisplayName("최근 게임 통계를 불러온다.")
 	@Test
 	void getRecentMatchStats() {
-		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(SUMMONER_NAME, PUUID);
+		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(PUUID);
 
 		double latestWinRate = recentMatchStats.getLatestWinRate();
 		List<ChampionStatDto> championStats = recentMatchStats.getChampionStats();
@@ -144,14 +143,14 @@ class MatchServiceTest {
 				() -> assertThat(championStats).hasSize(1),
 				() -> assertThat(championStats.get(0))
 						.extracting("name", "count")
-						.containsExactlyInAnyOrder(CHAMPION_NAME, 30L)
+						.containsExactlyInAnyOrder(CHAMPION_NAME, 10L)
 		);
 	}
 
-	@DisplayName("존재하지 않는 소환사 이름을 입력하면 예외가 발생한다.")
+	@DisplayName("유효하지 않은 Puuid를 입력하면 예외가 발생한다.")
 	@Test
 	void getRecentMatchStatsWithWrongSummonerName() {
-		assertThatThrownBy(() -> matchService.requestRecentMatchStats(INVALID_SUMMONER_NAME, PUUID))
-				.isInstanceOf(NoSuchSummonerException.class);
+		assertThatThrownBy(() -> matchService.requestRecentMatchStats(INVALID_PUUID))
+				.isInstanceOf(InvalidPuuIdException.class);
 	}
 }

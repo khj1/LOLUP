@@ -66,8 +66,7 @@ public class DuoService {
 	private SummonerDto requestSummonerDto(final String summonerName) {
 		SummonerAccountDto accountDto = summonerService.requestAccountInfo(summonerName);
 		SummonerStat summonerStat = summonerService.requestSummonerStat(accountDto.getId(), accountDto.getName());
-		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(summonerName,
-				accountDto.getPuuid());
+		RecentMatchStatsDto recentMatchStats = matchService.requestRecentMatchStats(accountDto.getPuuid());
 
 		return new SummonerDto(
 				accountDto.getProfileIconId(),
