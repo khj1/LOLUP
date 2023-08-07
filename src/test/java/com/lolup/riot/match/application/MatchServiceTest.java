@@ -2,14 +2,12 @@ package com.lolup.riot.match.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
@@ -20,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lolup.duo.application.dto.ChampionStatDto;
 import com.lolup.riot.match.application.dto.MatchDto;
@@ -42,9 +41,8 @@ class MatchServiceTest {
 	private static final String CHAMPION_NAME = "testChampionName";
 	private static final String MOCK_SERVER_BASE_URL = "http://localhost:%s";
 	private static final String SOLO_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=420&start=0&count=10&api_key=testApiKey";
-	private static final String TEAM_RANK_MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/testPuuid/ids?queue=440&start=0&count=10&api_key=testApiKey";
+	private static final String MATCH_REQUEST_URI = "/lol/match/v5/matches/%s?api_key=testApiKey";
 
-	private static final int TOTAL_GAME_COUNT = 30;
 	private static final int CHAMPION_ID = 1;
 	private static final int TEAM_ID = 1;
 	private static final boolean WIN = true;
@@ -64,20 +62,17 @@ class MatchServiceTest {
 
 		objectMapper = new ObjectMapper();
 
-		MockResponse 솔로_매치_ID_응답 = new MockResponse()
+		MockResponse 매치_ID_응답 = new MockResponse()
 				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(테스트_매치_ID_목록()));
+				.setBody(objectMapper.writeValueAsString(매치_ID_목록()));
 
-		MockResponse 팀_매치_ID_응답 = new MockResponse()
-				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(테스트_매치_ID_목록()));
-
-		MockResponse 매치_정보_응답 = new MockResponse()
-				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-				.setBody(objectMapper.writeValueAsString(매치_정보()));
+		MockResponse A_승리_매치_응답 = 매치_정보_응답("ChampionA", true);
+		MockResponse A_패배_매치_응답 = 매치_정보_응답("ChampionA", false);
+		MockResponse B_승리_매치_응답 = 매치_정보_응답("ChampionB", true);
+		MockResponse B_패배_매치_응답 = 매치_정보_응답("ChampionB", false);
+		MockResponse C_승리_매치_응답 = 매치_정보_응답("ChampionC", true);
+		MockResponse C_패배_매치_응답 = 매치_정보_응답("ChampionC", false);
 
 		Dispatcher dispatcher = new Dispatcher() {
 			@NotNull
@@ -86,16 +81,38 @@ class MatchServiceTest {
 				String path = Objects.requireNonNull(request.getPath());
 
 				if (path.equals(SOLO_RANK_MATCH_ID_REQUEST_URI)) {
-					return 솔로_매치_ID_응답;
+					return 매치_ID_응답;
 				}
-				if (path.equals(TEAM_RANK_MATCH_ID_REQUEST_URI)) {
-					return 팀_매치_ID_응답;
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionAWin"))) {
+					return A_승리_매치_응답;
 				}
-				return 매치_정보_응답;
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionALose"))) {
+					return A_패배_매치_응답;
+				}
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionBWin"))) {
+					return B_승리_매치_응답;
+				}
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionBLose"))) {
+					return B_패배_매치_응답;
+				}
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionCWin"))) {
+					return C_승리_매치_응답;
+				}
+				if (path.equals(String.format(MATCH_REQUEST_URI, "ChampionCLose"))) {
+					return C_패배_매치_응답;
+				}
+				return new MockResponse().setResponseCode(404);
 			}
 		};
 
 		mockWebServer.setDispatcher(dispatcher);
+	}
+
+	private static MockResponse 매치_정보_응답(final String championName, final boolean win) throws JsonProcessingException {
+		return new MockResponse()
+				.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+				.setBody(objectMapper.writeValueAsString(매치_정보(championName, win)));
 	}
 
 	@AfterAll
@@ -103,24 +120,24 @@ class MatchServiceTest {
 		mockWebServer.shutdown();
 	}
 
-	//TODO 통제하기 힘든 랜덤 값을 테스트에 활용하는 것은 좋아보이지 않는다.
-	private static List<String> 테스트_매치_ID_목록() {
-		return Stream.generate(() -> UUID.randomUUID().toString())
-				.limit(TOTAL_GAME_COUNT)
-				.collect(Collectors.toList());
-	}
-
-	private static MatchDto 매치_정보() {
-		return new MatchDto(createMatchInfoDto());
-	}
-
-	private static MatchDto.MatchInfoDto createMatchInfoDto() {
-		return new MatchDto.MatchInfoDto(createParticipantDtos());
-	}
-
-	private static List<ParticipantDto> createParticipantDtos() {
+	private static List<String> 매치_ID_목록() {
 		return List.of(
-				createParticipantDto(PUUID),
+				"ChampionAWin", "ChampionAWin", "ChampionAWin", "ChampionAWin", "ChampionALose",
+				"ChampionBWin", "ChampionBWin", "ChampionBLose", "ChampionCLose", "ChampionCLose"
+		);
+	}
+
+	private static MatchDto 매치_정보(final String championName, final boolean win) {
+		return new MatchDto(createMatchInfoDto(championName, win));
+	}
+
+	private static MatchDto.MatchInfoDto createMatchInfoDto(final String championName, final boolean win) {
+		return new MatchDto.MatchInfoDto(createParticipantDtos(championName, win));
+	}
+
+	private static List<ParticipantDto> createParticipantDtos(final String championName, final boolean win) {
+		return List.of(
+				createParticipantDto(PUUID, championName, win),
 				createParticipantDto(OTHER_PUUID)
 		);
 	}
@@ -129,7 +146,11 @@ class MatchServiceTest {
 		return new ParticipantDto(puuid, CHAMPION_NAME, CHAMPION_ID, TEAM_ID, WIN);
 	}
 
-	//TODO 현재 테스트는 너무 지엽적인 테스트, 보완할 필요가 있다.
+	private static ParticipantDto createParticipantDto(final String puuid, final String championName,
+													   final boolean win) {
+		return new ParticipantDto(puuid, championName, CHAMPION_ID, TEAM_ID, win);
+	}
+
 	@DisplayName("최근 게임 통계를 불러온다.")
 	@Test
 	void getRecentMatchStats() {
@@ -139,11 +160,15 @@ class MatchServiceTest {
 		List<ChampionStatDto> championStats = recentMatchStats.getChampionStats();
 
 		assertAll(
-				() -> assertThat(latestWinRate).isEqualTo(1d),
-				() -> assertThat(championStats).hasSize(1),
-				() -> assertThat(championStats.get(0))
+				() -> assertThat(latestWinRate).isEqualTo(0.6d),
+				() -> assertThat(championStats).hasSize(3),
+				() -> assertThat(championStats)
 						.extracting("name", "count")
-						.containsExactlyInAnyOrder(CHAMPION_NAME, 10L)
+						.containsExactly(
+								tuple("ChampionA", 5L),
+								tuple("ChampionB", 3L),
+								tuple("ChampionC", 2L)
+						)
 		);
 	}
 
