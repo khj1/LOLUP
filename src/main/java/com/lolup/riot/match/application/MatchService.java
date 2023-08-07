@@ -36,17 +36,12 @@ public class MatchService {
 	}
 
 	public RecentMatchStatsDto requestRecentMatchStats(final String puuId) {
-		List<ParticipantDto> participants = getParticipants(puuId);
-		List<ChampionStatDto> championStats = getMostPlayedChampions(participants);
-		double latestWinRate = getLatestWinRate(participants);
+		List<String> matchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
+		List<ParticipantDto> participants = extractParticipantsBy(puuId, matchIds);
+		List<ChampionStatDto> championStats = extractChampionStats(participants);
+		double latestWinRate = calculateLatestWinRate(participants);
 
 		return new RecentMatchStatsDto(latestWinRate, championStats);
-	}
-
-	private List<ParticipantDto> getParticipants(final String puuId) {
-		List<String> matchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
-
-		return extractParticipantDtoBy(puuId, matchIds);
 	}
 
 	private List<String> requestMatchIds(final String puuId, final int queueId) {
@@ -62,7 +57,7 @@ public class MatchService {
 		}
 	}
 
-	private List<ParticipantDto> extractParticipantDtoBy(final String puuid, final List<String> recentMatchIds) {
+	private List<ParticipantDto> extractParticipantsBy(final String puuid, final List<String> recentMatchIds) {
 		return recentMatchIds.stream()
 				.map(this::requestMatchDto)
 				.map(MatchDto::getParticipants)
@@ -89,7 +84,7 @@ public class MatchService {
 				.orElseThrow(InvalidPuuIdException::new);
 	}
 
-	private List<ChampionStatDto> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
+	private List<ChampionStatDto> extractChampionStats(final List<ParticipantDto> participantDtos) {
 		Map<String, Long> mostPlayedChampions = countPlayedChampion(participantDtos);
 		Map<String, Long> sortedMost = sortByPlayedCount(mostPlayedChampions);
 
@@ -112,7 +107,7 @@ public class MatchService {
 						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
 	}
 
-	private double getLatestWinRate(List<ParticipantDto> participantDtos) {
+	private double calculateLatestWinRate(List<ParticipantDto> participantDtos) {
 		int totalMatchCount = participantDtos.size();
 		long winCount = participantDtos.stream()
 				.filter(ParticipantDto::isWin)
