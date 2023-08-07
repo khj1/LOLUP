@@ -1,12 +1,10 @@
 package com.lolup.riot.match.application;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +25,6 @@ public class MatchService {
 	private static final String MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/{puuId}/ids?queue={queueId}&start=0&count={count}&api_key={apiKey}";
 	private static final String MATCH_REQUEST_URI = "/lol/match/v5/matches/{matchId}?api_key={apiKey}";
 	private static final int TOTAL_MATCH_COUNT = 10;
-	private static final int FROM_INDEX_INCLUSIVE = 0;
-	private static final int TO_INDEX_EXCLUSIVE = TOTAL_MATCH_COUNT;
 
 	private final WebClient webClient;
 	private final String apiKey;
@@ -48,9 +44,7 @@ public class MatchService {
 	}
 
 	private List<ParticipantDto> getParticipants(final String puuId) {
-		List<String> soloMatchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
-		List<String> teamMatchIds = requestMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
-		List<String> matchIds = mergeMatchIds(soloMatchIds, teamMatchIds);
+		List<String> matchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
 
 		return extractParticipantDtoBy(puuId, matchIds);
 	}
@@ -66,17 +60,6 @@ public class MatchService {
 		} catch (RuntimeException e) {
 			throw new InvalidPuuIdException();
 		}
-	}
-
-	private List<String> mergeMatchIds(final List<String> soloMatchIds, final List<String> teamMatchIds) {
-		List<String> matchIds = Stream.of(soloMatchIds, teamMatchIds)
-				.flatMap(Collection::stream)
-				.toList();
-
-		if (matchIds.size() > TOTAL_MATCH_COUNT) {
-			matchIds = matchIds.subList(FROM_INDEX_INCLUSIVE, TO_INDEX_EXCLUSIVE);
-		}
-		return matchIds;
 	}
 
 	private List<ParticipantDto> extractParticipantDtoBy(final String puuid, final List<String> recentMatchIds) {
