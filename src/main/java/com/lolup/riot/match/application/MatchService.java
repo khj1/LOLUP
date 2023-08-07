@@ -1,11 +1,10 @@
 package com.lolup.riot.match.application;
 
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,16 +18,13 @@ import com.lolup.riot.match.application.dto.ParticipantDto;
 import com.lolup.riot.match.application.dto.RecentMatchStatsDto;
 import com.lolup.riot.match.exception.InvalidMatchIdException;
 import com.lolup.riot.match.exception.InvalidPuuIdException;
-import com.lolup.riot.match.exception.NoSuchSummonerException;
 
 @Service
 public class MatchService {
 
-	private static final String MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/{puuId}/ids?queue={queueId}&start=0&count=30&api_key={apiKey}";
+	private static final String MATCH_ID_REQUEST_URI = "/lol/match/v5/matches/by-puuid/{puuId}/ids?queue={queueId}&start=0&count={count}&api_key={apiKey}";
 	private static final String MATCH_REQUEST_URI = "/lol/match/v5/matches/{matchId}?api_key={apiKey}";
-	private static final int TOTAL_MATCH_COUNT = 30;
-	private static final int FROM_INDEX_INCLUSIVE = 0;
-	private static final int TO_INDEX_EXCLUSIVE = TOTAL_MATCH_COUNT;
+	private static final int TOTAL_MATCH_COUNT = 10;
 
 	private final WebClient webClient;
 	private final String apiKey;
@@ -39,27 +35,19 @@ public class MatchService {
 		this.apiKey = apiKey;
 	}
 
-	public RecentMatchStatsDto requestRecentMatchStats(final String summonerName, final String puuId) {
-		List<ParticipantDto> participants = getParticipants(puuId, summonerName);
-		List<ChampionStatDto> championStats = getMostPlayedChampions(participants);
-		double latestWinRate = getLatestWinRate(participants);
+	public RecentMatchStatsDto requestRecentMatchStats(final String puuId) {
+		List<String> matchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
+		List<ParticipantDto> participants = extractParticipantsBy(puuId, matchIds);
+		List<ChampionStatDto> championStats = extractChampionStats(participants);
+		double latestWinRate = calculateLatestWinRate(participants);
 
 		return new RecentMatchStatsDto(latestWinRate, championStats);
-	}
-
-	private List<ParticipantDto> getParticipants(final String puuId, final String summonerName) {
-		List<String> soloMatchIds = requestMatchIds(puuId, QueueType.RANKED_SOLO.getQueueId());
-		List<String> teamMatchIds = requestMatchIds(puuId, QueueType.RANKED_TEAM.getQueueId());
-		List<String> matchIds = mergeMatchIds(soloMatchIds, teamMatchIds);
-		List<String> recentMatchIds = matchIds.subList(FROM_INDEX_INCLUSIVE, TO_INDEX_EXCLUSIVE);
-
-		return extractParticipantDtoBy(summonerName, recentMatchIds);
 	}
 
 	private List<String> requestMatchIds(final String puuId, final int queueId) {
 		try {
 			return webClient.get()
-					.uri(MATCH_ID_REQUEST_URI, puuId, queueId, apiKey)
+					.uri(MATCH_ID_REQUEST_URI, puuId, queueId, TOTAL_MATCH_COUNT, apiKey)
 					.retrieve()
 					.bodyToMono(new ParameterizedTypeReference<List<String>>() {
 					})
@@ -69,17 +57,11 @@ public class MatchService {
 		}
 	}
 
-	private List<String> mergeMatchIds(final List<String> soloMatchIds, final List<String> teamMatchIds) {
-		return Stream.of(soloMatchIds, teamMatchIds)
-				.flatMap(Collection::stream)
-				.toList();
-	}
-
-	private List<ParticipantDto> extractParticipantDtoBy(final String summonerName, final List<String> recentMatchIds) {
+	private List<ParticipantDto> extractParticipantsBy(final String puuid, final List<String> recentMatchIds) {
 		return recentMatchIds.stream()
 				.map(this::requestMatchDto)
 				.map(MatchDto::getParticipants)
-				.map(participants -> findBySummonerName(participants, summonerName))
+				.map(participants -> findByPuuid(participants, puuid))
 				.collect(Collectors.toList());
 	}
 
@@ -95,14 +77,14 @@ public class MatchService {
 		}
 	}
 
-	private ParticipantDto findBySummonerName(final List<ParticipantDto> participantDtos, final String summonerName) {
+	private ParticipantDto findByPuuid(final List<ParticipantDto> participantDtos, final String puuid) {
 		return participantDtos.stream()
-				.filter(participantDto -> participantDto.hasSameSummonerName(summonerName))
+				.filter(participantDto -> participantDto.hasSamePuuid(puuid))
 				.findFirst()
-				.orElseThrow(NoSuchSummonerException::new);
+				.orElseThrow(InvalidPuuIdException::new);
 	}
 
-	private List<ChampionStatDto> getMostPlayedChampions(final List<ParticipantDto> participantDtos) {
+	private List<ChampionStatDto> extractChampionStats(final List<ParticipantDto> participantDtos) {
 		Map<String, Long> mostPlayedChampions = countPlayedChampion(participantDtos);
 		Map<String, Long> sortedMost = sortByPlayedCount(mostPlayedChampions);
 
@@ -118,18 +100,19 @@ public class MatchService {
 
 	private LinkedHashMap<String, Long> sortByPlayedCount(final Map<String, Long> mostPlayedChampions) {
 		return mostPlayedChampions.entrySet().stream()
-				.sorted(Map.Entry.comparingByValue())
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
 						Map.Entry::getValue,
 						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
 	}
 
-	private double getLatestWinRate(List<ParticipantDto> participantDtos) {
+	private double calculateLatestWinRate(List<ParticipantDto> participantDtos) {
+		int totalMatchCount = participantDtos.size();
 		long winCount = participantDtos.stream()
 				.filter(ParticipantDto::isWin)
 				.count();
 
-		return (double)winCount / TOTAL_MATCH_COUNT;
+		return (double)winCount / totalMatchCount;
 	}
 }
