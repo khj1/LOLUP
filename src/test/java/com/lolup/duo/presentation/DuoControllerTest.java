@@ -29,6 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -49,7 +51,7 @@ class DuoControllerTest extends ControllerTest {
 	void save() throws Exception {
 		willDoNothing()
 				.given(duoService)
-				.save(anyLong(), any(DuoSaveRequest.class));
+				.save(anyLong(), any(DuoSaveRequest.class), any(LocalDateTime.class));
 
 		mockMvc.perform(post("/duo/new")
 						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)
@@ -75,7 +77,7 @@ class DuoControllerTest extends ControllerTest {
 	void saveWithInvalidMemberId() throws Exception {
 		willThrow(new NoSuchMemberException())
 				.given(duoService)
-				.save(anyLong(), any(DuoSaveRequest.class));
+				.save(anyLong(), any(DuoSaveRequest.class), any(LocalDateTime.class));
 
 		mockMvc.perform(post("/duo/new/failByNoMember")
 						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE)

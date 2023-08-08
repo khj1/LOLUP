@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import com.lolup.duo.application.dto.DuoResponse;
 import com.lolup.duo.domain.Duo;
 import com.lolup.duo.domain.SummonerPosition;
 import com.lolup.duo.domain.SummonerTier;
+import com.lolup.duo.exception.DuoCreationLimitException;
 import com.lolup.duo.exception.DuoDeleteFailureException;
 import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
@@ -29,11 +32,11 @@ import com.lolup.member.exception.NoSuchMemberException;
 
 class DuoServiceTest extends ServiceTest {
 
+	public static final int CREATION_LIMIT = 10;
 	private static final String GAME_VERSION = "test.game.version";
-	private static final String DESC = "testDesc";
 	private static final long INVALID_MEMBER_ID = 99L;
 	private static final long INVALID_DUO_ID = 99L;
-	private static final double LATEST_WIN_RATE = 0.2d;
+	private static final LocalDateTime NOW = LocalDateTime.now();
 
 	@DisplayName("조건에 맞는 듀오 모집글을 조회한다.")
 	@Test
@@ -78,7 +81,7 @@ class DuoServiceTest extends ServiceTest {
 		Long memberId = memberRepository.save(소환사_등록_회원())
 				.getId();
 
-		duoService.save(memberId, 듀오_생성_요청());
+		duoService.save(memberId, 듀오_생성_요청(), NOW);
 
 		assertThat(duoRepository.findAll()).hasSize(1);
 	}
@@ -86,8 +89,19 @@ class DuoServiceTest extends ServiceTest {
 	@DisplayName("듀오 모집글 추가 시 잘못된 멤버 ID를 입력하면 예외가 발생한다.")
 	@Test
 	void saveWithInvalidMemberId() {
-		assertThatThrownBy(() -> duoService.save(INVALID_MEMBER_ID, 듀오_생성_요청()))
+		assertThatThrownBy(() -> duoService.save(INVALID_MEMBER_ID, 듀오_생성_요청(), NOW))
 				.isInstanceOf(NoSuchMemberException.class);
+	}
+
+	@DisplayName("생성 제한 시간 이내에 듀오 모집글을 추가하면 예외가 발생한다.")
+	@Test
+	void saveWithBeforeCreationLimit() {
+		Member member = memberRepository.save(소환사_등록_회원());
+		duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.PLATINUM));
+		LocalDateTime beforeCreationLimit = NOW.minusMinutes(CREATION_LIMIT).plusSeconds(1L);
+
+		assertThatThrownBy(() -> duoService.save(member.getId(), 듀오_생성_요청(), beforeCreationLimit))
+				.isInstanceOf(DuoCreationLimitException.class);
 	}
 
 	@DisplayName("듀오 모집글을 수정한다.")
