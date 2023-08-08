@@ -55,9 +55,12 @@ public class DuoService {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
 
-		validateCreationLimit(memberId, currentDate);
+		LocalDateTime latestCreatedDate = duoRepository.findFirstCreatedDateByMemberId(memberId)
+				.orElse(LocalDateTime.MIN);
+		validateCreationLimit(latestCreatedDate, currentDate);
 
 		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
+
 		Duo duo = Duo.create(
 				member,
 				summonerDto.getSummonerStat(),
@@ -70,10 +73,7 @@ public class DuoService {
 		duoRepository.save(duo);
 	}
 
-	private void validateCreationLimit(final Long memberId, final LocalDateTime currentDate) {
-		LocalDateTime createdDate = duoRepository.findFirstCreatedDateByMemberId(memberId)
-				.orElse(LocalDateTime.MIN);
-
+	private void validateCreationLimit(final LocalDateTime createdDate, final LocalDateTime currentDate) {
 		if (isBeforeCreationLimit(createdDate, currentDate)) {
 			throw new DuoCreationLimitException();
 		}
