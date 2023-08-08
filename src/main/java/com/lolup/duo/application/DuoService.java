@@ -1,5 +1,7 @@
 package com.lolup.duo.application;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.lolup.duo.domain.DuoRepository;
 import com.lolup.duo.domain.SummonerPosition;
 import com.lolup.duo.domain.SummonerStat;
 import com.lolup.duo.domain.SummonerTier;
+import com.lolup.duo.exception.DuoCreationLimitException;
 import com.lolup.duo.exception.DuoDeleteFailureException;
 import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
@@ -33,6 +36,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DuoService {
 
+	public static final int CREATION_LIMIT_MINUTES = 10;
+
 	private final MatchService matchService;
 	private final SummonerService summonerService;
 	private final RiotStaticService riotStaticService;
@@ -46,9 +51,14 @@ public class DuoService {
 	}
 
 	@Transactional
-	public void save(final Long memberId, final DuoSaveRequest request) {
+	public void save(final Long memberId, final DuoSaveRequest request, final LocalDateTime currentDate) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(NoSuchMemberException::new);
+
+		LocalDateTime latestCreatedDate = duoRepository.findFirstCreatedDateByMemberId(memberId)
+				.orElse(LocalDateTime.MIN);
+		validateCreationLimit(latestCreatedDate, currentDate);
+
 		SummonerDto summonerDto = requestSummonerDto(request.getSummonerName());
 
 		Duo duo = Duo.create(
@@ -61,6 +71,16 @@ public class DuoService {
 				request.getDesc()
 		);
 		duoRepository.save(duo);
+	}
+
+	private void validateCreationLimit(final LocalDateTime createdDate, final LocalDateTime currentDate) {
+		if (isBeforeCreationLimit(createdDate, currentDate)) {
+			throw new DuoCreationLimitException();
+		}
+	}
+
+	private boolean isBeforeCreationLimit(final LocalDateTime createdDate, final LocalDateTime currentDate) {
+		return currentDate.minusMinutes(CREATION_LIMIT_MINUTES).isBefore(createdDate);
 	}
 
 	private SummonerDto requestSummonerDto(final String summonerName) {

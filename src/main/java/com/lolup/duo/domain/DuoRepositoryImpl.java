@@ -3,7 +3,9 @@ package com.lolup.duo.domain;
 import static com.lolup.duo.domain.QDuo.duo;
 import static com.lolup.member.domain.QMember.member;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -62,4 +64,16 @@ public class DuoRepositoryImpl implements DuoRepositoryCustom {
 				.fetch()
 				.size();
 	}
+
+	@Override
+	public Optional<LocalDateTime> findFirstCreatedDateByMemberId(final Long memberId) {
+		LocalDateTime createdDate = queryFactory
+				.select(duo.createdDate)
+				.from(duo)
+				.orderBy(duo.createdDate.desc())
+				.fetchFirst();
+
+		return Optional.ofNullable(createdDate);
+	}
 }
+

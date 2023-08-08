@@ -5,6 +5,8 @@ import static com.lolup.common.fixture.MemberFixture.소환사_등록_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -73,5 +75,19 @@ class DuoRepositoryTest extends RepositoryTest {
 		assertThat(findDuo)
 				.usingRecursiveComparison()
 				.isEqualTo(savedDuo);
+	}
+
+	@DisplayName("가장 최근에 작성한 게시물의 생성 시간을 조회할 수 있다.")
+	@Test
+	void findFirstCreatedDateByMemberId() {
+		Member member = memberRepository.save(소환사_등록_회원());
+		duoRepository.save(테스트_듀오(member, SummonerPosition.SUP, SummonerTier.UNRANKED));
+		duoRepository.save(테스트_듀오(member, SummonerPosition.TOP, SummonerTier.CHALLENGER));
+		Duo latestDuo = duoRepository.save(테스트_듀오(member, SummonerPosition.MID, SummonerTier.GRANDMASTER));
+
+		LocalDateTime createdDate = duoRepository.findFirstCreatedDateByMemberId(member.getId())
+				.orElseThrow();
+
+		assertThat(createdDate).isEqualTo(latestDuo.getCreatedDate());
 	}
 }

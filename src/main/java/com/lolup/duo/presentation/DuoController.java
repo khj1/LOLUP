@@ -1,6 +1,7 @@
 package com.lolup.duo.presentation;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class DuoController {
 	@PostMapping("/new")
 	public ResponseEntity<Void> save(@AuthenticationPrincipal final Long memberId,
 									 @RequestBody final DuoSaveRequest request) {
-		duoService.save(memberId, request);
+		duoService.save(memberId, request, LocalDateTime.now());
 		return ResponseEntity.created(URI.create("/duo")).build();
 	}
 
