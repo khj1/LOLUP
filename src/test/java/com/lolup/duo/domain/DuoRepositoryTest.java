@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,6 +88,6 @@ class DuoRepositoryTest extends RepositoryTest {
 		LocalDateTime createdDate = duoRepository.findFirstCreatedDateByMemberId(member.getId())
 				.orElseThrow();
 
-		assertThat(createdDate).isEqualTo(latestDuo.getCreatedDate().truncatedTo(ChronoUnit.MICROS));
+		assertThat(createdDate).isEqualTo(latestDuo.getCreatedDate());
 	}
 }
