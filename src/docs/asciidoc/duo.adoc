@@ -1,0 +1,252 @@
+[[Duo]]
+== Duo
+
+**path**
+
+|===
+| method | path | desc
+
+| `GET`
+| /duo
+| 게시물을 조회합니다.
+
+| `POST`
+| /duo/new
+| 새로운 게시물을 추가합니다.
+
+| `PATCH`
+| /duo/{duoId}
+| 게시물 내용을 수정합니다.
+
+| `DELETE`
+| /duo/{duoId}
+| 게시물을 삭제합니다.
+
+|===
+
+[[Duo_Get]]
+=== 조회
+
+==== Path
+
+|===
+| method | path | desc
+
+| `GET`
+| /duo
+| 게시물을 조회합니다.
+
+|===
+
+==== Request
+
+**Parameters**
+
+include::{snippets}/duo/findAll/query-parameters.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/findAll/http-request.adoc[]
+
+==== Response
+
+**Response fields**
+
+include::{snippets}/duo/findAll/response-fields.adoc[]
+
+***content***
+
+include::{snippets}/duo/findAll/response-fields-beneath-content.adoc[]
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 200
+| OK
+| 듀오 모집글을 조회했습니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 내부 서버에서 문제가 발생했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/duo/findAll/http-response.adoc[]
+
+***
+
+[[Duo_Post]]
+=== 추가
+
+==== Path
+
+|===
+| method | path | desc
+
+| `POST`
+| /duo/new
+| 새로운 게시물을 추가합니다.
+
+|===
+
+==== Request
+
+**Header**
+
+include::{snippets}/duo/create/request-headers.adoc[]
+
+**Request Body**
+
+include::{snippets}/duo/create/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/findAll/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 204
+| NO_CONTENT
+| 듀오 모집글을 생성했습니다.
+
+| 400
+| BAD_REQUEST
+| 듀오 모집글 생성 제한시간이 지난 후에 듀오 모집글을 추가할 수 있습니다.
+
+| 401
+| UNAUTHORIZED
+| 권한 인증에 실패했습니다.
+
+| 404
+| NOT_FOUND
+| 존재하지 않는 회원입니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 내부 서버에서 문제가 발생했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/duo/create/http-response.adoc[]
+
+
+***
+
+[[Duo_Patch]]
+=== 수정
+
+==== Path
+
+|===
+| method | path | desc
+
+| `PATCH`
+| /duo/{duoId}
+| 게시물 내용을 수정합니다.
+
+|===
+
+==== Request
+
+**Header**
+
+include::{snippets}/duo/update/request-headers.adoc[]
+
+**Request Body**
+
+include::{snippets}/duo/update/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/update/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 204
+| NO_CONTENT
+| 듀오 모집글을 수정했습니다.
+
+| 400
+| BAD_REQUEST
+| 희망 포지션은 공백일 수 없습니다.
+
+| 401
+| UNAUTHORIZED
+| 권한 인증에 실패했습니다.
+
+| 404
+| NOT_FOUND
+| 본인이 작성한 모집글이 아니거나, 존재하지 않는 모집글입니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 내부 서버에서 문제가 발생했습니다.
+|===
+
+***
+
+[[Duo_Delete]]
+=== 삭제
+
+==== Path
+
+|===
+| method | path | desc
+
+| `DELETE`
+| /duo/{duoId}
+| 게시물을 삭제합니다.
+
+|===
+
+==== Request
+
+**Header**
+
+include::{snippets}/duo/delete/request-headers.adoc[]
+
+**Request Body**
+
+include::{snippets}/duo/delete/path-parameters.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/duo/delete/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 204
+| NO_CONTENT
+| 듀오 모집글을 삭제했습니다.
+
+| 401
+| UNAUTHORIZED
+| 권한 인증에 실패했습니다.
+
+| 404
+| NOT_FOUND
+| 본인이 작성한 모집글이 아니거나, 존재하지 않는 모집글입니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 내부 서버에서 문제가 발생했습니다.
+|===
