@@ -65,9 +65,8 @@ dependencies {
 
     // RestDocs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-webtestclient:'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // MockWebServer
@@ -82,9 +81,9 @@ test {
 }
 
 asciidoctor {
-    inputs.dir snippetsDir
     configurations 'asciidoctorExt'
     baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+    inputs.dir snippetsDir
     dependsOn test
 }
 
