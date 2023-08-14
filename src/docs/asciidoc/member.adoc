@@ -1,0 +1,62 @@
+[[Member]]
+== Member
+
+**path**
+
+|===
+| method | path | desc
+
+| `PATCH`
+| /member
+| 소환사 이름을 변경합니다.
+
+|===
+
+[[CHANGE_SUMMONER_NAME]]
+=== 소환사 이름 변경
+
+==== Request
+
+**Header**
+
+include::{snippets}/member/update/request-headers.adoc[]
+
+**Request Body**
+
+include::{snippets}/member/update/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/check/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 204
+| NO_CONTENT
+| 소환사 이름을 변경했습니다.
+
+| 400
+| BAD_REQUEST
+| 소환사 이름은 공백일 수 없습니다.
+
+| 401
+| UNAUTHORIZED
+| 권한 인증에 실패했습니다.
+
+| 404
+| NOT_FOUND
+| 존재하지 않는 회원이거나 존재하지 않는 소환사 이름입니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 내부 서버에서 문제가 발생했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/member/update/http-response.adoc[]

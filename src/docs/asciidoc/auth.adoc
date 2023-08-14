@@ -1,0 +1,278 @@
+[[Auth]]
+== Auth
+
+**path**
+
+|===
+| method | path | desc
+
+| `GET`
+| /auth/check
+| 권한을 체크합니다.
+
+| `POST`
+| /auth/login/kakao
+| 카카오 엑세스 토큰으로 JWT를 발급받습니다.
+
+| `POST`
+| /auth/login/google
+| 구글 엑세스 토큰으로 JWT를 발급받습니다.
+
+| `POST`
+| /auth/refresh
+| 엑세스 토큰을 재발급 받습니다.
+
+| `POST`
+| /auth/logout
+| 로그아웃합니다.
+
+|===
+
+[[AUTH_CHECK]]
+=== 권한 체크
+
+==== Path
+
+|===
+| method | path | desc
+
+| `GET`
+| /auth/check
+| 권한을 체크합니다.
+
+|===
+
+==== Request
+
+**Header**
+
+include::{snippets}/auth/check/request-headers.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/check/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | usage
+
+| 204
+| NO_CONTENT
+| 권한 인증을 성공했습니다.
+
+| 401
+| UNAUTHORIZED
+| 권한 인증을 실패했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/auth/check/http-response.adoc[]
+
+
+***
+
+[[KAKAO_LOGIN]]
+=== 카카오 로그인
+
+==== Path
+
+|===
+| method | path | desc
+
+| `POST`
+| /auth/login/kakao
+| 카카오 엑세스 토큰으로 JWT를 발급받습니다.
+
+|===
+
+==== Request
+
+**Request Body**
+
+include::{snippets}/auth/login/kakao/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/check/http-request.adoc[]
+
+==== Response
+
+**Response fields**
+
+include::{snippets}/auth/login/kakao/response-fields.adoc[]
+
+**Response Status Code**
+
+|===
+| status | code | usage
+
+| 200
+| OK
+| 로그인에 성공했습니다.
+
+| 400
+| BAD_REQUEST
+| 전달받은 인가 코드 또는 리다이렉트 URI가 올바르지 않습니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 카카오 서버에서 발급받은 엑세스 토큰이 올바르지 않거나, 내부 서버에 문제가 발생했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/auth/login/kakao/http-response.adoc[]
+
+***
+
+[[GOOGLE_LOGIN]]
+=== 구글 로그인
+
+==== Path
+
+|===
+| method | path | desc
+
+| `POST`
+| /auth/login/google
+| 구글 엑세스 토큰으로 JWT를 발급받습니다.
+
+|===
+
+==== Request
+
+**Request Body**
+
+include::{snippets}/auth/login/google/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/login/google/http-request.adoc[]
+
+==== Response
+
+**Response fields**
+
+include::{snippets}/auth/login/google/response-fields.adoc[]
+
+**Response Status Code**
+
+|===
+| status | code | usage
+
+| 200
+| OK
+| 로그인에 성공했습니다.
+
+| 400
+| BAD_REQUEST
+| 전달받은 인가 코드 또는 리다이렉트 URI가 올바르지 않습니다.
+
+| 500
+| INTERNAL_SERVER_ERROR
+| 구글 서버에서 발급받은 엑세스 토큰이 올바르지 않거나, 내부 서버에 문제가 발생했습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/auth/login/google/http-response.adoc[]
+
+***
+
+[[REFRESH]]
+=== 엑세스 토큰 재발급
+
+==== Path
+
+|===
+| method | path | desc
+
+| `POST`
+| /auth/refresh
+| 엑세스 토큰을 재발급 받습니다.
+
+|===
+
+==== Request
+
+**Request Body**
+
+include::{snippets}/auth/refresh/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/refresh/http-request.adoc[]
+
+==== Response
+
+**Response fields**
+
+include::{snippets}/auth/refresh/response-fields.adoc[]
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 200
+| OK
+| 엑세스 토큰을 재발급 받았습니다.
+
+| 400
+| BAD_REQUEST
+| 리프레시 토큰이 전달되지 않았습니다.
+
+| 401
+| UNAUTHORIZED
+| 리프레시 토큰이 만료되었거나 유효하지 않습니다.
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/auth/refresh/http-response.adoc[]
+
+***
+
+[[LOGOUT]]
+=== 로그아웃
+
+==== Path
+
+|===
+| method | path | desc
+
+| `POST`
+| /auth/logout
+| 로그아웃합니다.
+
+|===
+
+==== Request
+
+**Request Body**
+
+include::{snippets}/auth/logout/request-fields.adoc[]
+
+**Request HTTP Example**
+
+include::{snippets}/auth/logout/http-request.adoc[]
+
+==== Response
+
+**Response Status Code**
+
+|===
+| status | code | Usage
+
+| 204
+| NO_CONTENT
+| 로그아웃
+|===
+
+**Response HTTP Example**
+
+include::{snippets}/auth/logout/http-response.adoc[]

@@ -65,9 +65,8 @@ dependencies {
 
     // RestDocs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-webtestclient:'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // MockWebServer
@@ -82,14 +81,9 @@ test {
 }
 
 asciidoctor {
-    inputs.dir snippetsDir
     configurations 'asciidoctorExt'
-
-    sources { // 특정 파일만 html로 만든다.
-        include("**/index.adoc")
-    }
-
     baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+    inputs.dir snippetsDir
     dependsOn test
 }
 
@@ -97,15 +91,15 @@ asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
 }
 
-jar {
-    enabled = false
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from "${asciidoctor.outputDir}"
+    into file("src/main/resources/static/docs")
 }
 
 bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs'
-    }
+    dependsOn copyDocument
 }
 
 // querydsl 설정
