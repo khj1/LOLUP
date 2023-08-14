@@ -11,10 +11,12 @@ import com.lolup.auth.exception.GoogleAuthorizationException;
 import com.lolup.auth.exception.InvalidTokenException;
 import com.lolup.auth.exception.KakaoAuthorizationException;
 import com.lolup.auth.exception.NoSuchRefreshTokenException;
+import com.lolup.duo.exception.DuoCreationLimitException;
 import com.lolup.duo.exception.DuoDeleteFailureException;
 import com.lolup.duo.exception.DuoUpdateFailureException;
 import com.lolup.duo.exception.NoSuchDuoException;
 import com.lolup.member.exception.NoSuchMemberException;
+import com.lolup.riot.match.exception.NoSuchSummonerException;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -39,6 +41,7 @@ public class ControllerAdvice {
 	@ExceptionHandler({
 			NoSuchDuoException.class,
 			NoSuchMemberException.class,
+			NoSuchSummonerException.class,
 			DuoDeleteFailureException.class,
 			DuoUpdateFailureException.class
 	})
@@ -48,6 +51,7 @@ public class ControllerAdvice {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({
+			DuoCreationLimitException.class,
 			KakaoAuthorizationException.class,
 			GoogleAuthorizationException.class
 	})
